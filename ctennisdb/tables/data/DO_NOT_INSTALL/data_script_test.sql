@@ -761,7 +761,7 @@ where o0.player1 is null
     ) as off_table limit 1 offset 1;
 */
 
-
+/*
 select alt_table.*, row_number() over(order by alt_table.ctcode) as row_number
 into temp table tmp_alt_table
 from 
@@ -792,7 +792,12 @@ left outer join ctennismappingplayers as mp0 on mp0.ctcodeofficial=p1.ctcode
 left outer join ctennismappingplayers as mp1 on mp1.ctcodeofficial=p2.ctcode
 left outer join ctennistournaments as t0 on t0.ctcode=m0.cttournament
 where /*(mp0.ctcodeofficial is null or mp1.ctcodeofficial is null)
-and */p1.ctgender='M'
+and p1.ctgender='M'
 and m0.ctstatsource in('https://www.atptour.com','http://www.tennislive.net') 
 and (p1.ctcode in('agustin-suarez-gonzalez-sy25','agustin-gonzalez-ge22') or p2.ctcode in('agustin-suarez-gonzalez-sy25','agustin-gonzalez-ge22'));
 --and (p1.ctcode in (select ctcode from tmp_alt_table) or p2.ctcode in (select ctcode from tmp_alt_table));
+*/
+select rd.*
+from cttournamentrounds as rd
+left outer join ctennismappingrounds as mr1 on mr1.ctcodeofficial=rd.ctcodeofficial
+where lower(rd.ctcodeofficial)=lower(_ctround) or lower(mr1.ctcode)=lower(_ctround);

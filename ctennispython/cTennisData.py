@@ -3564,7 +3564,7 @@ def testCleanStats():
 
 
 def testsmocTennisRunProcess():
-	p=cTennisRunProcess(data_source='sml',date_range=['2010-01-01','2020-03-31'])
+	p=cTennisRunProcess(data_source='smo',_start=0,_end=50,date_range=['2010-01-01','2020-03-31'])
 	p.start()
 
 def functionForPool(p):
@@ -3889,6 +3889,6 @@ if __name__=='__main__':
 #	testregex()
 #	testSingleWomenLiveTennisDataClass()
 #	testextractSingleMatchStats()
-#	testsmocTennisRunProcess()
-	testCleanStats()
+	testsmocTennisRunProcess()
+#	testCleanStats()
 #	print(prodCleanStats())
