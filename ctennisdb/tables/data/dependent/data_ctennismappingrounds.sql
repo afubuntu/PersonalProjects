@@ -34,8 +34,8 @@ begin
         union all select 'q 1' as ctcode, '1stroundqualifying' as ctcodeofficial
         union all select 'q 2' as ctcode, '2ndroundqualifying' as ctcodeofficial
         union all select 'qual.' as ctcode, 'lastroundqualifying' as ctcodeofficial
-        union all select 'olympicbrzone' as ctcode, 'roundbronze' as ctcodeofficial
-        union all select 'brzone' as ctcode, 'roundbronze' as ctcodeofficial
+        union all select 'olympic bronze' as ctcode, 'roundbronze' as ctcodeofficial
+        union all select 'bronze' as ctcode, 'roundbronze' as ctcodeofficial
       ) as tmp
       left outer join ctennismappingrounds as r 
            on  lower(r.ctcode)=lower(tmp.ctcode) and lower(r.ctcodeofficial)=lower(tmp.ctcodeofficial)
