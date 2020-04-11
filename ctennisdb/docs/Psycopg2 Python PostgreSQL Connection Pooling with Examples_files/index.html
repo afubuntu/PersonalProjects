@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<title>PerfProGenerique_300x600_IAB_201907</title>
+	<meta name="ad.size" content="width=300,height=600">
+    <script src="./index_edge.js"></script><script type="text/javascript">var clickTag = "http://www.google.com";</script>
+    <style>
+		* {
+		  -webkit-font-smoothing: antialiased;
+		  -moz-osx-font-smoothing: grayscale;
+		}
+	</style>
+<!--Adobe Edge Runtime-->
+    <script type="text/javascript" charset="utf-8" src="./edge.6.0.0.min.js"></script>
+    <style>
+        .edgeLoad-PerfProGenerique_300x600_IAB_201907 { visibility:hidden; }
+    </style>
+<script>
+   AdobeEdge.loadComposition('index', 'PerfProGenerique_300x600_IAB_201907', {
+    scaleToFit: "none",
+    centerStage: "none",
+    minW: "0px",
+    maxW: "undefined",
+    width: "300px",
+    height: "600px"
+}, {"dom":{}}, {"dom":{}});
+</script>
+<!--Adobe Edge Runtime End-->
+<script type="text/javascript">
+    
+  (function() {
+    var MAX_URL_PARAM_LENGTH = 34;
+    var CLICK_X_URL_KEY = 'nx';
+    var CLICK_Y_URL_KEY = 'ny';
+    var CREATIVE_DIMENSIONS_KEY = 'dim';
+    var AD_URL_PARAM = '&adurl=';
+
+    var relegateNavigation = '';
+    var urlParamMap = {};
+
+    urlParamMap[CLICK_X_URL_KEY] = null;
+    urlParamMap[CLICK_Y_URL_KEY] = null;
+    urlParamMap[CREATIVE_DIMENSIONS_KEY] = null;
+
+    var handleClickTagMessage = function(e) {
+      try {
+        var eventData = JSON.parse(e.data);
+      } catch (err) {
+        return;
+      }
+      if (eventData.isInitClickTag) {
+        if (eventData.clickTags) {
+          for (var i = 0; i < eventData.clickTags.length; i++) {
+            var clkTag = eventData.clickTags[i];
+            window[clkTag.name] = clkTag.url;
+          }
+        } else if (eventData.clickTag) {
+          window.clickTag = eventData.clickTag;
+        }
+        relegateNavigation = eventData.relegateNavigation;
+      }
+    };
+
+    var storeClickCoordinates = function(e) {
+      urlParamMap[CLICK_X_URL_KEY] = Math.round(e.clientX);
+      urlParamMap[CLICK_Y_URL_KEY] = Math.round(e.clientY);
+    };
+
+    var getCreativeDimensions = function() {
+      return window.innerWidth + 'x' + window.innerHeight;
+    }
+
+    var getExitClickParams = function(e) {
+      urlParamMap[CREATIVE_DIMENSIONS_KEY] = getCreativeDimensions();
+
+      var exitParams = '';
+      for (var key in urlParamMap) {
+        exitParams += '&' + key + '=';
+        if (urlParamMap[key] !== null) {
+          exitParams += urlParamMap[key];
+        }
+      }
+      return exitParams;
+    }
+
+    var appendExitClickParams = function(url) {
+      var adUrlIndex = url.toLowerCase().indexOf(AD_URL_PARAM);
+      var paramsToBeAdded = getExitClickParams();
+      if (adUrlIndex > -1 && paramsToBeAdded.length <= MAX_URL_PARAM_LENGTH) {
+        url = url.substr(0, adUrlIndex) + paramsToBeAdded +
+          url.substr(adUrlIndex);
+      };
+      return url;
+    };
+
+    if (open.call) {
+      window.open = function(open) {
+        return function(url, name, features) {
+          url = appendExitClickParams(url);
+          if (relegateNavigation === 'parent') {
+            var message = {'clickTag': url, 'isPostClickTag': true};
+            parent.postMessage(JSON.stringify(message), '*');
+          } else {
+            var args = [url, name];
+            if (features) {
+              args.push(features);
+            }
+            open.apply(window, args);
+          }
+        };
+      }(window.open);
+    }
+
+    if (window.addEventListener) {
+      window.addEventListener(
+          'message', handleClickTagMessage, false);
+      window.addEventListener('mousedown', storeClickCoordinates, true);
+    } else {
+      window.attachEvent('onmessage', handleClickTagMessage);
+    }
+  })();
+    
+  </script></head>
+<body style="margin:0;padding:0;">
+	<div onclick="javascript:window.open(window.clickTag)" style="cursor: pointer; position: relative; height: 600px; width: 300px; z-index: 0; right: auto; bottom: auto; background-color: rgb(255, 255, 255); overflow: hidden; text-overflow: clip; background-size: 100% 100%;" id="Stage" class="PerfProGenerique_300x600_IAB_201907">
+	<div id="Stage_VISU" class="Stage_VISU_id" style="position: absolute; margin: 0px; width: 300px; height: 300px; opacity: 1; left: 0px; top: 0px; right: auto; bottom: auto; transform-style: preserve-3d; transform: translate(0px, 355px) translateZ(0px) rotate(0deg) scale(1, 1); -webkit-tap-highlight-color: rgba(0, 0, 0, 0); z-index: 0;"><div id="Stage_VISU_v_300x600" class="Stage_VISU_v_300x600_id" style="position: absolute; margin: 0px; left: 0px; top: 0px; width: 300px; height: 270px; right: auto; bottom: auto; background-image: url(&quot;v_300x600.jpg&quot;); background-color: rgba(0, 0, 0, 0); background-repeat: no-repeat; background-size: 100% 100%; background-position: 0px 0px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translateZ(0px);"></div></div><div id="Stage_LOGO" class="Stage_LOGO_id" style="position: absolute; margin: 0px; opacity: 1; left: 245px; top: 544px; width: 40px; height: 40px; right: auto; bottom: auto; background-image: url(&quot;Logo.svg&quot;); background-color: rgba(0, 0, 0, 0); background-repeat: no-repeat; background-size: 100% 100%; background-position: 0px 0px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translateZ(0px);"></div><div id="Stage_RECT" class="Stage_RECT_id" style="position: absolute; margin: 0px; opacity: 1; left: 86px; top: 308px; width: 122px; height: 30px; right: auto; bottom: auto; background-color: rgba(255, 255, 255, 0); background-size: 100% 100%; border-width: 2px; border-color: rgb(255, 102, 0); border-style: solid; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translateZ(0px);"></div><div id="Stage_ENPROFITER" class="Stage_ENPROFITER_id" style="position: absolute; margin: 0px; width: 128px; height: 28px; overflow: hidden; text-overflow: clip; opacity: 1; left: 84px; top: 311px; right: auto; bottom: auto; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translateZ(0px); z-index: 0;"><div id="Stage_ENPROFITER_profiterCopy2" class="Stage_ENPROFITER_profiterCopy2_id" style="position: absolute; margin: 0px; opacity: 0; left: 0px; top: 0px; width: 128px; height: 18px; right: auto; bottom: auto; overflow: hidden; text-overflow: clip; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; text-transform: none; color: rgb(255, 102, 0); text-decoration: none; font-style: normal; overflow-wrap: break-word; text-align: center; transform-style: preserve-3d; transform: translate(0px, -18px) translateZ(0px) rotate(0deg) scale(1, 1); -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><p style="margin: 0px;">​<span style="font-size: 14px;">En profiter</span></p></div><div id="Stage_ENPROFITER_orangeCopy" class="Stage_ENPROFITER_orangeCopy_id" style="position: absolute; margin: 0px; opacity: 1; left: 0px; top: 0px; width: 128px; height: 18px; right: auto; bottom: auto; overflow: hidden; text-overflow: clip; clip: rect(-4px, 128px, 18px, 0px); font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; text-transform: none; color: rgb(255, 102, 0); text-decoration: none; font-style: normal; overflow-wrap: break-word; text-align: center; transform-style: preserve-3d; transform: translate(-1px, 4px) translateZ(0px) rotate(0deg) scale(1, 1); -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><p style="margin: 0px;">​<span style="font-size: 14px;">orangepro.fr</span></p></div></div><div id="Stage_RECTNOIR" class="Stage_RECTNOIR_id" style="position: absolute; margin: 0px; opacity: 1; left: 0px; top: 0px; width: 300px; height: 152px; right: auto; bottom: auto; background-color: rgb(0, 0, 0); background-size: 100% 100%; border-width: 0px; border-color: rgb(0, 0, 0); border-style: solid; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translateZ(0px);"></div><div id="Stage_TXT1" class="Stage_TXT1_id" style="position: absolute; margin: 0px; width: 300px; height: 200px; overflow: hidden; text-overflow: clip; opacity: 1; left: 0px; top: 0px; right: auto; bottom: auto; transform-style: preserve-3d; transform: translate(0px, 6px) translateZ(0px) rotate(0deg) scale(1, 1); -webkit-tap-highlight-color: rgba(0, 0, 0, 0); z-index: 0;"><div id="Stage_TXT1_txt" class="Stage_TXT1_txt_id" style="position: absolute; margin: 0px; left: 0px; top: 0px; width: 300px; height: 1200px; right: auto; bottom: auto; background-image: url(&quot;txt_300x600.svg&quot;); background-color: rgba(0, 0, 0, 0); background-repeat: no-repeat; background-size: 100% 100%; background-position: 0px 0px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translateZ(0px);"></div></div><div id="Stage_TXT2" class="Stage_TXT2_id" style="position: absolute; margin: 0px; width: 300px; height: 200px; overflow: hidden; text-overflow: clip; opacity: 1; left: 0px; top: 0px; right: auto; bottom: auto; transform-style: preserve-3d; transform: translate(0px, 72px) translateZ(0px) rotate(0deg) scale(1, 1); -webkit-tap-highlight-color: rgba(0, 0, 0, 0); z-index: 0;"><div id="Stage_TXT2_txt" class="Stage_TXT2_txt_id" style="position: absolute; margin: 0px; left: 0px; top: -200px; width: 300px; height: 1200px; right: auto; bottom: auto; background-image: url(&quot;txt_300x600.svg&quot;); background-color: rgba(0, 0, 0, 0); background-repeat: no-repeat; background-size: 100% 100%; background-position: 0px 0px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translateZ(0px);"></div></div><div id="Stage_TXT3" class="Stage_TXT3_id" style="position: absolute; margin: 0px; width: 300px; height: 200px; overflow: hidden; text-overflow: clip; opacity: 0; left: 0px; top: 0px; right: auto; bottom: auto; transform-style: preserve-3d; transform: translate(-60px, 82px) translateZ(0px) rotate(0deg) scale(1, 1); -webkit-tap-highlight-color: rgba(0, 0, 0, 0); z-index: 0;"><div id="Stage_TXT3_txt" class="Stage_TXT3_txt_id" style="position: absolute; margin: 0px; left: 0px; top: -400px; width: 300px; height: 1200px; right: auto; bottom: auto; background-image: url(&quot;txt_300x600.svg&quot;); background-color: rgba(0, 0, 0, 0); background-repeat: no-repeat; background-size: 100% 100%; background-position: 0px 0px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translateZ(0px);"></div></div><div id="Stage_TXT4" class="Stage_TXT4_id" style="position: absolute; margin: 0px; width: 300px; height: 200px; overflow: hidden; text-overflow: clip; opacity: 0; left: 0px; top: 0px; right: auto; bottom: auto; transform-style: preserve-3d; transform: translate(-60px, 84px) translateZ(0px) rotate(0deg) scale(1, 1); -webkit-tap-highlight-color: rgba(0, 0, 0, 0); z-index: 0;"><div id="Stage_TXT4_txt" class="Stage_TXT4_txt_id" style="position: absolute; margin: 0px; left: 0px; top: -600px; width: 300px; height: 1200px; right: auto; bottom: auto; background-image: url(&quot;txt_300x600.svg&quot;); background-color: rgba(0, 0, 0, 0); background-repeat: no-repeat; background-size: 100% 100%; background-position: 0px 0px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translateZ(0px);"></div></div><div id="Stage_TXT5" class="Stage_TXT5_id" style="position: absolute; margin: 0px; width: 300px; height: 200px; overflow: hidden; text-overflow: clip; opacity: 0; left: 0px; top: 0px; right: auto; bottom: auto; transform-style: preserve-3d; transform: translate(0px, 150px) translateZ(0px) rotate(0deg) scale(1, 1); -webkit-tap-highlight-color: rgba(0, 0, 0, 0); z-index: 0;"><div id="Stage_TXT5_txt" class="Stage_TXT5_txt_id" style="position: absolute; margin: 0px; left: 0px; top: -800px; width: 300px; height: 1200px; right: auto; bottom: auto; background-image: url(&quot;txt_300x600.svg&quot;); background-color: rgba(0, 0, 0, 0); background-repeat: no-repeat; background-size: 100% 100%; background-position: 0px 0px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translateZ(0px);"></div></div><div id="Stage_TXT6" class="Stage_TXT6_id" style="position: absolute; margin: 0px; width: 300px; height: 200px; overflow: hidden; text-overflow: clip; opacity: 1; left: 7px; top: 186px; right: auto; bottom: auto; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translateZ(0px); z-index: 0;"><div id="Stage_TXT6_txt" class="Stage_TXT6_txt_id" style="position: absolute; margin: 0px; left: 0px; top: -1000px; width: 300px; height: 1200px; right: auto; bottom: auto; background-image: url(&quot;txt_300x600.svg&quot;); background-color: rgba(0, 0, 0, 0); background-repeat: no-repeat; background-size: 100% 100%; background-position: 0px 0px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translateZ(0px);"></div></div><div id="Stage_FONDU" class="Stage_FONDU_id" style="position: absolute; margin: 0px; opacity: 0; left: 0px; top: 0px; width: 300px; height: 600px; right: auto; bottom: auto; background-color: rgb(255, 255, 255); background-size: 100% 100%; border-width: 0px; border-color: rgb(0, 0, 0); border-style: solid; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translateZ(0px);"></div><div id="Stage_MASQUE" class="Stage_MASQUE_id" style="position: absolute; margin: 0px; left: 0px; top: 0px; width: 300px; height: 205px; right: auto; bottom: auto; background-color: rgb(255, 255, 255); background-size: 100% 100%; border-width: 0px; border-color: rgba(128, 128, 128, 0.498); border-style: solid; transform-style: preserve-3d; transform: translate(0px, 150px) translateZ(0px) rotate(0deg) scale(1, 1); -webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 0;"></div><div id="Stage_border" class="Stage_border_id" style="position: absolute; margin: 0px; opacity: 1; left: 0px; top: 0%; width: 298px; height: 598px; right: auto; bottom: auto; background-color: rgba(0, 0, 0, 0); background-size: 100% 100%; border-width: 1px; border-color: rgba(128, 128, 128, 0.5); border-style: solid; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translateZ(0px);"></div></div>
+
+</body></html>

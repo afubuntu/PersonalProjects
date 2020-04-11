@@ -1,0 +1,68 @@
+These are some notes related to how to extract data from the atp web site.
+
+1) Official website home page : https://www.atptour.com
+
+2) Single men ranking : div(class="atp-nav-wrap-inner")->nav(class="atp-nav")->ul(class="atp-nav-list")->li(class="atp-nav-item")->ul(class="atp-sub-nav-item")->a.href
+
+   url for single men ranking is : https://www.atptour.com+a.href
+
+3) Select the table of players of whom to extract data:
+   CurrentDate= ul(class="dropdown" data-value="rankDate")->li(class="current").data-value
+   rankRange= ul(class="dropdown" data-value="rankRange")->li(data-value="1-5000").data-value
+   countryCode=ul(class="dropdown" data-value="countryCode")->li(class="dropdown-default-label" data-value="all").data-value
+
+   url=https://www.atptour.com+href?rankDate=CurrentDate&rankRange=1-5000&countryCode=all
+
+4) The table headers :
+   div(class="table-rankings" data-filtered-mdule="playerRankDetail")->table(class="mega-table")->thead->tr:
+Ranking : ->th(class="sorting-cell rank-heading sort-up")[0]->div(class="sorting-inner")->div(class="sorting-label").text
+
+Move : ->th(class="sorting-cell rank-heading sort-up")[1]->div(class="sorting-inner")->div(class="sorting-label").text
+
+Country : ->th(class="sorting-cell rank-heading sort-up")[2]->div(class="sorting-inner")->div(class="sorting-label").text
+
+Player : ->th(class="sorting-cell rank-heading sort-up")[3]->div(class="sorting-inner")->div(class="sorting-label").text
+
+Age : ->th(class="sorting-cell rank-heading sort-up")[4]->div(class="sorting-inner")->div(class="sorting-label").text
+
+Points : ->th(class="sorting-cell rank-heading sort-up")[5]->div(class="sorting-inner")->div(class="sorting-label").text
+
+Tourn Played : ->th(class="sorting-cell rank-heading sort-up")[6]->div(class="sorting-inner")->div(class="sorting-label").text
+
+Points Dropping : ->th(class="sorting-cell rank-heading sort-up")[7]->div(class="sorting-inner")->div(class="sorting-label").text
+
+Next Best : ->th(class="sorting-cell rank-heading sort-up")[8]->div(class="sorting-inner")->div(class="sorting-label").text
+
+5) The table of players itself :
+   div(class="table-rankings" data-filtered-mdule="playerRankDetail")->table(class="mega-table")->tbody->tr:
+
+Ranking : ->td(class="rank-cell").text
+
+Move : ->td(class="move-cell")->div(class="move-text").text
+
+Country : ->td(class="country-cell")->div(class="country-inner")->div(class="country-item")->img.alt
+
+Player: ->td(class="player-cell")->a.data-ga-label or .text
+Player overview link: https://www.atptour.com+->td(class="player-cell")->a.href
+
+Age : ->td(class="age-cell").text
+
+Points : ->td(class="points-cell")->a.text
+
+Tourn Played : ->td(class="tourn-cell").a.text
+
+Points Dropping : ->td(class="pts-cell").a.text
+
+Best Next : ->td(class="next-cell").text
+
+
+6) Player matchs stats table:
+Player overview link: https://www.atptour.com+->td(class="player-cell")->a.href
+Matches list : div(class="profile-tabs-wrapper")->ul(class="profile-tabs")->li(class="profile-tabs")->a(data-ga-label="Activity").href
+url= https://www.atptour.com+a.href
+filter url : https://www.atptour.com+div(class="current-tab-content")->div(class="module-header")->div(class="content-filters-with-buttons")->div(class="filter-action-buttons")->button(class="filter-submit").data-resulturl?year=all
+matchs table : div(data-filtered-module="playerActivityTables")->div(class="activity-tournament-table")
+
+
+7) Activity details per tournament :
+Tournament info : ->table(class="tourney-results-wrapper")

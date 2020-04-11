@@ -1,0 +1,1 @@
+{'atpcup': 'atpcup', '250': 'atp250', '500': 'atp500', '1000': 'atpmasters1000', 'grandslam': 'grandslam', 'finals': 'finals', 'lvr': 'lvr', 'itf': 'itf', 'olympicgames': 'olympicgames', 'international': 'international', 'premier': 'premier', 'premier5': 'premier5', 'premiermandatory': 'premiermandatory'}

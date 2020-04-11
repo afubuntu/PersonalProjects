@@ -1,0 +1,35 @@
+Extraction procedure based on : http://www.tennisendirect.net
+
+
+I- Single Men:
+
+   1) Single Men nivagation : div(class="navi")->ul(id="head_menu")->li[3]->a(title="Hommes").href
+   2) Or direct link to ATP ranking : div(id="left_column")->div(class="tour_box")->ul->li(class="menu_main")->a.href
+   3) Players table: div(class="rank_block")[0]->div->table(class="table_pranks")->tbody->tr[0] for headers
+      Players table: div(class="rank_block")[0]->div->table(class="table_pranks")->tbody->tr[i]->td[0],[1],[2]=rank,player name,points
+   4) table stats : 
+
+
+
+
+
+
+II- Single Women:
+
+   1) Single Women nivagation : div(class="navi")->ul(id="head_menu")->li[4]->a(title="Femmes").href
+   2) Or direct link to WTA ranking : div(id="left_column")->div(class="tour_box")->ul->li(class="menu_main")->a.href
+   3) Players table: div(class="rank_block")[0]->div->table(class="table_pranks")
+
+
+
+III- Data presentation
+
+For a player,we will have two kinds of data. Data that represent the player profile (presentation) and data that represent the player matches stats
+
+  1) Player profile
+     The row is marked by "player_profile" in the first column.
+     The other columns are : player_name, player_birth_date, player_country_code, player_country_label, player_height, player_weight, player_style_hand, player_rank, player_points, player_prize_money
+
+  2) Player match stats
+     The row is marked by "player_match_stats".
+     The other columns are : match_date, tournament_name, tournament_points, tournament_round, player1_name, player2_name, match_score, match_result, stat_player1_first_serv, stat_player2_first_serv, stat_player1_first_serv_pts, stat_player2_first_serv_pts, stat_player1_2nd_serv_pts, stat_player2_2nd_serv_pts, stat_player1_brk_pts_won, stat_player2_brk_pts_won, stat_player1_return_pts_won, stat_player2_return_pts_won, stat_player1_dble_faults, stat_player2_dble_faults, stat_player1_aces, stat_player2_aces 

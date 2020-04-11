@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Google Tag Manager -->
+    <script type="text/javascript" async="" src="./PostgreSQL Stored Procedures _ CARTO_files/js"></script><script type="text/javascript" async="" src="./PostgreSQL Stored Procedures _ CARTO_files/analytics.js"></script><script async="" src="./PostgreSQL Stored Procedures _ CARTO_files/gtm.js"></script><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WGSN6JK');</script>
+    <!-- End Google Tag Manager -->
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" href="https://carto.com/favicon.ico">
+    <title>PostgreSQL Stored Procedures | CARTO</title>
+    <meta name="description" content="Learn how to store SQL functions in your CARTO database.">
+    <meta name="keywords" content="">
+    <meta name="author" content="CARTO">
+    <link rel="search" type="application/opensearchdescription+xml" href="https://carto.com/help/open_search.xml" title="CARTO">
+    
+    <meta property="og:title" content="PostgreSQL Stored Procedures">
+    <meta property="og:description" content="Learn how to store SQL functions in your CARTO database.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://carto.com/help/working-with-data/sql-stored-procedures/">
+    <meta property="og:image" content="https://carto.com/help/images/media/media-default.png">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@carto">
+    <meta name="twitter:title" content="PostgreSQL Stored Procedures — CARTO">
+    <meta name="twitter:description" content="Learn how to store SQL functions in your CARTO database.">
+    <meta name="twitter:image" content="https://carto.com/help/images/media/carto-for-twitter.png">
+    
+    <link href="./PostgreSQL Stored Procedures _ CARTO_files/css" rel="stylesheet" type="text/css">
+    <link href="./PostgreSQL Stored Procedures _ CARTO_files/css(1)" rel="stylesheet" type="text/css">
+    <link href="./PostgreSQL Stored Procedures _ CARTO_files/css(2)" rel="stylesheet" type="text/css">
+    
+    <link rel="stylesheet" href="./PostgreSQL Stored Procedures _ CARTO_files/main.css">
+    <link rel="canonical" href="https://carto.com/help/working-with-data/sql-stored-procedures/">
+</head>
+      
+  <body class="article">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WGSN6JK"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <header class="Header Navbar--negative is-bgTutorialsPurple is-BorderWhite">
+  <div class="Navbar-container">
+  <nav class="Navbar js-Navbar js-Navbar--fixed">
+    <div class="Navbar-inner Navbar-height--44 container">
+      <div class="Navbar-header">
+        <a class="Logo js-Navbar-logo u-rspace--28" href="https://carto.com/">
+          <div class="Logo--negative">
+            <svg width="92px" height="36px" viewBox="0 0 92 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Logo-Scale-Negative" transform="translate(-162.000000, -282.000000)" fill="#FFFFFF">
+      <g id="logo_carto_n_36" transform="translate(162.000000, 282.000000)">
+        <path d="M74,36 C83.9411255,36 92,27.9411255 92,18 C92,8.0588745 83.9411255,0 74,0 C64.0588745,0 56,8.0588745 56,18 C56,27.9411255 64.0588745,36 74,36 Z" id="halo" fill-opacity="0.200000018"></path>
+        <path d="M6.25280899,23.981602 C8.76747566,23.981602 10.220757,22.882802 11.2984713,21.390402 L8.9144367,19.684802 C8.22861851,20.521202 7.52647133,21.078802 6.33445401,21.078802 C4.73421159,21.078802 3.60751029,19.734002 3.60751029,18.012002 L3.60751029,17.979202 C3.60751029,16.306402 4.73421159,14.928802 6.33445401,14.928802 C7.4284973,14.928802 8.1796315,15.470002 8.83279168,16.273602 L11.2168263,14.420402 C10.204428,13.026402 8.70215964,12.042402 6.36711202,12.042402 C2.9053631,12.042402 0.358038428,14.666402 0.358038428,18.012002 L0.358038428,18.044802 C0.358038428,21.472402 2.98700813,23.981602 6.25280899,23.981602 L6.25280899,23.981602 Z M16.732047,23.752002 L20.0468349,23.752002 L20.8632851,21.685602 L25.2884453,21.685602 L26.1048955,23.752002 L29.5013284,23.752002 L24.6352851,12.190002 L21.5817613,12.190002 L16.732047,23.752002 Z M21.7940384,19.209202 L23.0840297,15.962002 L24.357692,19.209202 L21.7940384,19.209202 Z M35.6697093,23.752002 L38.8375361,23.752002 L38.8375361,20.275202 L40.2418305,20.275202 L42.5442201,23.752002 L46.1855881,23.752002 L43.4586443,19.750402 C44.8792677,19.143602 45.810021,17.979202 45.810021,16.208002 L45.810021,16.175202 C45.810021,15.043602 45.4671119,14.174402 44.7976227,13.502002 C44.0301595,12.731202 42.8218132,12.272002 41.0746097,12.272002 L35.6697093,12.272002 L35.6697093,23.752002 Z M38.8375361,17.782402 L38.8375361,15.010802 L40.9276487,15.010802 C41.9727049,15.010802 42.6421941,15.470002 42.6421941,16.388402 L42.6421941,16.421202 C42.6421941,17.257602 42.005363,17.782402 40.9439777,17.782402 L38.8375361,17.782402 Z M55.2605317,23.752002 L58.4283585,23.752002 L58.4283585,15.060002 L61.8574495,15.060002 L61.8574495,12.272002 L51.8477698,12.272002 L51.8477698,15.060002 L55.2605317,15.060002 L55.2605317,23.752002 Z M74,24 C77.3137085,24 80,21.3137085 80,18 C80,14.6862915 77.3137085,12 74,12 C70.6862915,12 68,14.6862915 68,18 C68,21.3137085 70.6862915,24 74,24 Z" id="logotype"></path>
+      </g>
+    </g>
+  </g>
+</svg>
+
+          </div>
+          <div class="Logo--positive">
+            
+              <svg width="92px" height="36px" viewBox="0 0 92 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Logo-Scale-Positive" transform="translate(-162.000000, -282.000000)" fill="#162945">
+      <g id="logo_carto_p_36" transform="translate(162.000000, 282.000000)">
+          <path d="M74,36 C83.9411255,36 92,27.9411255 92,18 C92,8.0588745 83.9411255,0 74,0 C64.0588745,0 56,8.0588745 56,18 C56,27.9411255 64.0588745,36 74,36 Z" id="halo" fill-opacity="0.100000001"></path>
+          <path d="M6.25280899,23.981602 C8.76747566,23.981602 10.220757,22.882802 11.2984713,21.390402 L8.9144367,19.684802 C8.22861851,20.521202 7.52647133,21.078802 6.33445401,21.078802 C4.73421159,21.078802 3.60751029,19.734002 3.60751029,18.012002 L3.60751029,17.979202 C3.60751029,16.306402 4.73421159,14.928802 6.33445401,14.928802 C7.4284973,14.928802 8.1796315,15.470002 8.83279168,16.273602 L11.2168263,14.420402 C10.204428,13.026402 8.70215964,12.042402 6.36711202,12.042402 C2.9053631,12.042402 0.358038428,14.666402 0.358038428,18.012002 L0.358038428,18.044802 C0.358038428,21.472402 2.98700813,23.981602 6.25280899,23.981602 L6.25280899,23.981602 Z M16.732047,23.752002 L20.0468349,23.752002 L20.8632851,21.685602 L25.2884453,21.685602 L26.1048955,23.752002 L29.5013284,23.752002 L24.6352851,12.190002 L21.5817613,12.190002 L16.732047,23.752002 Z M21.7940384,19.209202 L23.0840297,15.962002 L24.357692,19.209202 L21.7940384,19.209202 Z M35.6697093,23.752002 L38.8375361,23.752002 L38.8375361,20.275202 L40.2418305,20.275202 L42.5442201,23.752002 L46.1855881,23.752002 L43.4586443,19.750402 C44.8792677,19.143602 45.810021,17.979202 45.810021,16.208002 L45.810021,16.175202 C45.810021,15.043602 45.4671119,14.174402 44.7976227,13.502002 C44.0301595,12.731202 42.8218132,12.272002 41.0746097,12.272002 L35.6697093,12.272002 L35.6697093,23.752002 Z M38.8375361,17.782402 L38.8375361,15.010802 L40.9276487,15.010802 C41.9727049,15.010802 42.6421941,15.470002 42.6421941,16.388402 L42.6421941,16.421202 C42.6421941,17.257602 42.005363,17.782402 40.9439777,17.782402 L38.8375361,17.782402 Z M55.2605317,23.752002 L58.4283585,23.752002 L58.4283585,15.060002 L61.8574495,15.060002 L61.8574495,12.272002 L51.8477698,12.272002 L51.8477698,15.060002 L55.2605317,15.060002 L55.2605317,23.752002 Z M74,24 C77.3137085,24 80,21.3137085 80,18 C80,14.6862915 77.3137085,12 74,12 C70.6862915,12 68,14.6862915 68,18 C68,21.3137085 70.6862915,24 74,24 Z" id="logotype"></path>
+      </g>
+    </g>
+  </g>
+</svg>
+
+            
+          </div>
+        </a>
+        <div class="tablet--flex">
+          
+            <div class="u-flex">
+              <form action="https://carto.com/help/search" method="get" class="collapsable-search-form" _lpchecked="1">
+                <input type="text" name="query" class="input collapsable-search-box js-expand-search-box" placeholder="">
+                <span class="Navbar-link collapsable-search-icon">
+                    <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+  <path d="M17.244 16.006l-4.72-4.718A6.937 6.937 0 0 0 14 7c0-1.87-.729-3.628-2.051-4.949A6.948 6.948 0 0 0 7 0C5.13 0 3.372.728 2.051 2.051A6.951 6.951 0 0 0 0 7c0 1.87.729 3.628 2.051 4.949A6.948 6.948 0 0 0 7 14a6.932 6.932 0 0 0 4.288-1.475l4.718 4.718 1.238-1.237zM7 12.25a5.214 5.214 0 0 1-3.712-1.537A5.213 5.213 0 0 1 1.75 7c0-1.402.546-2.72 1.538-3.712A5.211 5.211 0 0 1 7 1.75c1.403 0 2.72.546 3.712 1.538A5.213 5.213 0 0 1 12.25 7a5.213 5.213 0 0 1-1.538 3.713A5.214 5.214 0 0 1 7 12.25z" fill="currentcolor" fill-rule="nonzero"></path>
+</svg>
+                </span>
+              </form>
+            </div>
+          
+          <div class="Navbar-buttonMenu js-Navbar-button">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="Navbar-collapse">
+        <ul class="Navbar-list">
+          <li class="Navbar-item Dropdown u-rspace--28 ">
+            <span class="Navbar-link text is-semibold is-caption u-default">
+              Platform
+            </span>
+            <div class="Dropdown-inner Dropdown--center Dropdown--new Dropdown--platform">
+              <ul class="grid">
+                
+                
+                  <li class="Dropdown-item grid-cell--col12 u-flex u-vspace--24">
+                    <a href="https://carto.com/platform/data-ingestion-management/" class="Dropdown-link js-Action--NAVplatform u-flex u-align-center">
+                      <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <defs> <circle id="a" cx="17.82" cy="17.82" r="17.82"></circle> </defs> <g fill="none" fill-rule="evenodd"> <mask id="b" fill="#fff"> <use xlink:href="#a"></use> </mask> <use fill="#F2F6F9" xlink:href="#a"></use> <g mask="url(#b)" stroke-linecap="round" stroke-linejoin="round"> <path stroke="#162945" stroke-width="1.24" d="M14.4 21.74h3.58v13.3M14.42 11.77h3.56V-4.85"></path> <path d="M-6.97 15.09h24.94c3.57 0 3.57 0 3.57-6.65M-6.97 18.41h24.94c3.57 0 3.57 0 3.57 6.65" stroke="#EB1510" stroke-width="1.24"></path> </g> </g> </svg>
+                      <div class="u-lspace--12">
+                          <p class="text is-caption is-txtBaseGrey is-semibold Dropdown-link-platform">Data Ingestion &amp; Management</p>
+                          <p class="text is-small is-txtBaseGrey"></p>
+                      </div>
+                    </a>
+                  </li>
+                
+                  <li class="Dropdown-item grid-cell--col12 u-flex u-vspace--24">
+                    <a href="https://carto.com/platform/data-enrichment/" class="Dropdown-link js-Action--NAVplatform u-flex u-align-center">
+                      <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <defs> <circle id="a" cx="17.82" cy="17.82" r="17.82"></circle> </defs> <g fill="none" fill-rule="evenodd"> <mask id="b" fill="#fff"> <use xlink:href="#a"></use> </mask> <use fill="#F2F6F9" xlink:href="#a"></use> <g mask="url(#b)"> <g stroke-linecap="round" stroke-linejoin="round"> <path d="M-8.96 15.02H5.4c14.18 0 12.8 9.96 39.45 9.97" stroke="#162945" stroke-width="1.25"></path> <path d="M-10.3 18.36H5.39c15.53 0 17-10.67 39.45-10.07" stroke="#EB1510" stroke-width="1.25"></path> </g> </g> </g> </svg>
+                      <div class="u-lspace--12">
+                          <p class="text is-caption is-txtBaseGrey is-semibold Dropdown-link-platform">Data Enrichment</p>
+                          <p class="text is-small is-txtBaseGrey"></p>
+                      </div>
+                    </a>
+                  </li>
+                
+                  <li class="Dropdown-item grid-cell--col12 u-flex u-vspace--24">
+                    <a href="https://carto.com/platform/analysis/" class="Dropdown-link js-Action--NAVplatform u-flex u-align-center">
+                      <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <defs> <circle id="a" cx="17.82" cy="17.82" r="17.82"></circle> </defs> <g fill="none" fill-rule="evenodd"> <mask id="b" fill="#fff"> <use xlink:href="#a"></use> </mask> <use fill="#F2F6F9" xlink:href="#a"></use> <g mask="url(#b)"> <g stroke-linecap="round" stroke-linejoin="round"> <path d="M14.35 9.46L25.1 19.54M14.35 9.46l-3.6-6.73M32.28 12.82l-7.18 6.72M14.35 9.46L3.59 19.54M10.76 29.63L3.59 19.54M25.1 29.86V19.54" stroke="#EB1510" stroke-width="1.25"></path> </g> <path d="M10.49 4.93a2.46 2.46 0 0 1-2.42-2.5c0-1.37 1.08-2.5 2.42-2.5h.17a2.46 2.46 0 0 1 2.41 2.5c0 1.38-1.07 2.5-2.4 2.5h-.18zM3.2 21.94a2.46 2.46 0 0 1-2.42-2.5c0-1.37 1.08-2.5 2.42-2.5h.17a2.46 2.46 0 0 1 2.41 2.5c0 1.38-1.07 2.5-2.4 2.5H3.2zM10.49 32.07a2.46 2.46 0 0 1-2.42-2.5c0-1.38 1.08-2.5 2.42-2.5h.17a2.46 2.46 0 0 1 2.41 2.5c0 1.37-1.07 2.5-2.4 2.5h-.18zM24.66 32.07a2.46 2.46 0 0 1-2.41-2.5c0-1.38 1.08-2.5 2.41-2.5h.18a2.46 2.46 0 0 1 2.41 2.5c0 1.37-1.08 2.5-2.41 2.5h-.18zM24.66 21.94a2.46 2.46 0 0 1-2.41-2.5c0-1.37 1.08-2.5 2.41-2.5h.18a2.46 2.46 0 0 1 2.41 2.5c0 1.38-1.08 2.5-2.41 2.5h-.18zM14.13 11.82a2.46 2.46 0 0 1-2.41-2.5c0-1.38 1.08-2.5 2.41-2.5h.18a2.46 2.46 0 0 1 2.41 2.5c0 1.37-1.08 2.5-2.41 2.5h-.18zM31.95 15.06a2.46 2.46 0 0 1-2.41-2.5c0-1.38 1.08-2.5 2.41-2.5h.18a2.46 2.46 0 0 1 2.41 2.5c0 1.37-1.08 2.5-2.41 2.5h-.18z" stroke="#FFF" fill="#162945" fill-rule="nonzero"></path> </g> </g> </svg>
+                      <div class="u-lspace--12">
+                          <p class="text is-caption is-txtBaseGrey is-semibold Dropdown-link-platform">Analysis</p>
+                          <p class="text is-small is-txtBaseGrey"></p>
+                      </div>
+                    </a>
+                  </li>
+                
+                  <li class="Dropdown-item grid-cell--col12 u-flex u-vspace--24">
+                    <a href="https://carto.com/platform/solutions-visualization/" class="Dropdown-link js-Action--NAVplatform u-flex u-align-center">
+                      <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <defs> <circle id="a" cx="17.82" cy="17.82" r="17.82"></circle> </defs> <g fill="none" fill-rule="evenodd"> <mask id="b" fill="#fff"> <use xlink:href="#a"></use> </mask> <use fill="#F2F6F9" xlink:href="#a"></use> <g mask="url(#b)"> <path d="M17.44 28.96c-5.92 0-10.72-5.02-10.72-11.2 0-6.2 4.8-11.22 10.72-11.22h.98c5.92 0 10.72 5.02 10.72 11.21 0 6.2-4.8 11.2-10.72 11.2h-.98z" stroke="#EB1510" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path> <g fill="#162945" fill-rule="nonzero" stroke="#FFF" transform="translate(4.65 4.47)"> <circle cx="5.24" cy="4.83" r="2.5"></circle> <circle cx="17.39" cy="2.4" r="2.5"></circle> <circle cx="24.27" cy="12.53" r="2.5"></circle> <circle cx="18.61" cy="23.02" r="2.5"></circle> <circle cx="6.05" cy="22.25" r="2.5"></circle> <circle cx="2" cy="10.91" r="2.5"></circle> </g> </g> </g> </svg>
+                      <div class="u-lspace--12">
+                          <p class="text is-caption is-txtBaseGrey is-semibold Dropdown-link-platform">Solutions &amp; Visualization</p>
+                          <p class="text is-small is-txtBaseGrey"></p>
+                      </div>
+                    </a>
+                  </li>
+                
+                  <li class="Dropdown-item grid-cell--col12 u-flex u-vspace--24">
+                    <a href="https://carto.com/platform/integration/" class="Dropdown-link js-Action--NAVplatform u-flex u-align-center">
+                      <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <defs> <circle id="a" cx="17.82" cy="17.82" r="17.82"></circle> </defs> <g fill="none" fill-rule="evenodd"> <mask id="b" fill="#fff"> <use xlink:href="#a"></use> </mask> <use fill="#F2F6F9" xlink:href="#a"></use> <g mask="url(#b)" stroke-linecap="round" stroke-linejoin="round"> <path stroke="#162945" stroke-width="1.25" d="M15.47 21.74h-3.59V35.2M15.46 11.66h-3.58V-1.8M22.64 21.74h3.59V35.2M22.64 11.66h3.59V-1.8"></path> <path d="M26.23 18.38H11.88c-3.59 0-3.59 0-3.59 6.72M26.23 15.02H11.88c-3.59 0-3.59 0-3.59-6.73" stroke="#EB1510" stroke-width="1.25"></path> </g> </g> </svg>
+                      <div class="u-lspace--12">
+                          <p class="text is-caption is-txtBaseGrey is-semibold Dropdown-link-platform">Integration</p>
+                          <p class="text is-small is-txtBaseGrey"></p>
+                      </div>
+                    </a>
+                  </li>
+                
+              </ul>
+            </div>
+          </li>
+
+          <li class="Navbar-item Dropdown u-rspace--28 ">
+            <span class="Navbar-link text is-semibold is-caption u-default">
+              Solutions
+            </span>
+            <div class="Dropdown-inner Dropdown--center Dropdown--new Dropdown--industries">
+              
+              <a class="title is-small is-txtSolutionsRed js-Action--NAVindustriesLanding" href="https://carto.com/industries/">BY INDUSTRY</a>
+              <ul class="grid u-vspace--24 u-tspace--24">
+                
+                  <li class="Dropdown-item grid-cell--col6 u-vspace--24">
+                    <a href="https://carto.com/industries/retail/" class="Dropdown-link js-Action--NAVindustries u-flex u-align-center">
+                      <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"> <g fill="none" fill-rule="evenodd"> <circle fill="#FF583E" opacity=".9" cx="18" cy="18" r="18"></circle> <path d="M11.66 11h2.01l-1.42 5H9.52l2.14-5zM19 11h1.25l1.42 5H19v-5zm-4.67 5l1.42-5H17v5h-2.67zm12.15 0h-2.73l-1.42-5h2.01l2.14 5zM17 24h-5v-4h5v4zm11.92-7.4l-3-7A1 1 0 0 0 25 9H11a1 1 0 0 0-.92.6l-3 7A1 1 0 0 0 8 18h1v8a1 1 0 0 0 1 1h10v-7h4v7h2a1 1 0 0 0 1-1v-8h1a1 1 0 0 0 .92-1.4z" fill="#FFF"></path> </g> </svg>
+                      <p class="u-lspace--12 text is-caption is-txtBaseGrey is-semibold Dropdown-link--industries">Retail</p>
+                    </a>
+                  </li>
+                
+                  <li class="Dropdown-item grid-cell--col6 u-vspace--24">
+                    <a href="https://carto.com/industries/banking-and-insurance/" class="Dropdown-link js-Action--NAVindustries u-flex u-align-center">
+                      <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"> <g fill="none" fill-rule="evenodd"> <circle fill="#FF583E" opacity=".9" cx="18" cy="18" r="18"></circle> <g fill="#FFF"> <path d="M8.5 28h19v-2h-19zM28.03 14.15l-9.5-6a1 1 0 0 0-1.06 0l-9.5 6A1 1 0 0 0 8.5 16h19a1 1 0 0 0 .53-1.85M10.5 25h3v-8h-3zM16.5 25h3v-8h-3zM22.5 25h3v-8h-3z"></path> </g> </g> </svg>
+                      <p class="u-lspace--12 text is-caption is-txtBaseGrey is-semibold Dropdown-link--industries">Financial Services</p>
+                    </a>
+                  </li>
+                
+                  <li class="Dropdown-item grid-cell--col6 u-vspace--24">
+                    <a href="https://carto.com/industries/transport-logistics/" class="Dropdown-link js-Action--NAVindustries u-flex u-align-center">
+                      <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"> <g fill="none" fill-rule="evenodd"> <circle fill="#FF583E" opacity=".9" cx="18" cy="18" r="18"></circle> <path d="M18.78 14h-2v-4h2v4zm0 6h-2v-4h2v4zm0 6h-2v-4h2v4zm5.16-17.2a1 1 0 0 0-.98-.8H12.6a1 1 0 0 0-.98.8l-3.6 18A1 1 0 0 0 9 28h17.56a1 1 0 0 0 .98-1.2l-3.6-18z" fill="#FFF"></path> </g> </svg>
+                      <p class="u-lspace--12 text is-caption is-txtBaseGrey is-semibold Dropdown-link--industries">Transport &amp; Logistics</p>
+                    </a>
+                  </li>
+                
+                  <li class="Dropdown-item grid-cell--col6 u-vspace--24">
+                    <a href="https://carto.com/industries/telco-utilities/" class="Dropdown-link js-Action--NAVindustries u-flex u-align-center">
+                      <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"> <g fill="none" fill-rule="evenodd"> <circle cx="18" cy="18" r="18" fill="#FF583E" opacity=".9"></circle> <g fill="#FFF"> <path d="M23.24 13.42a.83.83 0 0 0 1.18 0l3.34-3.33a.83.83 0 0 0 0-1.18l-1.67-1.67a.83.83 0 0 0-1.18 0l-3.33 3.34a.83.83 0 0 0 0 1.18l1.66 1.66zM12.76 20.58a.83.83 0 0 0-1.18 0L8.24 23.9a.83.83 0 0 0 0 1.18l1.67 1.67a.83.83 0 0 0 1.18 0l3.33-3.34a.83.83 0 0 0 0-1.18l-1.66-1.66zM19.91 20.09l1.18-1.18-1.53-1.52 2.36-2.36a.83.83 0 0 0 0-1.18 4.97 4.97 0 0 0-7.07 0 5 5 0 0 0 0 7.07.84.84 0 0 0 1.18 0l2.36-2.36 1.52 1.53zM18 25.33V27c5.51 0 10-4.49 10-10h-1.67c0 4.6-3.73 8.33-8.33 8.33"></path> <path d="M18 22v1.67c3.68 0 6.67-3 6.67-6.67H23a5 5 0 0 1-5 5"></path> </g> </g> </svg>
+                      <p class="u-lspace--12 text is-caption is-txtBaseGrey is-semibold Dropdown-link--industries">Telco &amp; Utilities</p>
+                    </a>
+                  </li>
+                
+                  <li class="Dropdown-item grid-cell--col6 u-vspace--24">
+                    <a href="https://carto.com/industries/real-estate/" class="Dropdown-link js-Action--NAVindustries u-flex u-align-center">
+                      <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"> <g fill="none" fill-rule="evenodd"> <circle fill="#FF583E" opacity=".9" cx="18" cy="18" r="18"></circle> <g fill="#FFF"> <path d="M19 20a2 2 0 1 0-4 0 2 2 0 0 0 4 0"></path> <path d="M21.3 25.7l-2.28-2.27c-.6.35-1.28.57-2.02.57a4 4 0 1 1 4-4c0 .74-.21 1.42-.57 2.02l2.28 2.27-1.42 1.42zm6.4-8.4l-9-9a1 1 0 0 0-1.4 0l-9 9A1 1 0 0 0 9 19h1v9h16v-9h1a1 1 0 0 0 .7-1.7z"></path> </g> </g> </svg>
+                      <p class="u-lspace--12 text is-caption is-txtBaseGrey is-semibold Dropdown-link--industries">Real Estate</p>
+                    </a>
+                  </li>
+                
+                  <li class="Dropdown-item grid-cell--col6 u-vspace--24">
+                    <a href="https://carto.com/industries/healthcare-and-pharma/" class="Dropdown-link js-Action--NAVindustries u-flex u-align-center">
+                      <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"> <g fill="none" fill-rule="evenodd"> <circle cx="18" cy="18" r="18" fill="#FF583E" opacity=".9"></circle> <path d="M22 21h-3v3h-2v-3h-3v-2h3v-3h2v3h3v2zm-6-10h4v2h-4v-2zm10 2h-4v-3a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v3h-4a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h16a2 2 0 0 0 2-2V15a2 2 0 0 0-2-2z" fill="#FFF"></path> </g> </svg>
+                      <p class="u-lspace--12 text is-caption is-txtBaseGrey is-semibold Dropdown-link--industries">Healthcare &amp; Pharma</p>
+                    </a>
+                  </li>
+                
+                  <li class="Dropdown-item grid-cell--col6 u-vspace--24">
+                    <a href="https://carto.com/industries/cities-government/" class="Dropdown-link js-Action--NAVindustries u-flex u-align-center">
+                      <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"> <g fill="none" fill-rule="evenodd"> <circle cx="18" cy="18" r="18" fill="#FF583E" opacity=".9"></circle> <g fill="#FFF"> <path d="M15 25h-2v-6h2v6zm4 0h-2v-6h2v6zm4 0h-2v-6h2v6zm5-6h-3v-1.34a1 1 0 0 0-.6-.92l-6-2.57a1 1 0 0 0-.8 0l-6 2.57a1 1 0 0 0-.6.92V19H8a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h20a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1zM19 9.11V7h-2v2.11A5 5 0 0 0 13.1 13h9.8A5 5 0 0 0 19 9.11"></path> </g> </g> </svg>
+                      <p class="u-lspace--12 text is-caption is-txtBaseGrey is-semibold Dropdown-link--industries">Cities &amp; Government</p>
+                    </a>
+                  </li>
+                
+              </ul>
+              <div class="Dropdown-innerHighlight is-bgSoftBlue">
+                
+                <a class="title is-small is-txtCartoRed js-Action--NAVsolutionsLanding" href="https://carto.com/solutions/">BY USE CASE</a>
+                <ul class="grid u-tspace--24">
+                    
+                      <li class="Dropdown-item grid-cell--col6 u-vspace--24">
+                        <a href="https://carto.com/solutions/site-planning/" class="Dropdown-link text is-caption is-txtBaseGrey is-semibold js-Action--NAVsolutions Dropdown-link--solutions">Site Planning</a>
+                      </li>
+                    
+                      <li class="Dropdown-item grid-cell--col6 u-vspace--24">
+                        <a href="https://carto.com/solutions/territory-management/" class="Dropdown-link text is-caption is-txtBaseGrey is-semibold js-Action--NAVsolutions Dropdown-link--solutions">Territory Management</a>
+                      </li>
+                    
+                      <li class="Dropdown-item grid-cell--col6 u-vspace--24">
+                        <a href="https://carto.com/solutions/logistics-optimization/" class="Dropdown-link text is-caption is-txtBaseGrey is-semibold js-Action--NAVsolutions Dropdown-link--solutions">Logistics Optimization</a>
+                      </li>
+                    
+                      <li class="Dropdown-item grid-cell--col6 u-vspace--24">
+                        <a href="https://carto.com/solutions/geomarketing/" class="Dropdown-link text is-caption is-txtBaseGrey is-semibold js-Action--NAVsolutions Dropdown-link--solutions">Geomarketing</a>
+                      </li>
+                    
+                      <li class="Dropdown-item grid-cell--col6 u-vspace--24">
+                        <a href="https://carto.com/solutions/mobility-planning/" class="Dropdown-link text is-caption is-txtBaseGrey is-semibold js-Action--NAVsolutions Dropdown-link--solutions">Mobility Planning</a>
+                      </li>
+                    
+                </ul>
+              </div>
+            </div>
+          </li>
+
+          <li class="Navbar-item Dropdown u-rspace--28 ">
+            <span class="Navbar-link text is-semibold is-caption u-default">
+              Resources
+            </span>
+            <div class="Dropdown-inner Dropdown--center Dropdown--new Dropdown--resources">
+              <div class="grid">
+                
+                <ul class="grid-cell--col6">
+                  <li class="Dropdown-item">
+                    <div class="u-vspace--10">
+                      <a href="https://carto.com/resources/" class="Dropdown-link js-Action--NAVresources u-flex">
+                        <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"> <g transform="translate(0 -4)" fill="none" fill-rule="evenodd"> <circle fill="#5300CC" opacity=".8" cx="18" cy="22" r="18"></circle> <g fill="#FFF" fill-rule="nonzero"> <path d="M15 21.001h7a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1zM17 22.001h-7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1zM27 22.001h-7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1z"></path> </g> </g> </svg>
+                        <div class="u-lspace--12">
+                          <p class="text is-caption is-txtBaseGrey is-semibold Dropdown-link--resources">Resources</p>
+                          <p class="text is-small is-txtBaseGrey"></p>
+                        </div>
+                      </a>
+                    </div>
+                    <ul class="tree u-lspace--16">
+                      
+                      <li class="u-vspace--12"><a href="https://carto.com/location-intelligence/" class="Dropdown-link text is-caption is-txtBaseGrey is-semibold js-Action--NAVresources Dropdown-link--resources">Location Intelligence</a></li>
+                      
+                      <li class="u-vspace--12"><a href="https://carto.com/resources/case-studies/" class="Dropdown-link text is-caption is-txtBaseGrey is-semibold js-Action--NAVresources Dropdown-link--resources">Case Studies</a></li>
+                      
+                      <li class="u-vspace--12"><a href="https://carto.com/resources/success-stories/" class="Dropdown-link text is-caption is-txtBaseGrey is-semibold js-Action--NAVresources Dropdown-link--resources">Success Stories</a></li>
+                      
+                      <li class="u-vspace--12"><a href="https://carto.com/webinars/" class="Dropdown-link text is-caption is-txtBaseGrey is-semibold js-Action--NAVresources Dropdown-link--resources">Webinars</a></li>
+                      
+                      <li class="u-vspace--12"><a href="https://carto.com/resources/events/" class="Dropdown-link text is-caption is-txtBaseGrey is-semibold js-Action--NAVresources Dropdown-link--resources">Events</a></li>
+                      
+                    </ul>
+                  </li>
+                </ul>
+                <ul class="grid-cell--col6">
+                  
+                  
+                  <li class="Dropdown-item u-vspace--24">
+                    <a href="https://carto.com/developers/" class="Dropdown-link js-Action--NAVresources u-flex">
+                      <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"> <g transform="translate(0 -4)" fill="none" fill-rule="evenodd"> <circle fill="#7D21F5" opacity=".8" cx="18" cy="22" r="18"></circle> <path d="M22.25 12H11.83c-1.01 0-1.83.82-1.83 1.83v16.44c0 1 .82 1.82 1.83 1.82H24.6c1 0 1.82-.81 1.82-1.82V16.19l-4.18-4.18zM17.04 26.9l-1.3 1.29-3.38-3.39 3.39-3.38 1.29 1.29-2.1 2.1 2.1 2.09zm3.65 1.29l-1.3-1.3 2.1-2.09-2.1-2.1 1.3-1.28 3.38 3.38-3.38 3.39zm.27-10.7v-4.56l4.56 4.56h-4.56z" fill="#FFF" fill-rule="nonzero"></path> </g> </svg>
+                      <div class="u-lspace--12">
+                        <p class="text is-caption is-txtBaseGrey is-semibold Dropdown-link--developers">Developers</p>
+                        
+                          <p class="text is-small is-txtBaseGrey">Get started building LI Apps.</p>
+                        
+                      </div>
+                    </a>
+                  </li>
+                  
+                  <li class="Dropdown-item u-vspace--24">
+                    <a href="https://carto.com/help/" class="Dropdown-link js-Action--NAVresources u-flex">
+                      <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"> <g transform="translate(0 -4)" fill="none" fill-rule="evenodd"> <circle fill="#6E00DC" opacity=".8" cx="18" cy="22" r="18"></circle> <path d="M18 12c-5.514 0-10 4.487-10 10 0 5.515 4.486 10 10 10s10-4.485 10-10c0-5.513-4.486-10-10-10zm0 16.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm1-4.375V25h-2v-3h1a2 2 0 1 0-2-2h-2c0-2.205 1.795-4 4-4s4 1.795 4 4a4.01 4.01 0 0 1-3 3.875z" fill="#FFF" fill-rule="nonzero"></path> </g> </svg>
+                      <div class="u-lspace--12">
+                        <p class="text is-caption is-txtBaseGrey is-semibold Dropdown-link--help">Help</p>
+                        
+                          <p class="text is-small is-txtBaseGrey">Check FAQs and tutorials.</p>
+                        
+                      </div>
+                    </a>
+                  </li>
+                  
+                </ul>
+              </div>
+            </div>
+          </li>
+
+          <li class="Navbar-item ">
+            <a href="https://carto.com/pricing/" class="Navbar-link text is-semibold is-caption js-Action--NAVpricing">
+              <span>Pricing</span>
+            </a>
+          </li>
+
+          <li class="Navbar-item ">
+            <a href="https://carto.com/blog/" class="Navbar-link text is-semibold is-caption js-Action--NAVblog">
+              <span>Blog</span>
+            </a>
+          </li>
+
+        </ul>
+
+        <ul class="Navbar-list Navbar--show-animation User-element--hide Navbar-height--44 js-User--showConnected">
+          <li class="Navbar-item u-rspace--28">
+            <a class="Navbar-link text is-semibold is-caption js-Action--NAVlogin js-user-information" data-addbaselink="dashboard">
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="Navbar-item js-Dropdown js-Dropdown--onClick Dropdown">
+            <div class="Navbar--userAvatar js-Dropdown-target u-pointer">
+              <img class="js-user-information" data-adduserimage="avatar_url" src="https://carto.com/help/working-with-data/sql-stored-procedures/">
+            </div>
+            <div class="Dropdown-inner Dropdown--center Dropdown--new Dropdown-new--click-activated js-Dropdown-inner">
+              <ul class="grid u-vspace--36">
+                <li class="Dropdown-item grid-cell--col12 u-flex u-vspace--36 u-flex">
+                  <div class="Navbar--userAvatar u-rspace--12">
+                    <img class="js-user-information" data-adduserimage="avatar_url" src="https://carto.com/help/working-with-data/sql-stored-procedures/">
+                  </div>
+                  <ul>
+                    <li class="is-txtBaseGrey text is-semibold is-caption is-txtBaseGrey js-user-information" data-addusertext="username"></li>
+                    <li class="text is-small is-txtBaseGrey u-tspace--4 js-user-information" data-addusertext="email"></li>
+                  </ul>
+                </li>
+                <li class="Dropdown-item grid-cell--col12 u-flex u-vspace--20">
+                  <svg width="24" height="24" viewBox="0 0 24 18" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="#2E51E8" fill-rule="nonzero">
+                      <circle cx="9" cy="9" r="2.4"></circle>
+                      <path d="M16 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm-1 10.09h-1.79a4.343 4.343 0 0 1-.431 1.053l1.13 1.13-1.636 1.635-1.131-1.13a4.193 4.193 0 0 1-1.053.43V15H7.908v-1.791a4.201 4.201 0 0 1-1.052-.43l-1.131 1.13-1.635-1.635 1.131-1.13a4.36 4.36 0 0 1-.431-1.053H3V7.909h1.79c.098-.373.244-.723.431-1.053L4.09 5.726 5.727 4.09l1.131 1.13a4.24 4.24 0 0 1 1.052-.43V2.999h2.181V4.79a4.23 4.23 0 0 1 1.053.43l1.131-1.13 1.636 1.636-1.13 1.13c.187.33.333.679.431 1.053H15v2.181z"></path>
+                    </g>
+                  </svg>
+                  <div class="u-lspace--12">
+                      <a class="Dropdown-link text is-caption is-txtBaseGrey is-semibold js-user-information" data-addbaselink="profile">Settings</a>
+                  </div>
+                </li>
+                <li class="Dropdown-item grid-cell--col12 u-flex u-vspace--20">
+                  <svg width="24" height="24" viewBox="0 0 24 19" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.723 10.579l2.121-2.121-1.414-1.414 1.414-1.415 1.415 1.415 1.414-1.414-1.415-1.415 1.415-1.414 1.415 1.414 1.414-1.414-2.828-2.83L7.896 7.75l-.707-.707c-.781-.782-2.048-.782-2.828 0L.825 10.578c-.78.781-.78 2.047.001 2.828l4.242 4.242c.781.781 2.047.781 2.828 0l3.535-3.535c.782-.781.782-2.047 0-2.828l-.708-.706zM6.834 13.76c-.586.586-1.535.586-2.121 0-.586-.586-.586-1.535 0-2.121.586-.587 1.535-.587 2.121 0 .586.586.586 1.535 0 2.121z" fill="#2E51E8" fill-rule="nonzero"></path>
+                  </svg>
+                  <div class="u-lspace--12">
+                      <a class="Dropdown-link text is-caption is-txtBaseGrey is-semibold js-user-information" data-addbaselink="your_apps">API Keys</a>
+                  </div>
+                </li>
+                <li class="Dropdown-item grid-cell--col12 u-flex u-vspace--20">
+                  <svg width="24" height="24" viewBox="0 0 24 17" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="none" fill-rule="evenodd">
+                      <path d="M-4-4h24v24H-4z"></path>
+                      <g fill="#2E51E8" fill-rule="nonzero">
+                        <path d="M8 8a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 9c-4.7 0-8 2.47-8 6v1h16v-1c0-3.53-3.29-6-8-6z"></path>
+                      </g>
+                    </g>
+                  </svg>
+                  <div class="u-lspace--12">
+                      <a class="Dropdown-link text is-caption is-txtBaseGrey is-semibold js-user-information" data-addbaselink="me">Public Profile</a>
+                  </div>
+                </li>
+                <li class="Dropdown-item grid-cell--col12 u-flex">
+                  <svg width="24" height="24" viewBox="0 0 24 13" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="none" fill-rule="evenodd">
+                      <path d="M-2-5h24v24H-2z"></path>
+                      <g fill="#2E51E8" fill-rule="nonzero">
+                        <path d="M10 5.82L18.96.26A1.98 1.98 0 0 0 18 0H2c-.35 0-.68.1-.97.26L10 5.82z"></path>
+                        <path d="M10.53 7.85a1 1 0 0 1-1.06 0L0 1.97V11c0 1.1.9 2 2 2h16a2 2 0 0 0 2-2V2v-.03l-9.47 5.88z"></path>
+                      </g>
+                    </g>
+                  </svg>
+                  <div class="u-lspace--12">
+                      <a class="Dropdown-link text is-caption is-txtBaseGrey is-semibold" href="mailto:support@carto.com">Contact Support</a>
+                  </div>
+                </li>
+              </ul>
+              <div class="Dropdown-innerHighlight is-bgSoftBlue">
+                <a class="buttonLink is-txtSolutionsRed js-user-information" data-addbaselink="logout">
+                  <svg width="8px" height="7px" viewBox="0 0 8 7" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path class="buttonLink-media" d="M1.52245273,3.04854764 L3.68776506,0.883235307 C3.88225492,0.688745449 3.88821988,0.353713791 3.68525771,0.15075162 C3.4882313,-0.0462747862 3.15435142,-0.053333131 2.95277402,0.148244267 L0.147793654,2.95322464 C0.0109867585,3.09003153 -0.0325396573,3.29637729 0.0243152648,3.47738142 C-0.0325396573,3.65838554 0.0109867585,3.8647313 0.147793654,4.00153819 L2.95277402,6.80651857 C3.15435142,7.00809596 3.4882313,7.00103762 3.68525771,6.80401121 C3.88821988,6.60104904 3.88225492,6.26601738 3.68776506,6.07152753 L1.70421948,4.08798194 L7.99996393,4.08798194 L7.99996393,3.04854764 L1.52245273,3.04854764 Z" id="Combined-Shape" fill="currentColor " transform="translate(3.999982, 3.477381) scale(-1, 1) translate(-3.999982, -3.477381) "></path></g>
+                  </svg>
+                  Log out
+                </a>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <ul class="Navbar-list Navbar--show-animation Navbar-height--44 js-User--hideConnected">
+          <li class="Navbar-item u-rspace--28">
+            <a href="https://carto.com/login" class="Navbar-link text is-semibold is-caption js-Action--NAVlogin">
+              <span>Login</span>
+            </a>
+          </li>
+          <li class="Navbar-item">
+            <a href="https://carto.com/signup/" class="button button--small is-whiteOutline Navbar-button js-Action--NAVdemo"><span>Try for free</span>
+            </a>
+            <a href="https://carto.com/signup/" class="button button--small is-baseGreyOutline Navbar-link Navbar-buttonFixed js-Action--NAVdemo">
+              <span>Try for free</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="NavbarMobile js-Navbar js-Navbar-mobile">
+      <ul class="NavbarMobile-collapse Navbar--scroll--vertical">
+        <li class="Navbar-item">
+          <a href="https://carto.com/platform/" class="Navbar-link js-Action--NAVmobile">
+            <span class="title u-negative">Platform</span>
+          </a>
+            </li>
+        <li class="Navbar-item NavbarMobile-list">
+          <ul>
+            
+            
+            <li class="Navbar-subitem">
+                <a href="https://carto.com/platform/data-ingestion-management/" class="Navbar-link"><span class="text is-small is-txtWhite js-Action--NAVmobile">Data Ingestion &amp; Management</span></a>
+            </li>
+            
+            <li class="Navbar-subitem">
+                <a href="https://carto.com/platform/data-enrichment/" class="Navbar-link"><span class="text is-small is-txtWhite js-Action--NAVmobile">Data Enrichment</span></a>
+            </li>
+            
+            <li class="Navbar-subitem">
+                <a href="https://carto.com/platform/analysis/" class="Navbar-link"><span class="text is-small is-txtWhite js-Action--NAVmobile">Analysis</span></a>
+            </li>
+            
+            <li class="Navbar-subitem">
+                <a href="https://carto.com/platform/solutions-visualization/" class="Navbar-link"><span class="text is-small is-txtWhite js-Action--NAVmobile">Solutions &amp; Visualization</span></a>
+            </li>
+            
+            <li class="Navbar-subitem">
+                <a href="https://carto.com/platform/integration/" class="Navbar-link"><span class="text is-small is-txtWhite js-Action--NAVmobile">Integration</span></a>
+            </li>
+            
+          </ul>
+          </li>
+        <li class="Navbar-item">
+          <a href="https://carto.com/industries/" class="Navbar-link js-Action--NAVmobile">
+            <span class="title u-negative">Industries</span>
+          </a>
+        </li>
+        <li class="Navbar-item NavbarMobile-list">
+          <ul class="NavbarMobile--tabletList">
+            
+            
+          </ul>
+        </li>
+        <li class="Navbar-item">
+          <a href="https://carto.com/solutions/" class="Navbar-link js-Action--NAVmobile">
+            <span class="title u-negative">Solutions</span>
+          </a>
+        </li>
+        <li class="Navbar-item NavbarMobile-list">
+          <ul>
+            
+            
+          </ul>
+        </li>
+        <li class="Navbar-item">
+          <a href="https://carto.com/resources/" class="Navbar-link js-Action--NAVmobile">
+            <span class="title u-negative">Resources</span>
+          </a>
+        </li>
+        <li class="Navbar-item NavbarMobile-list">
+          <ul class="NavbarMobile--tabletList">
+            
+            
+              <li class="Navbar-subitem">
+                <a href="https://carto.com/location-intelligence/" class="Navbar-link js-Action--NAVmobile">
+                  <span class="text is-small is-txtWhite">Location Intelligence</span>
+                </a>
+              </li>
+            
+              <li class="Navbar-subitem">
+                <a href="https://carto.com/resources/case-studies/" class="Navbar-link js-Action--NAVmobile">
+                  <span class="text is-small is-txtWhite">Case Studies</span>
+                </a>
+              </li>
+            
+              <li class="Navbar-subitem">
+                <a href="https://carto.com/resources/success-stories/" class="Navbar-link js-Action--NAVmobile">
+                  <span class="text is-small is-txtWhite">Success Stories</span>
+                </a>
+              </li>
+            
+              <li class="Navbar-subitem">
+                <a href="https://carto.com/webinars/" class="Navbar-link js-Action--NAVmobile">
+                  <span class="text is-small is-txtWhite">Webinars</span>
+                </a>
+              </li>
+            
+              <li class="Navbar-subitem">
+                <a href="https://carto.com/resources/events/" class="Navbar-link js-Action--NAVmobile">
+                  <span class="text is-small is-txtWhite">Events</span>
+                </a>
+              </li>
+            
+            
+            
+            <li class="Navbar-subitem">
+                <a href="https://carto.com/developers/" class="Navbar-link js-Action--NAVmobile">
+                  <span class="text is-small is-txtWhite">Developers</span>
+              </a>
+            </li>
+            
+            <li class="Navbar-subitem">
+                <a href="https://carto.com/help/" class="Navbar-link js-Action--NAVmobile">
+                  <span class="text is-small is-txtWhite">Help</span>
+              </a>
+            </li>
+            
+          </ul>
+        </li>
+        <li class="Navbar-item">
+          <a href="https://carto.com/pricing/" class="Navbar-link js-Action--NAVmobile">
+            <span class="title u-negative">Pricing</span>
+          </a>
+        </li>
+        <li class="Navbar-item">
+          <a href="https://carto.com/blog/" class="Navbar-link js-Action--NAVmobile">
+            <span class="title u-negative">Blog</span>
+          </a>
+        </li>
+      </ul>
+      <div class="Navbar-item">
+        <a href="https://carto.com/signup/" class="button is-jade js-Action--NAVmobile">
+          <span>Try for free</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+</div>
+  
+    <div class="desktopTablet">
+      <div class="subNavbar-container">
+    <nav class="Navbar Navbar--secondary js-subNavbar--fixed Navbar--fixed is-active">
+        <div class="Navbar-inner container">
+            <ul class="Navbar-list">
+                <li class="Navbar-item Logo--positive">
+                    <a href="https://carto.com/" class="u-flex">
+                        <svg width="92px" height="36px" viewBox="0 0 92 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Logo-Scale-Positive" transform="translate(-162.000000, -282.000000)" fill="#162945">
+      <g id="logo_carto_p_36" transform="translate(162.000000, 282.000000)">
+          <path d="M74,36 C83.9411255,36 92,27.9411255 92,18 C92,8.0588745 83.9411255,0 74,0 C64.0588745,0 56,8.0588745 56,18 C56,27.9411255 64.0588745,36 74,36 Z" id="halo" fill-opacity="0.100000001"></path>
+          <path d="M6.25280899,23.981602 C8.76747566,23.981602 10.220757,22.882802 11.2984713,21.390402 L8.9144367,19.684802 C8.22861851,20.521202 7.52647133,21.078802 6.33445401,21.078802 C4.73421159,21.078802 3.60751029,19.734002 3.60751029,18.012002 L3.60751029,17.979202 C3.60751029,16.306402 4.73421159,14.928802 6.33445401,14.928802 C7.4284973,14.928802 8.1796315,15.470002 8.83279168,16.273602 L11.2168263,14.420402 C10.204428,13.026402 8.70215964,12.042402 6.36711202,12.042402 C2.9053631,12.042402 0.358038428,14.666402 0.358038428,18.012002 L0.358038428,18.044802 C0.358038428,21.472402 2.98700813,23.981602 6.25280899,23.981602 L6.25280899,23.981602 Z M16.732047,23.752002 L20.0468349,23.752002 L20.8632851,21.685602 L25.2884453,21.685602 L26.1048955,23.752002 L29.5013284,23.752002 L24.6352851,12.190002 L21.5817613,12.190002 L16.732047,23.752002 Z M21.7940384,19.209202 L23.0840297,15.962002 L24.357692,19.209202 L21.7940384,19.209202 Z M35.6697093,23.752002 L38.8375361,23.752002 L38.8375361,20.275202 L40.2418305,20.275202 L42.5442201,23.752002 L46.1855881,23.752002 L43.4586443,19.750402 C44.8792677,19.143602 45.810021,17.979202 45.810021,16.208002 L45.810021,16.175202 C45.810021,15.043602 45.4671119,14.174402 44.7976227,13.502002 C44.0301595,12.731202 42.8218132,12.272002 41.0746097,12.272002 L35.6697093,12.272002 L35.6697093,23.752002 Z M38.8375361,17.782402 L38.8375361,15.010802 L40.9276487,15.010802 C41.9727049,15.010802 42.6421941,15.470002 42.6421941,16.388402 L42.6421941,16.421202 C42.6421941,17.257602 42.005363,17.782402 40.9439777,17.782402 L38.8375361,17.782402 Z M55.2605317,23.752002 L58.4283585,23.752002 L58.4283585,15.060002 L61.8574495,15.060002 L61.8574495,12.272002 L51.8477698,12.272002 L51.8477698,15.060002 L55.2605317,15.060002 L55.2605317,23.752002 Z M74,24 C77.3137085,24 80,21.3137085 80,18 C80,14.6862915 77.3137085,12 74,12 C70.6862915,12 68,14.6862915 68,18 C68,21.3137085 70.6862915,24 74,24 Z" id="logotype"></path>
+      </g>
+    </g>
+  </g>
+</svg>
+
+                    </a>
+                </li>
+                
+                    
+                        <li class="Navbar-item ">
+                            <a class="Navbar-link text is-subnavbar is-txtWhite is-semibold" href="https://carto.com/help/">Help</a>
+                        </li>
+                    
+                
+                    
+                        <li class="Navbar-item Dropdown js-Dropdown js-hide-on-focus ">
+                            <a class="Navbar-link text is-subnavbar is-txtWhite is-semibold js-Dropdown-target u-default">Questions</a>
+                            <div class="Dropdown-inner Dropdown-inner--secondary  js-Dropdown-inner">
+                                <ul>
+                                    
+                                        <li class="Dropdown-item">
+                                            <a class="Dropdown-link text is-subnavbar u-vspace--8" href="https://carto.com/help/getting-started/">Getting Started</a>
+                                        </li>
+                                    
+                                        <li class="Dropdown-item">
+                                            <a class="Dropdown-link text is-subnavbar u-vspace--8" href="https://carto.com/help/building-maps/">Building Maps</a>
+                                        </li>
+                                    
+                                        <li class="Dropdown-item">
+                                            <a class="Dropdown-link text is-subnavbar u-vspace--8" href="https://carto.com/help/working-with-data/">Working with Data</a>
+                                        </li>
+                                    
+                                        <li class="Dropdown-item">
+                                            <a class="Dropdown-link text is-subnavbar u-vspace--8" href="https://carto.com/help/your-account/">Your Account &amp; Plan</a>
+                                        </li>
+                                    
+                                </ul>
+                                
+                            </div>
+                        </li>
+                    
+                
+                    
+                        <li class="Navbar-item Dropdown js-Dropdown js-hide-on-focus ">
+                            <a class="Navbar-link text is-subnavbar is-txtWhite is-semibold js-Dropdown-target u-default">Tutorials</a>
+                            <div class="Dropdown-inner Dropdown-inner--secondary  js-Dropdown-inner">
+                                <ul>
+                                    
+                                        <li class="Dropdown-item">
+                                            <a class="Dropdown-link text is-subnavbar u-vspace--8" href="https://carto.com/help/tutorials/your-account/">Your Account</a>
+                                        </li>
+                                    
+                                        <li class="Dropdown-item">
+                                            <a class="Dropdown-link text is-subnavbar u-vspace--8" href="https://carto.com/help/tutorials/your-dashboard/">Your Dashboard</a>
+                                        </li>
+                                    
+                                        <li class="Dropdown-item">
+                                            <a class="Dropdown-link text is-subnavbar u-vspace--8" href="https://carto.com/help/tutorials/data-management/">Data Management</a>
+                                        </li>
+                                    
+                                        <li class="Dropdown-item">
+                                            <a class="Dropdown-link text is-subnavbar u-vspace--8" href="https://carto.com/help/tutorials/using-builder/">Using Builder</a>
+                                        </li>
+                                    
+                                        <li class="Dropdown-item">
+                                            <a class="Dropdown-link text is-subnavbar u-vspace--8" href="https://carto.com/help/tutorials/map-styling/">Map Styling</a>
+                                        </li>
+                                    
+                                        <li class="Dropdown-item">
+                                            <a class="Dropdown-link text is-subnavbar u-vspace--8" href="https://carto.com/help/tutorials/using-sql/">Using SQL</a>
+                                        </li>
+                                    
+                                        <li class="Dropdown-item">
+                                            <a class="Dropdown-link text is-subnavbar u-vspace--8" href="https://carto.com/help/tutorials/editor/">Editor</a>
+                                        </li>
+                                    
+                                </ul>
+                                
+                            </div>
+                        </li>
+                    
+                
+                    
+                        <li class="Navbar-item ">
+                            <a class="Navbar-link text is-subnavbar is-txtWhite is-semibold" href="https://carto.com/help/glossary/">Glossary</a>
+                        </li>
+                    
+                
+            </ul>
+            <div class="">
+                
+                    <form action="https://carto.com/help/search" method="get" class="search-form" _lpchecked="1">
+                        <input type="text" name="query" class="input search-box" placeholder="Find anything (like import data…">
+                        <span class="is-txtTypo3 search-icon u-flex">
+                            <svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13.138 12.195L9.543 8.6a5.285 5.285 0 0 0 1.124-3.267 5.296 5.296 0 0 0-1.563-3.77A5.294 5.294 0 0 0 5.334 0a5.294 5.294 0 0 0-3.771 1.563A5.296 5.296 0 0 0 0 5.333c0 1.425.555 2.764 1.563 3.771a5.294 5.294 0 0 0 3.77 1.563c1.2 0 2.336-.398 3.267-1.124l3.595 3.594.943-.942zM5.333 9.333a3.973 3.973 0 0 1-2.828-1.171 3.972 3.972 0 0 1-1.172-2.829c0-1.068.416-2.072 1.172-2.828a3.97 3.97 0 0 1 2.828-1.172 3.97 3.97 0 0 1 2.828 1.172 3.972 3.972 0 0 1 1.172 2.828 3.972 3.972 0 0 1-1.172 2.829 3.973 3.973 0 0 1-2.828 1.171z" fill="currentColor" fill-rule="nonzero"></path>
+                            </svg>
+                        </span>
+                    </form>
+                
+            </div>
+        </div>
+    </nav>
+</div>
+    </div>
+  
+</header>
+    <section class="u-tspace--24 u-vspace--64" id="article">
+    
+    <div class="container grid u-tspace--64 u-vspace--8">
+      
+
+
+<div class="grid-cell--col8 grid-cell--col12--mobile">
+  <div class="text is-small u-vspace--24">
+  
+    
+    
+    <span>Questions</span>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="https://carto.com/help/working-with-data/">Working with Data</a>&nbsp;&nbsp;/&nbsp;&nbsp;<a href="https://carto.com/help/working-with-data/#development">Development</a>
+  
+</div>
+
+  <h1 class="title is-bold is-subheader u-vspace--8">PostgreSQL Stored Procedures</h1>
+  <p class="text is-caption is-txtSoftGrey">Learn how to store SQL functions in your CARTO database.</p>
+  <!-- <p class="text is-caption is-txtSoftGrey">Last Updated on July 24, 2019</p> -->
+  
+
+  <h2 id="what-is-a-stored-procedure">What is a stored procedure?</h2>
+
+<p>PostgreSQL allows you to extend the database functionality with user-defined functions by using various procedural languages, which are often referred to as stored procedures.</p>
+
+<p>With stored procedures you can create your own custom functions and reuse them in applications or as part of other database’s workflow.</p>
+
+<h2 id="basic-structure-of-a-plpgsql-function">Basic structure of a PL/pgSQL function</h2>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">FUNCTION</span> <span class="n">function_name</span><span class="p">(</span><span class="n">argument1</span> <span class="k">type</span><span class="p">,</span><span class="n">argument2</span> <span class="k">type</span><span class="p">)</span>
+ <span class="k">RETURNS</span> <span class="k">type</span> <span class="k">AS</span>
+<span class="k">BEGIN</span>
+  <span class="n">staments</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="k">LANGUAGE</span> <span class="s1">'language_name'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Where:</p>
+
+<ol>
+  <li>We specify the name of function followed by the <code class="highlighter-rouge">CREATE FUNCTION</code>clause.</li>
+  <li>Provide a list of parameters inside the paretheses, also specifying each data type (integer, boolean, geometry, etc..)</li>
+  <li><code class="highlighter-rouge">RETURNS</code> specifies the return type of the function.</li>
+  <li>Place the block of code inside inside the <code class="highlighter-rouge">BEGIN</code> and <code class="highlighter-rouge">END;</code>.</li>
+  <li>Indicate the procedural language of the function. For PostgreSQL is usually <code class="highlighter-rouge">plpgsql</code>.</li>
+  <li>
+    <p>The conditions can be <code class="highlighter-rouge">STRICT</code>, <code class="highlighter-rouge">IMMUTABLE</code> or <code class="highlighter-rouge">VOLATILE</code>.</p>
+
+    <ul>
+      <li><code class="highlighter-rouge">STRICT</code>: write <code class="highlighter-rouge">STRICT</code> when the input arguments have <code class="highlighter-rouge">NULL</code> values. The function is not evaluated and returns a <code class="highlighter-rouge">NULL</code> value.</li>
+      <li><code class="highlighter-rouge">IMMUTABLE</code>: The function ensures the same result (it caches it) if the same value is put as an input arguments. This function can’t change the database.</li>
+      <li><code class="highlighter-rouge">VOLATILE</code>: opposite of <code class="highlighter-rouge">IMMUTABLE</code>. The function has a result that changes the result even when you write the same input values.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>To call the created function you could use:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">function_name</span><span class="p">(</span><span class="n">val1</span><span class="p">,</span><span class="n">val2</span><span class="p">);</span>
+</code></pre></div></div>
+<p>if the function returns a table, or just</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">function_name</span><span class="p">(</span><span class="n">val1</span><span class="p">,</span><span class="n">val2</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>If one of the variables is taken from a column in a table:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">function_name</span><span class="p">(</span><span class="n">val1</span><span class="p">,</span><span class="n">val2</span><span class="p">)</span> <span class="k">FROM</span> <span class="k">table</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="input-and-output-arguments">Input and output arguments</h3>
+
+<p>In the previous section we defined a function like</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">FUNCTION</span> <span class="n">function_name</span><span class="p">(</span><span class="n">argument1</span> <span class="k">type</span><span class="p">,</span><span class="n">argument2</span> <span class="k">type</span><span class="p">)</span>
+ <span class="k">RETURNS</span> <span class="k">type</span> <span class="k">AS</span>
+<span class="k">BEGIN</span>
+  <span class="n">staments</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="k">LANGUAGE</span> <span class="n">language_name</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Where we define the input arguments and their type and then we define the type of the output argument within the <code class="highlighter-rouge">RETURNS</code> statement.</p>
+
+<p>However, there is another way to define the input and output arguments with <code class="highlighter-rouge">IN</code> and <code class="highlighter-rouge">OUT</code>, where <code class="highlighter-rouge">IN</code> define the input arguments and <code class="highlighter-rouge">OUT</code> the
+output arguments. The <code class="highlighter-rouge">OUT</code> argument declaration is useful when you need to return multiple values. For example:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">FUNCTION</span> <span class="n">sum_n_product</span><span class="p">(</span><span class="k">IN</span> <span class="n">x</span> <span class="nb">int</span><span class="p">,</span><span class="k">IN</span> <span class="n">y</span> <span class="nb">int</span><span class="p">,</span> <span class="k">OUT</span> <span class="k">sum</span> <span class="nb">int</span><span class="p">,</span> <span class="k">OUT</span> <span class="n">prod</span> <span class="nb">int</span><span class="p">)</span> <span class="k">AS</span> <span class="err">$$</span>
+<span class="k">BEGIN</span>
+    <span class="k">sum</span> <span class="p">:</span><span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">prod</span> <span class="p">:</span><span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="err">$$</span> <span class="k">LANGUAGE</span> <span class="n">plpgsql</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Then the function can be called as: <code class="highlighter-rouge">SELECT * FROM sum_n_product(1,2)</code>, where you only need to pass the <code class="highlighter-rouge">IN</code> arguments to the function.</p>
+
+<p>Notice that if we use IN and OUT arguments, we don’t use the <code class="highlighter-rouge">RETURNS</code> statement in the function definition. Also, if you define the arguments with IN or OUT, there is no need to put both. You can define IN arguments without the need to put OUT arguments or viceversa.</p>
+
+<p>On the other hand, there are different ways to refer to the input arguments within the function.</p>
+
+<ol>
+  <li>If the input arguments have no names:</li>
+</ol>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">FUNCTION</span> <span class="n">function_name</span><span class="p">(</span><span class="k">type</span><span class="p">,</span><span class="k">type</span><span class="p">)</span>
+ <span class="k">RETURNS</span> <span class="k">type</span> <span class="k">AS</span>
+<span class="k">BEGIN</span>
+  <span class="n">v1</span><span class="p">:</span><span class="o">=</span> <span class="k">abs</span><span class="p">(</span><span class="err">$</span><span class="mi">1</span><span class="p">);</span> <span class="c1">-- $1 refers to the first input argument (reading from left to right)</span>
+  <span class="n">v2</span><span class="p">:</span><span class="o">=</span> <span class="err">$</span><span class="mi">2</span><span class="p">;</span> <span class="c1">-- $2 refers to the second input argument (reading from left to right)</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="k">LANGUAGE</span> <span class="s1">'plpgsql'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Using aliases for the input arguments.</li>
+</ol>
+
+<p>We can assign alias to the input arguments.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">FUNCTION</span> <span class="n">function_name</span><span class="p">(</span><span class="k">type</span><span class="p">,</span><span class="k">type</span><span class="p">)</span>
+ <span class="k">RETURNS</span> <span class="k">type</span> <span class="k">AS</span>
+<span class="k">DECLARE</span>
+  <span class="n">val1</span> <span class="k">alias</span> <span class="k">for</span> <span class="err">$</span><span class="mi">1</span><span class="p">;</span>
+  <span class="n">val2</span> <span class="k">alias</span> <span class="k">for</span> <span class="err">$</span><span class="mi">2</span><span class="p">;</span>
+<span class="k">BEGIN</span>
+  <span class="n">v1</span><span class="p">:</span><span class="o">=</span> <span class="k">abs</span><span class="p">(</span><span class="err">$</span><span class="mi">1</span><span class="p">);</span> <span class="c1">-- $1 refers to the first input argument (reading from left to right)</span>
+  <span class="n">v2</span><span class="p">:</span><span class="o">=</span> <span class="err">$</span><span class="mi">2</span><span class="p">;</span> <span class="c1">-- $2 refers to the second input argument (reading from left to right)</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="k">LANGUAGE</span> <span class="s1">'plpgsql'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="variables-and-constants">Variables and constants</h3>
+
+<p>A PL/pgSQL variable holds a values that can be changed through the function. A variables is always associated to a data type.
+Before you use a variable we must declare it in the proper section, using the following syntax:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">FUNCTION</span> <span class="n">function_name</span><span class="p">(</span><span class="n">argument1</span> <span class="k">type</span><span class="p">,</span><span class="n">argument2</span> <span class="k">type</span><span class="p">)</span>
+ <span class="k">RETURNS</span> <span class="k">type</span> <span class="k">AS</span>
+ <span class="k">DECLARE</span>
+  <span class="n">variable_name</span> <span class="n">data_type</span> <span class="p">[:</span><span class="o">=</span> <span class="n">value</span><span class="p">];</span>
+<span class="k">BEGIN</span>
+  <span class="n">staments</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="k">LANGUAGE</span> <span class="n">language_name</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Constants can’t be changed through the function. It is declared in a very similar way than variables.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">FUNCTION</span> <span class="n">function_name</span><span class="p">(</span><span class="n">argument1</span> <span class="k">type</span><span class="p">,</span><span class="n">argument2</span> <span class="k">type</span><span class="p">)</span>
+ <span class="k">RETURNS</span> <span class="k">type</span> <span class="k">AS</span>
+ <span class="k">DECLARE</span>
+  <span class="n">variable_name</span> <span class="n">CONSTANT</span> <span class="n">data_type</span> <span class="p">[:</span><span class="o">=</span> <span class="n">value</span><span class="p">];</span>
+<span class="k">BEGIN</span>
+  <span class="n">staments</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="k">LANGUAGE</span> <span class="n">language_name</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="errors-and-messages">Errors and messages</h2>
+
+<p>To raise a message, you use the <code class="highlighter-rouge">RAISE</code> statement: <code class="highlighter-rouge">RAISE level format;</code> the <code class="highlighter-rouge">level</code> option specifies the error severity. There are the following levels:</p>
+
+<ul>
+  <li>DEBUG</li>
+  <li>LOG</li>
+  <li>NOTICE</li>
+  <li>INFO</li>
+  <li>WARNING</li>
+  <li>EXCEPTION</li>
+</ul>
+
+<p>For example:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">RAISE</span> <span class="n">INFO</span> <span class="s1">'information message %'</span><span class="p">,</span> <span class="n">now</span><span class="p">()</span> <span class="p">;</span>
+  <span class="n">RAISE</span> <span class="n">LOG</span> <span class="s1">'log message %'</span><span class="p">,</span> <span class="n">now</span><span class="p">();</span>
+  <span class="n">RAISE</span> <span class="n">DEBUG</span> <span class="s1">'debug message %'</span><span class="p">,</span> <span class="n">now</span><span class="p">();</span>
+  <span class="n">RAISE</span> <span class="n">WARNING</span> <span class="s1">'warning message %'</span><span class="p">,</span> <span class="n">now</span><span class="p">();</span>
+  <span class="n">RAISE</span> <span class="n">NOTICE</span> <span class="s1">'notice message %'</span><span class="p">,</span> <span class="n">now</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>However, the only error that would raise in the CartoDB Editor is RAISE EXCEPTION.</p>
+
+<p>For example:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">sum_n_product3</span><span class="p">(</span><span class="k">IN</span> <span class="n">x</span> <span class="nb">int</span><span class="p">,</span><span class="k">IN</span> <span class="n">y</span> <span class="nb">int</span><span class="p">,</span> <span class="k">OUT</span> <span class="k">sum</span> <span class="nb">int</span><span class="p">,</span> <span class="k">OUT</span> <span class="n">prod</span> <span class="nb">int</span><span class="p">)</span> <span class="k">AS</span> <span class="err">$$</span>
+<span class="k">BEGIN</span>
+    <span class="n">IF</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="k">THEN</span>
+      <span class="n">RAISE</span> <span class="n">EXCEPTION</span> <span class="s1">'information message %'</span><span class="p">,</span> <span class="n">now</span><span class="p">();</span>
+    <span class="k">END</span> <span class="n">IF</span><span class="p">;</span>
+    <span class="k">sum</span> <span class="p">:</span><span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">prod</span> <span class="p">:</span><span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="err">$$</span> <span class="k">LANGUAGE</span> <span class="n">plpgsql</span>
+</code></pre></div></div>
+
+<p>If we call this function wihtin the CartoDB Editor, we will get the message of the RAISE EXCEPTION.</p>
+
+<p>On the other hand, the message errors RAISE NOTICE, RAISE WARNING and RAISE INFO only will appear if you use the SQL API outsite the editor. If we modify the previous function to add those error messages:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">sum_n_product3</span><span class="p">(</span><span class="k">IN</span> <span class="n">x</span> <span class="nb">int</span><span class="p">,</span><span class="k">IN</span> <span class="n">y</span> <span class="nb">int</span><span class="p">,</span> <span class="k">OUT</span> <span class="k">sum</span> <span class="nb">int</span><span class="p">,</span> <span class="k">OUT</span> <span class="n">prod</span> <span class="nb">int</span><span class="p">)</span> <span class="k">AS</span> <span class="err">$$</span>
+<span class="k">BEGIN</span>
+    <span class="n">IF</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="k">THEN</span>
+      <span class="n">RAISE</span> <span class="n">WARNING</span> <span class="s1">'information message %'</span><span class="p">,</span> <span class="n">now</span><span class="p">();</span>
+      <span class="n">RAISE</span> <span class="n">NOTICE</span> <span class="s1">'information message %'</span><span class="p">,</span> <span class="n">now</span><span class="p">();</span>
+      <span class="n">RAISE</span> <span class="n">INFO</span> <span class="s1">'information message %'</span><span class="p">,</span> <span class="n">now</span><span class="p">();</span>
+    <span class="k">END</span> <span class="n">IF</span><span class="p">;</span>
+    <span class="k">sum</span> <span class="p">:</span><span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">prod</span> <span class="p">:</span><span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="err">$$</span> <span class="k">LANGUAGE</span> <span class="n">plpgsql</span>
+</code></pre></div></div>
+<p>And then we call the function using the SQL API as a URL:</p>
+
+<p><code class="highlighter-rouge">https://username.carto.com/api/v2/sql?q=SELECT * FROM sum_n_product3(1,2)&amp;api_key=API_KEY</code></p>
+
+<p>We get the next response with the three error messages:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="err">rows:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="err">sum:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+      </span><span class="err">prod:</span><span class="w"> </span><span class="mi">2</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="err">time:</span><span class="w"> </span><span class="mf">0.001</span><span class="p">,</span><span class="w">
+  </span><span class="err">fields:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="err">sum:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="err">type:</span><span class="w"> </span><span class="s2">"number"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="err">prod:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="err">type:</span><span class="w"> </span><span class="s2">"number"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="err">total_rows:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="err">warnings:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"information message 2016-06-08 09:43:33.923025+00"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="err">notices:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"information message 2016-06-08 09:43:33.923025+00"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="err">infos:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"information message 2016-06-08 09:43:33.923025+00"</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p>The error RAISE LOG and RAISE DEBUG error messages are not returned in the client side, that’s because those messages are not showed to the client by default, they are
+displayed in the server side. The configuration of these error messages are controlled by the client_min_messages and log_min_messages configuration parameters. (more information <a href="https://www.postgresql.org/docs/9.5/static/runtime-config-logging.html">here</a>)</p>
+
+<p>If the level is not specified, the defaults level will be <code class="highlighter-rouge">EXCEPTION</code> that raises an error and stops the current transaction.</p>
+
+<p>A transaction is a unit of work that is performed against a database. Transactions are units or sequences of work accomplished in a logical order, whether in a manual fashion by a user or automatically by some sort of a database program. A transaction is the propagation of one or more changes to the database.
+For example, if you are creating or updating or deleting a record from the table, then you are performing transaction on the table. It is important to control transactions to ensure data integrity and to handle database errors.</p>
+
+<h2 id="dynamic-plpgsql-functions">Dynamic PL/pgSQL functions</h2>
+
+<p>In order to write dynamic PL/pgSQL queries the <code class="highlighter-rouge">EXECUTE 'sql';</code> is used. The <code class="highlighter-rouge">EXECUTE</code> coommand it is used to generate dynamic commands inside the PL/pgSQL function. EXECUTE command it is used when the function involves different tables or different data types each time that the function is executed.</p>
+
+<p>Syntax of EXECUTE command:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">EXECUTE</span> <span class="n">command</span><span class="o">-</span><span class="n">string</span> <span class="p">[</span> <span class="k">INTO</span> <span class="p">[</span><span class="k">STRICT</span><span class="p">]</span> <span class="n">target</span> <span class="p">]</span> <span class="p">[</span> <span class="k">USING</span> <span class="n">expression</span> <span class="p">[,</span> <span class="p">...</span> <span class="p">]</span> <span class="p">];</span>
+</code></pre></div></div>
+
+<ol>
+  <li><code class="highlighter-rouge">command-string</code> is an expression that contains que query to be executed.</li>
+  <li>The <code class="highlighter-rouge">target</code> statement is optional. Is a record variable, row variable or a comma-separated list of simple variables and record/row fields, into which the results of the command will be stored.</li>
+  <li>The <code class="highlighter-rouge">using</code> statement is optional. Supply values to be inserted into the command.</li>
+</ol>
+
+<p>Features:</p>
+
+<ul>
+  <li>There is no plan caching for commands executed via EXECUTE. The command is always planned each time the statements are running.</li>
+  <li>Any required variable values must be inserted in the command string as it is constructed.</li>
+  <li>The INTO clause specifies where the results of a SQL command returning rows should be assigned. If a row or variable list is provided, it must exactly match the structure of the query’s results (when a record variable is used, it will configure itself to match the result structure automatically). If multiple rows are returned, only the first will be assigned to the INTO variable. If no rows are returned, NULL is assigned to the INTO variable(s). If no INTO clause is specified, the query results are discarded.</li>
+  <li>If the STRICT option is given, an error is reported unless the query produces exactly one row.</li>
+</ul>
+
+<p>For more information and examples look at <a href="http://www.postgresql.org/docs/current/static/plpgsql-statements.html#PLPGSQL-STATEMENTS-EXECUTING-DYN">this section</a> of the PostgreSQL documentation.</p>
+
+<h2 id="functions-that-doesnt-return-any-row">Functions that doesn’t return any row</h2>
+
+<p>If we create a function that doesn’t return any row, but performs a writing operation, such as an <code class="highlighter-rouge">UPDATE</code>, <code class="highlighter-rouge">INSERT</code> or <code class="highlighter-rouge">DELETE</code>, we need to set the <code class="highlighter-rouge">RETURNS TYPE</code> statement as <code class="highlighter-rouge">RETURNS void</code></p>
+
+<p>For example:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">logfunc1</span><span class="p">(</span><span class="n">logtxt</span> <span class="nb">text</span><span class="p">)</span> <span class="k">RETURNS</span> <span class="n">void</span> <span class="k">AS</span> <span class="err">$$</span>
+    <span class="k">BEGIN</span>
+      <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">untitled_table_1</span> <span class="p">(</span><span class="n">description</span><span class="p">,</span><span class="n">currenttime</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="n">logtxt</span><span class="p">,</span><span class="s1">'now'</span><span class="p">);</span>
+    <span class="k">END</span><span class="p">;</span>
+<span class="err">$$</span> <span class="k">LANGUAGE</span> <span class="n">plpgsql</span>
+</code></pre></div></div>
+<p>We could call this function with <code class="highlighter-rouge">SELECT logfunc1('coolestWordEver')</code> or <code class="highlighter-rouge">SELECT * FROM logfunc1('someCoolWord')</code> and postgreSQL will return no rows, but if you go to your table you will see that there is a new row with values in <code class="highlighter-rouge">description</code> and <code class="highlighter-rouge">currentime</code> columns.</p>
+
+<p>You can apply the <code class="highlighter-rouge">RETURNS void</code> to UPDATE OR DELETE a row.</p>
+
+<p>For example, this function when it’s called, updates the the description column that has the cartodb_id that you put as an argument:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">upfunc</span><span class="p">(</span><span class="n">logtxt</span> <span class="nb">text</span><span class="p">,</span> <span class="n">id</span> <span class="nb">numeric</span><span class="p">)</span> <span class="k">RETURNS</span> <span class="n">void</span> <span class="k">AS</span> <span class="err">$$</span>
+    <span class="k">BEGIN</span>
+        <span class="k">UPDATE</span> <span class="n">coooltable</span>
+		    <span class="k">SET</span> <span class="n">description</span> <span class="o">=</span> <span class="n">logtxt</span>
+		    <span class="k">WHERE</span> <span class="n">cartodb_id</span> <span class="o">=</span> <span class="n">id</span><span class="p">;</span>
+    <span class="k">END</span><span class="p">;</span>
+<span class="err">$$</span> <span class="k">LANGUAGE</span> <span class="n">plpgsql</span>
+</code></pre></div></div>
+
+<p>And in this other example, the function will delete the row that have the cartodb_id that you put as an input.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">delfunc</span><span class="p">(</span><span class="n">id</span> <span class="nb">numeric</span><span class="p">)</span> <span class="k">RETURNS</span> <span class="n">void</span> <span class="k">AS</span> <span class="err">$$</span>
+    <span class="k">BEGIN</span>
+      <span class="k">DELETE</span> <span class="k">FROM</span> <span class="n">coooltable</span>
+		  <span class="k">WHERE</span> <span class="n">cartodb_id</span> <span class="o">=</span> <span class="n">id</span><span class="p">;</span>
+    <span class="k">END</span><span class="p">;</span>
+<span class="err">$$</span> <span class="k">LANGUAGE</span> <span class="n">plpgsql</span>
+</code></pre></div></div>
+
+<h2 id="function-that-returns-a-table">Function that returns a table</h2>
+
+<p>To return a table from a PL/pgSQL function, we have to set <code class="highlighter-rouge">RETURNS TABLE (column1 type, column2 type, etc)</code> where <code class="highlighter-rouge">column1</code>, <code class="highlighter-rouge">column2</code> are the names of the columns that will be returned.</p>
+
+<p>This example returns a frequency table from a specific column and specific table:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">get_freq_table</span><span class="p">()</span>
+<span class="k">RETURNS</span> <span class="k">TABLE</span><span class="p">(</span>
+                    <span class="n">name</span> <span class="nb">VARCHAR</span><span class="p">,</span>
+               <span class="n">frequency</span> <span class="nb">INT</span><span class="p">,</span>
+         <span class="n">total_frequency</span> <span class="nb">INT</span><span class="p">,</span>
+      <span class="n">relative_frequency</span> <span class="nb">NUMERIC</span><span class="p">,</span>
+  <span class="n">sum_relative_frequency</span> <span class="nb">NUMERIC</span>
+<span class="p">)</span>
+<span class="k">AS</span> <span class="err">$$</span>
+<span class="k">BEGIN</span>
+  <span class="k">RETURN</span> <span class="n">QUERY</span>
+    <span class="k">WITH</span> <span class="n">a</span> <span class="k">as</span> <span class="p">(</span>
+      <span class="k">SELECT</span> <span class="k">DISTINCT</span> <span class="n">adm0_a3</span><span class="p">,</span> <span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="n">OVER</span> <span class="p">(</span><span class="n">PARTITION</span> <span class="k">BY</span> <span class="n">adm0_a3</span><span class="p">)</span> <span class="k">as</span> <span class="n">freq</span><span class="p">,</span>
+             <span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="n">OVER</span><span class="p">()</span> <span class="k">as</span> <span class="n">total_freq</span>
+        <span class="k">FROM</span> <span class="n">populated_places_spf</span>
+    <span class="p">),</span>
+    <span class="n">b</span> <span class="k">as</span><span class="p">(</span>
+      <span class="k">SELECT</span> <span class="n">a</span><span class="p">.</span><span class="n">adm0_a3</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">freq</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">total_freq</span><span class="p">,</span>
+             <span class="n">round</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">freq</span><span class="p">::</span><span class="nb">numeric</span><span class="o">/</span><span class="n">a</span><span class="p">.</span><span class="n">total_freq</span><span class="p">::</span><span class="nb">numeric</span><span class="p">),</span>
+                <span class="mi">2</span>
+              <span class="p">)</span> <span class="k">as</span> <span class="n">relative_freq</span>
+        <span class="k">FROM</span> <span class="n">a</span>
+    <span class="p">)</span>
+    <span class="k">SELECT</span> <span class="n">b</span><span class="p">.</span><span class="n">adm0_a3</span><span class="p">::</span><span class="nb">VARCHAR</span><span class="p">,</span>
+           <span class="n">b</span><span class="p">.</span><span class="n">freq</span><span class="p">::</span><span class="nb">INT</span><span class="p">,</span>
+           <span class="n">b</span><span class="p">.</span><span class="n">total_freq</span><span class="p">::</span><span class="nb">INT</span><span class="p">,</span>
+           <span class="n">b</span><span class="p">.</span><span class="n">relative_freq</span><span class="p">::</span><span class="nb">NUMERIC</span><span class="p">,</span>
+           <span class="k">sum</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">relative_freq</span><span class="p">)</span>
+             <span class="n">OVER</span><span class="p">(</span><span class="k">ORDER</span> <span class="k">BY</span> <span class="n">b</span><span class="p">.</span><span class="n">relative_freq</span><span class="p">)::</span><span class="nb">NUMERIC</span> <span class="k">as</span> <span class="n">suma_rel_freq</span>
+      <span class="k">FROM</span> <span class="n">b</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="err">$$</span> <span class="k">LANGUAGE</span> <span class="s1">'plpgsql'</span>
+</code></pre></div></div>
+
+<p>We could also modify the function to return a frequency table with a dynamic function:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">get_freq_table_general</span><span class="p">(</span><span class="n">col</span> <span class="nb">VARCHAR</span><span class="p">,</span> <span class="n">tablName</span> <span class="nb">VARCHAR</span><span class="p">)</span>
+<span class="k">RETURNS</span> <span class="k">TABLE</span><span class="p">(</span>
+                    <span class="n">name</span> <span class="nb">VARCHAR</span><span class="p">,</span>
+               <span class="n">frequency</span> <span class="nb">INT</span><span class="p">,</span>
+         <span class="n">total_frequency</span> <span class="nb">INT</span><span class="p">,</span>
+      <span class="n">relative_frequency</span> <span class="nb">NUMERIC</span><span class="p">,</span>
+  <span class="n">sum_relative_frequency</span> <span class="nb">NUMERIC</span>
+<span class="p">)</span>
+<span class="k">AS</span> <span class="err">$$</span>
+<span class="k">BEGIN</span>
+  <span class="k">RETURN</span> <span class="n">QUERY</span> <span class="k">EXECUTE</span> <span class="s1">'
+    WITH a as (
+      SELECT DISTINCT '</span><span class="o">||</span> <span class="n">col</span> <span class="o">||</span> <span class="s1">' as colName, count(*) OVER (PARTITION BY '</span><span class="o">||</span>
+      <span class="n">col</span> <span class="o">||</span><span class="s1">') as freq , count(*) OVER() as total_freq FROM '</span><span class="o">||</span> <span class="n">tablName</span> <span class="o">||</span><span class="s1">'
+    ),
+    b as(
+      SELECT a.colName,a.freq, a.total_freq,
+             round(
+               (a.freq::numeric/a.total_freq::numeric),
+                2::integer
+              ) as relative_freq
+         FROM a)
+    SELECT b.colName::VARCHAR, b.freq::INT, b.total_freq::INT,
+           b.relative_freq::NUMERIC,
+           sum(b.relative_freq)
+             OVER(ORDER BY b.relative_freq)::NUMERIC as suma_rel_freq
+      FROM b'</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="err">$$</span> <span class="k">LANGUAGE</span> <span class="s1">'plpgsql'</span>
+</code></pre></div></div>
+
+<h2 id="functions-with-security-definer">Functions with Security Definer</h2>
+
+<p>In order to allow CARTO anonymous user (called <code class="highlighter-rouge">publicuser</code>) to perform writing operations such as <code class="highlighter-rouge">INSERT</code> or <code class="highlighter-rouge">UPDATE</code> queries, we need to define those actions inside a stored procedure. That function will afterwards be granted execution permission, so it will run with the same permission as the account owner.</p>
+
+<p>This is an example of function that can be called to insert new points and alphanumerical data in a table:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">insertpoint</span><span class="p">(</span>
+          <span class="n">lon</span> <span class="nb">numeric</span><span class="p">,</span>
+          <span class="n">lat</span> <span class="nb">numeric</span><span class="p">,</span>
+         <span class="n">name</span> <span class="nb">text</span><span class="p">,</span>
+  <span class="n">description</span> <span class="nb">text</span><span class="p">,</span>
+     <span class="n">category</span> <span class="nb">text</span><span class="p">,</span>
+    <span class="n">tablename</span> <span class="nb">text</span>
+<span class="p">)</span>
+ <span class="k">RETURNS</span> <span class="k">TABLE</span><span class="p">(</span><span class="n">cartodb_id</span> <span class="nb">INT</span><span class="p">)</span>
+<span class="k">LANGUAGE</span> <span class="s1">'plpgsql'</span> <span class="k">SECURITY</span> <span class="k">DEFINER</span>
+ <span class="k">RETURNS</span> <span class="k">NULL</span> <span class="k">ON</span> <span class="k">NULL</span> <span class="k">INPUT</span>
+<span class="k">AS</span> <span class="err">$$</span>
+<span class="k">DECLARE</span>
+  <span class="k">sql</span> <span class="nb">text</span><span class="p">;</span>
+<span class="k">BEGIN</span>
+  <span class="k">sql</span><span class="p">:</span><span class="o">=</span> <span class="s1">'WITH do_insert AS (
+        INSERT INTO '</span><span class="o">||</span><span class="n">quote_ident</span><span class="p">(</span><span class="n">tablename</span><span class="p">)</span><span class="o">||</span><span class="s1">'(the_geom, name, description, category)
+        VALUES '</span>
+          <span class="o">||</span> <span class="s1">'('</span>
+          <span class="o">||</span> <span class="s1">'ST_SetSRID(ST_MakePoint('</span><span class="o">||</span><span class="n">lon</span><span class="o">||</span><span class="s1">','</span><span class="o">||</span><span class="n">lat</span><span class="o">||</span><span class="s1">'), 4326),'</span>
+          <span class="o">||</span> <span class="n">quote_literal</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">||</span><span class="s1">','</span>
+          <span class="o">||</span> <span class="n">quote_literal</span><span class="p">(</span><span class="n">description</span><span class="p">)</span><span class="o">||</span><span class="s1">','</span>
+          <span class="o">||</span> <span class="n">quote_literal</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
+          <span class="o">||</span> <span class="s1">')'</span>
+          <span class="o">||</span><span class="s1">'RETURNING cartodb_id)'</span>
+          <span class="o">||</span><span class="s1">'SELECT cartodb_id FROM do_insert'</span><span class="p">;</span>
+
+<span class="k">RETURN</span> <span class="n">QUERY</span> <span class="k">EXECUTE</span> <span class="k">sql</span><span class="p">;</span>
+
+<span class="k">END</span><span class="p">;</span>
+<span class="err">$$</span><span class="p">;</span>
+
+<span class="c1">--Grant access to the public user</span>
+   <span class="k">GRANT</span> <span class="k">EXECUTE</span> <span class="k">ON</span>
+<span class="k">FUNCTION</span> <span class="n">insertpoint</span><span class="p">(</span><span class="nb">numeric</span><span class="p">,</span> <span class="nb">numeric</span><span class="p">,</span> <span class="nb">text</span><span class="p">,</span> <span class="nb">text</span><span class="p">,</span> <span class="nb">text</span><span class="p">,</span> <span class="nb">text</span><span class="p">)</span>
+      <span class="k">TO</span> <span class="n">publicuser</span><span class="p">;</span>
+</code></pre></div></div>
+<p><strong><a href="https://gist.github.com/ernesmb/beb25f539f8ff38bbd891e6d114ea7f4">Click here</a></strong> to find more detailed instructions for creating a Security Definer function that allows to collect points from a public map in a secure way</p>
+
+<h2 id="trigger-functions">Trigger functions</h2>
+
+<p>The trigger functions have three main properties:</p>
+
+<ol>
+  <li>They are immutable</li>
+  <li>The <code class="highlighter-rouge">RETURNS</code> statement returns a trigger type</li>
+  <li>They don’t take any input argument</li>
+</ol>
+
+<p>The trigger functions can be defines in two setps:</p>
+
+<p>1- Define the trigger function:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">tr_function</span><span class="p">()</span>
+<span class="k">RETURNS</span> <span class="k">TRIGGER</span>
+<span class="k">AS</span> <span class="err">$$</span>
+<span class="k">BEGIN</span>
+  <span class="k">NEW</span><span class="p">.</span><span class="n">c3</span> <span class="o">=</span> <span class="k">NEW</span><span class="p">.</span><span class="n">c1</span> <span class="o">+</span> <span class="k">NEW</span><span class="p">.</span><span class="n">c2</span>
+  <span class="k">RETURN</span> <span class="k">NEW</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="err">$$</span>
+<span class="k">LANGUAGE</span> <span class="s1">'plpgsql'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Where <code class="highlighter-rouge">NEW</code> is a variable that contains a row of the table.</p>
+
+<p>2- Define when the trigger will be fired:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TRIGGER</span> <span class="n">tr</span>
+<span class="k">BEFORE</span> <span class="k">INSERT</span> <span class="k">ON</span> <span class="n">tableName</span>
+<span class="k">FOR</span> <span class="k">EACH</span> <span class="k">ROW</span> <span class="k">EXECUTE</span>
+<span class="k">PROCEDURE</span> <span class="n">tr_function</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>Where:</p>
+
+<ul>
+  <li>BEFORE (or AFTER): define <strong>when</strong> the trigger function will be activated (before or after the <code class="highlighter-rouge">INSERT</code> operation)</li>
+  <li>FOR EACH ROW: the operation of the trigger function is executed once for each row.</li>
+  <li>FOR EACH STATEMENT: the operation of the trigger function is executed once for each statement.</li>
+</ul>
+
+<p>If we want to remove our triggers:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">DROP</span> <span class="k">TRIGGER</span> <span class="n">triggerName</span> <span class="k">ON</span> <span class="n">tableName</span>
+</code></pre></div></div>
+
+<p>or</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">DROP</span> <span class="k">TRIGGER</span> <span class="n">IF</span> <span class="k">EXISTS</span> <span class="n">triggerName</span> <span class="k">ON</span> <span class="n">tableName</span>
+</code></pre></div></div>
+<h2 id="control-structures">Control structures</h2>
+
+<h3 id="if-statement">IF statement</h3>
+
+<p>The <code class="highlighter-rouge">IF</code> statement it is used to execute a command conditionally. PL/pgSQL has 3 ways to use the <code class="highlighter-rouge">IF</code> statements.</p>
+
+<ol>
+  <li>IF THEN
+    <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">IF</span> <span class="n">condition</span> <span class="k">THEN</span>
+ <span class="k">statement</span><span class="p">;</span>
+  <span class="k">END</span> <span class="n">IF</span><span class="p">;</span>
+</code></pre></div>    </div>
+    <p>The condition is a boolean expression that has to be evaluated as <code class="highlighter-rouge">true</code> or <code class="highlighter-rouge">false</code>, the statement will only be executed if the condition is <code class="highlighter-rouge">true</code>.</p>
+  </li>
+  <li>IF THEN/ELSE
+    <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">IF</span> <span class="n">condition</span> <span class="k">THEN</span>
+ <span class="n">statements</span><span class="p">;</span>
+  <span class="k">ELSE</span>
+ <span class="n">alternative</span><span class="o">-</span><span class="n">statements</span><span class="p">;</span>
+  <span class="k">END</span> <span class="n">IF</span><span class="p">;</span>
+</code></pre></div>    </div>
+    <p>The <code class="highlighter-rouge">IF THEN/ELSE</code> statement executes a command when the condition is <code class="highlighter-rouge">true</code> and it executes an alternative command when the condition is <code class="highlighter-rouge">false</code>.</p>
+  </li>
+  <li>IF THEN/ ELSIF THEN/ELSE</li>
+</ol>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">IF</span> <span class="n">condition</span><span class="o">-</span><span class="mi">1</span> <span class="k">THEN</span>
+    <span class="n">if</span><span class="o">-</span><span class="k">statement</span><span class="p">;</span>
+  <span class="n">ELSIF</span> <span class="n">condition</span><span class="o">-</span><span class="mi">2</span> <span class="k">THEN</span>
+    <span class="n">elsif</span><span class="o">-</span><span class="k">statement</span><span class="o">-</span><span class="mi">2</span>
+  <span class="p">...</span>
+  <span class="n">ELSIF</span> <span class="n">condition</span><span class="o">-</span><span class="n">n</span> <span class="k">THEN</span>
+    <span class="n">elsif</span><span class="o">-</span><span class="k">statement</span><span class="o">-</span><span class="n">n</span><span class="p">;</span>
+  <span class="k">ELSE</span>
+    <span class="k">else</span><span class="o">-</span><span class="k">statement</span><span class="p">;</span>
+  <span class="k">END</span> <span class="n">IF</span><span class="p">;</span>
+</code></pre></div></div>
+<p>The <code class="highlighter-rouge">IF THEN/ ELSIF THEN/ELSE</code> statement allows you to have multiple conditions to evaluate. In case one condition is <code class="highlighter-rouge">true</code>, PostgreSQL will stop evaluating the underneath conditions.</p>
+
+<h3 id="case-statement">CASE statement</h3>
+
+<p>This is similar to <code class="highlighter-rouge">IF</code> statement, but  the <code class="highlighter-rouge">CASE</code> operator allows you to execute statements based on conditions. There are two ways to apply a <code class="highlighter-rouge">CASE</code>.</p>
+
+<ol>
+  <li>Simple CASE statement
+    <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">CASE</span> <span class="k">search</span><span class="o">-</span><span class="n">expression</span>
+  <span class="k">WHEN</span> <span class="n">expression_1</span> <span class="p">[,</span> <span class="n">expression_2</span><span class="p">,</span> <span class="p">...]</span> <span class="k">THEN</span>
+     <span class="k">when</span><span class="o">-</span><span class="n">statements</span>
+ <span class="p">[</span> <span class="p">...</span> <span class="p">]</span>
+ <span class="p">[</span><span class="k">ELSE</span>
+     <span class="k">else</span><span class="o">-</span><span class="n">statements</span> <span class="p">]</span>
+  <span class="k">END</span> <span class="k">CASE</span><span class="p">;</span>
+</code></pre></div>    </div>
+    <p>The search-expression is an expression that will be evaluated against the expression in each <code class="highlighter-rouge">WHEN</code> branch using equality operand (<code class="highlighter-rouge">=</code>). If a match is found, the <code class="highlighter-rouge">when-statements</code> in the corresponding <code class="highlighter-rouge">WHEN</code> branch are executed. The subsequent expressions underneath will not be evaluated.</p>
+  </li>
+</ol>
+
+<p>Example:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">get_price_segment</span><span class="p">(</span><span class="n">p_film_id</span> <span class="nb">integer</span><span class="p">)</span>
+     <span class="k">RETURNS</span> <span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="k">AS</span> <span class="err">$$</span>
+  <span class="k">DECLARE</span>
+            <span class="n">rate</span> <span class="nb">NUMERIC</span><span class="p">;</span>
+   <span class="n">price_segment</span> <span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
+  <span class="k">BEGIN</span>
+     <span class="c1">-- get the rate based on film_id</span>
+      <span class="k">SELECT</span> <span class="k">INTO</span> <span class="n">rate</span> <span class="n">rental_rate</span>
+        <span class="k">FROM</span> <span class="n">film</span>
+       <span class="k">WHERE</span> <span class="n">film_id</span> <span class="o">=</span> <span class="n">p_film_id</span><span class="p">;</span>
+
+      <span class="k">CASE</span> <span class="n">rate</span>
+        <span class="k">WHEN</span> <span class="mi">0</span><span class="p">.</span><span class="mi">99</span> <span class="k">THEN</span> <span class="n">price_segment</span> <span class="o">=</span> <span class="s1">'Mass'</span><span class="p">;</span>
+        <span class="k">WHEN</span> <span class="mi">2</span><span class="p">.</span><span class="mi">99</span> <span class="k">THEN</span> <span class="n">price_segment</span> <span class="o">=</span> <span class="s1">'Mainstream'</span><span class="p">;</span>
+        <span class="k">WHEN</span> <span class="mi">4</span><span class="p">.</span><span class="mi">99</span> <span class="k">THEN</span> <span class="n">price_segment</span> <span class="o">=</span> <span class="s1">'High End'</span><span class="p">;</span>
+        <span class="k">ELSE</span> <span class="n">price_segment</span> <span class="o">=</span> <span class="s1">'Unspecified'</span><span class="p">;</span>
+      <span class="k">END</span> <span class="k">CASE</span><span class="p">;</span>
+
+      <span class="k">RETURN</span> <span class="n">price_segment</span><span class="p">;</span>
+  <span class="k">END</span><span class="p">;</span> <span class="err">$$</span>
+  <span class="k">LANGUAGE</span> <span class="n">plpgsql</span><span class="p">;</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Searched CASE statement</li>
+</ol>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">CASE</span>
+      <span class="k">WHEN</span> <span class="nb">boolean</span><span class="o">-</span><span class="n">expression</span><span class="o">-</span><span class="mi">1</span> <span class="k">THEN</span> <span class="n">statements</span>
+      <span class="p">[</span> <span class="k">WHEN</span> <span class="nb">boolean</span><span class="o">-</span><span class="n">expression</span><span class="o">-</span><span class="mi">2</span> <span class="k">THEN</span> <span class="n">statements</span> <span class="p">...</span> <span class="p">]</span>
+      <span class="p">[</span> <span class="k">ELSE</span> <span class="n">statements</span> <span class="p">]</span>
+  <span class="k">END</span> <span class="k">CASE</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The searched <code class="highlighter-rouge">CASE</code> statement executes statements based on the result of Boolean expressions in each <code class="highlighter-rouge">WHEN</code> clause.</p>
+
+<h3 id="loop-statement">LOOP statement</h3>
+
+<p>This is used to execute a block of statements repeatedly until a condition becomes true. The basic syntax is:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LOOP</span>
+   <span class="n">Statements</span><span class="p">;</span>
+   <span class="n">EXIT</span> <span class="p">[</span><span class="o">&lt;&lt;</span><span class="n">label</span><span class="o">&gt;&gt;</span><span class="p">]</span> <span class="k">WHEN</span> <span class="n">condition</span><span class="p">;</span>
+<span class="k">END</span> <span class="n">LOOP</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Example:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">fibonacci</span> <span class="p">(</span><span class="n">n</span> <span class="nb">INTEGER</span><span class="p">)</span>
+ <span class="k">RETURNS</span> <span class="nb">INTEGER</span> <span class="k">AS</span> <span class="err">$$</span>
+<span class="k">DECLARE</span>
+   <span class="n">counter</span> <span class="nb">INTEGER</span> <span class="p">:</span><span class="o">=</span> <span class="mi">0</span> <span class="p">;</span>
+         <span class="n">i</span> <span class="nb">INTEGER</span> <span class="p">:</span><span class="o">=</span> <span class="mi">0</span> <span class="p">;</span>
+         <span class="n">j</span> <span class="nb">INTEGER</span> <span class="p">:</span><span class="o">=</span> <span class="mi">1</span> <span class="p">;</span>
+<span class="k">BEGIN</span>
+
+ <span class="n">IF</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="k">THEN</span>
+   <span class="k">RETURN</span> <span class="mi">0</span> <span class="p">;</span>
+ <span class="k">END</span> <span class="n">IF</span><span class="p">;</span>
+
+ <span class="n">LOOP</span>
+   <span class="n">EXIT</span> <span class="k">WHEN</span> <span class="n">counter</span> <span class="o">=</span> <span class="n">n</span> <span class="p">;</span>
+   <span class="n">counter</span> <span class="p">:</span><span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">;</span>
+   <span class="k">SELECT</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span> <span class="k">INTO</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="p">;</span>
+ <span class="k">END</span> <span class="n">LOOP</span> <span class="p">;</span>
+
+ <span class="k">RETURN</span> <span class="n">i</span> <span class="p">;</span>
+<span class="k">END</span> <span class="p">;</span>
+<span class="err">$$</span> <span class="k">LANGUAGE</span> <span class="n">plpgsql</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The Fibonacci function accepts an integer and returns the Nth Fibonacci number. By definition, Fibonacci numbers are sequence of integers starting with 0 and 1, and each subsequent number is the product the previous two numbers, for example 1, 1, 2 (1+1), 3 (2+1), 5 (3 +2), 8 (5+3), …</p>
+
+<p>In the declaration section, the counter variable is initialized to zero (0). Inside the loop, when counter equals <code class="highlighter-rouge">n</code>, the loop exits. The statement:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span> <span class="k">INTO</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="p">;</span>
+</code></pre></div></div>
+
+<p>Swaps <code class="highlighter-rouge">i</code> and <code class="highlighter-rouge">j</code> at the same time without using a temporary variable.</p>
+
+<h3 id="while-loops">WHILE loops</h3>
+
+<p>The <code class="highlighter-rouge">WHILE</code> loop statement executes a block of statements until a condition evaluates to false. In the <code class="highlighter-rouge">WHILE</code> loop statement, PostgreSQL evaluates the condition before executing the block of statements. If the condition is <code class="highlighter-rouge">true</code>, the block of statements is executed until it is evaluated to false.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">fibonacci</span> <span class="p">(</span><span class="n">n</span> <span class="nb">INTEGER</span><span class="p">)</span>
+ <span class="k">RETURNS</span> <span class="nb">INTEGER</span> <span class="k">AS</span> <span class="err">$$</span>
+<span class="k">DECLARE</span>
+   <span class="n">counter</span> <span class="nb">INTEGER</span> <span class="p">:</span><span class="o">=</span> <span class="mi">0</span> <span class="p">;</span>
+         <span class="n">i</span> <span class="nb">INTEGER</span> <span class="p">:</span><span class="o">=</span> <span class="mi">0</span> <span class="p">;</span>
+         <span class="n">j</span> <span class="nb">INTEGER</span> <span class="p">:</span><span class="o">=</span> <span class="mi">1</span> <span class="p">;</span>
+<span class="k">BEGIN</span>
+
+ <span class="n">IF</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="k">THEN</span>
+   <span class="k">RETURN</span> <span class="mi">0</span> <span class="p">;</span>
+ <span class="k">END</span> <span class="n">IF</span><span class="p">;</span>
+
+ <span class="n">WHILE</span> <span class="n">counter</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="n">LOOP</span>
+   <span class="n">counter</span> <span class="p">:</span><span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">;</span>
+   <span class="k">SELECT</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span> <span class="k">INTO</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="p">;</span>
+ <span class="k">END</span> <span class="n">LOOP</span> <span class="p">;</span>
+
+ <span class="k">RETURN</span> <span class="n">i</span> <span class="p">;</span>
+<span class="k">END</span> <span class="p">;</span>
+</code></pre></div></div>
+<h3 id="for-loops">FOR loops</h3>
+
+<ul>
+  <li><code class="highlighter-rouge">FOR</code> loop for looping through a ranges of integers
+    <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FOR</span> <span class="n">loop_counter</span> <span class="k">IN</span> <span class="p">[</span> <span class="n">REVERSE</span> <span class="p">]</span> <span class="k">from</span><span class="p">..</span> <span class="k">to</span> <span class="p">[</span> <span class="k">BY</span> <span class="n">expression</span> <span class="p">]</span> <span class="n">LOOP</span>
+  <span class="n">statements</span>
+<span class="k">END</span> <span class="n">LOOP</span> <span class="p">[</span> <span class="n">label</span> <span class="p">];</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>First, PostgreSQL creates a integer variable <code class="highlighter-rouge">loop_counter</code> that exists only inside the loop. By default, the loop counter is added after each iteration, If you use the <code class="highlighter-rouge">REVERSE</code> keyword, PostgreSQL will subtract the loop counter.</p>
+
+<p>Second, the <code class="highlighter-rouge">FROM</code> and <code class="highlighter-rouge">TO</code> are expressions that specify the lower and upper bounds of the range. PostgreSQL evaluates those expressions before entering the loop.</p>
+
+<p>Third, the expression following the <code class="highlighter-rouge">BY</code> clause specifies the iteration step. If you omit this, the default step is 1. PostgreSQL also evaluates this expression once on loop entry</p>
+
+<ul>
+  <li><code class="highlighter-rouge">FOR</code> loop for looping through a query result</li>
+</ul>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FOR</span> <span class="n">target</span> <span class="k">IN</span> <span class="n">query</span> <span class="n">LOOP</span>
+    <span class="n">statements</span>
+<span class="k">END</span> <span class="n">LOOP</span> <span class="p">[</span> <span class="n">label</span> <span class="p">];</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="highlighter-rouge">FOR</code> loop for looping through a query result of a dynamic query</li>
+</ul>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FOR</span> <span class="k">row</span> <span class="k">IN</span> <span class="k">EXECUTE</span> <span class="n">string_expression</span> <span class="p">[</span> <span class="k">USING</span> <span class="n">query_param</span> <span class="p">[,</span> <span class="p">...</span> <span class="p">]</span> <span class="p">]</span>
+<span class="n">LOOP</span>
+    <span class="n">statements</span>
+<span class="k">END</span> <span class="n">LOOP</span> <span class="p">[</span> <span class="n">label</span> <span class="p">];</span>
+</code></pre></div></div>
+
+<h2 id="plpgsql-and-postgis">Pl/pgSQL and PostGIS</h2>
+
+<p>It’s possible to create Pl/pgSQL functions with PostGIS to predefine a process to modify the geometries of some data. For example, based on <a href="https://selectoid.wordpress.com/2008/12/22/developing-fun-st_staratpoint-for-postgis/">this
+example</a> that creates star polygons from points (read it !! it’s detailed and fun), we can create a function like this one:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">regularPolygons</span><span class="p">(</span>
+           <span class="k">IN</span> <span class="n">center</span> <span class="n">geometry</span><span class="p">,</span>
+           <span class="k">IN</span> <span class="n">radius</span> <span class="nb">numeric</span><span class="p">,</span>
+  <span class="k">IN</span> <span class="n">number_of_sides</span> <span class="nb">integer</span>
+<span class="p">)</span> <span class="k">RETURNS</span> <span class="n">GEOMETRY</span> <span class="k">AS</span>
+<span class="err">$$</span>
+<span class="k">DECLARE</span>
+  <span class="c1">-- the geometry as WKT</span>
+  <span class="n">geometry_wkt</span> <span class="nb">text</span> <span class="p">:</span><span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+  <span class="c1">-- a loop counter</span>
+  <span class="n">i</span> <span class="nb">integer</span> <span class="p">:</span><span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="c1">-- angle to rotate</span>
+  <span class="n">angle</span> <span class="nb">numeric</span><span class="p">;</span>
+  <span class="c1">-- reference line to rotate around</span>
+  <span class="n">ref_line</span> <span class="n">geometry</span><span class="p">;</span>
+<span class="k">BEGIN</span>
+  <span class="c1">-- create reference line to rotate the points</span>
+  <span class="c1">-- it creates a 12 o'clock lines from the center</span>
+  <span class="n">ref_line</span> <span class="o">=</span> <span class="n">ST_MakeLine</span><span class="p">(</span>
+              <span class="n">center</span><span class="p">,</span>
+              <span class="n">ST_Transform</span><span class="p">(</span>
+                <span class="n">ST_SetSRID</span><span class="p">(</span>
+                  <span class="n">ST_MakePoint</span><span class="p">(</span><span class="n">ST_X</span><span class="p">(</span><span class="n">center</span><span class="p">),</span><span class="n">ST_Y</span><span class="p">(</span><span class="n">center</span><span class="p">)</span> <span class="o">+</span> <span class="n">radius</span><span class="p">),</span>
+                  <span class="mi">3857</span><span class="p">)</span>
+                <span class="p">,</span><span class="mi">4326</span><span class="p">));</span>
+
+  <span class="c1">-- calculate angle depending ong number of sides of the</span>
+  <span class="n">angle</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="mi">360</span><span class="p">::</span><span class="nb">numeric</span><span class="o">/</span><span class="n">number_of_sides</span><span class="p">::</span><span class="nb">numeric</span><span class="p">);</span>
+
+  <span class="c1">-- Start loop to create polygon using the ref_line</span>
+  <span class="c1">-- and the declared variable i</span>
+  <span class="n">WHILE</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">number_of_sides</span><span class="p">)</span> <span class="n">LOOP</span>
+    <span class="n">geometry_wkt</span> <span class="o">=</span> <span class="n">geometry_wkt</span> <span class="o">||</span>
+      <span class="p">(</span><span class="n">ST_X</span><span class="p">(</span><span class="n">ST_EndPoint</span><span class="p">(</span><span class="n">ST_RotateZ</span><span class="p">(</span><span class="n">ref_line</span><span class="p">,</span> <span class="n">angle</span> <span class="o">*</span> <span class="n">i</span><span class="p">)))</span> <span class="o">+</span>
+        <span class="n">ST_X</span><span class="p">(</span><span class="n">center</span><span class="p">))</span> <span class="o">||</span> <span class="s1">'  '</span> <span class="o">||</span>
+      <span class="p">(</span><span class="n">ST_Y</span><span class="p">(</span><span class="n">ST_EndPoint</span><span class="p">(</span><span class="n">ST_RotateZ</span><span class="p">(</span><span class="n">ref_line</span><span class="p">,</span> <span class="n">angle</span> <span class="o">*</span> <span class="n">i</span><span class="p">)))</span> <span class="o">+</span>
+        <span class="n">ST_Y</span><span class="p">(</span><span class="n">center</span><span class="p">))</span> <span class="o">||</span> <span class="s1">','</span><span class="p">;</span>
+
+    <span class="c1">-- increment counter</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+
+  <span class="k">END</span> <span class="n">LOOP</span><span class="p">;</span>
+
+  <span class="c1">-- add the first point again so the linestring is closed</span>
+  <span class="n">geometry_wkt</span> <span class="o">=</span> <span class="n">geometry_wkt</span> <span class="o">||</span>
+    <span class="p">(</span><span class="n">ST_X</span><span class="p">(</span><span class="n">ST_EndPoint</span><span class="p">(</span><span class="n">ref_line</span><span class="p">))</span> <span class="o">+</span> <span class="n">ST_X</span><span class="p">(</span><span class="n">center</span><span class="p">))</span>  <span class="o">||</span> <span class="s1">' '</span> <span class="o">||</span>
+    <span class="p">(</span><span class="n">ST_Y</span><span class="p">(</span><span class="n">ST_EndPoint</span><span class="p">(</span><span class="n">ref_line</span><span class="p">))</span> <span class="o">+</span> <span class="n">ST_Y</span><span class="p">(</span><span class="n">center</span><span class="p">));</span>
+
+  <span class="c1">-- Transform  pair of points into a polygon geometry</span>
+  <span class="n">geometry_wkt</span> <span class="o">=</span> <span class="s1">'POLYGON(('</span><span class="o">||</span> <span class="n">geometry_wkt</span> <span class="o">||</span><span class="s1">'))'</span><span class="p">;</span>
+
+  <span class="k">RETURN</span> <span class="n">geometry_wkt</span><span class="p">::</span><span class="n">geometry</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="err">$$</span> <span class="k">LANGUAGE</span> <span class="n">plpgsql</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">regularPolygons()</code> function takes three input arguments: the points that you want to use as a center of the output polygons, length of the radius and number of sides of the output polygon.</p>
+
+<p>Using this function like this</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">regularPolygons</span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="mi">100000</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="n">adm0_a3</span>
+  <span class="k">FROM</span> <span class="n">populated_places_spf</span>
+ <span class="k">WHERE</span> <span class="n">adm0_a3</span> <span class="o">=</span> <span class="s1">'PRT'</span> <span class="k">UNION</span> <span class="k">ALL</span>
+<span class="k">SELECT</span> <span class="n">regularPolygons</span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="mi">100000</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">adm0_a3</span>
+  <span class="k">FROM</span> <span class="n">populated_places_spf</span>
+ <span class="k">WHERE</span> <span class="n">adm0_a3</span> <span class="o">=</span> <span class="s1">'ESP'</span> <span class="k">UNION</span> <span class="k">ALL</span>
+<span class="k">SELECT</span> <span class="n">regularPolygons</span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span><span class="mi">100000</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">adm0_a2</span>
+  <span class="k">FROM</span> <span class="n">populated_places_spf</span>
+ <span class="k">WHERE</span> <span class="n">adm0_a3</span> <span class="o">=</span> <span class="s1">'FRA'</span>
+</code></pre></div></div>
+
+<p>We can create a different way to classify our point data like in <a href="https://team.cartodb.com/u/oboix/viz/63e74f10-27d7-11e6-bad6-0e3ff518bd15/public_map">this example</a>.</p>
+
+<h2 id="exercise">Exercise</h2>
+
+<h3 id="create-a-stored-procedure--trigger-workflow-to-store-changes-from-any-of-your-tables-to-a-log-table">Create a stored procedure + trigger workflow to store changes from any of your tables to a log table</h3>
+
+<p>First, we need to create the log table and cartodbfy it.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">version_control</span><span class="p">();</span>
+<span class="k">SELECT</span> <span class="n">CDB_CartodbfyTable</span><span class="p">(</span><span class="s1">'username'</span><span class="p">,</span><span class="s1">'version_control'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Cartodbfication will add <code class="highlighter-rouge">the_geom</code>, `the_geom_webmercator’ and ‘cartodb_id’ columns to the table, as well as some triggers to populate these columns automatically when a new row is added (we’ll see more about this at the end of the exercise).</p>
+
+<p>Next step would be adding some extra columns to the log table.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">version_control</span> <span class="k">ADD</span> <span class="k">COLUMN</span> <span class="k">data</span> <span class="n">json</span><span class="p">;</span> <span class="c1">-- to store the complete row in JSON format</span>
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">version_control</span> <span class="k">ADD</span> <span class="k">COLUMN</span> <span class="n">source_id</span> <span class="nb">integer</span><span class="p">;</span> <span class="c1">-- cartodb_id of the row</span>
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">version_control</span> <span class="k">ADD</span> <span class="k">COLUMN</span> <span class="k">table_name</span> <span class="nb">text</span><span class="p">;</span> <span class="c1">-- table name</span>
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">version_control</span> <span class="k">ADD</span> <span class="k">COLUMN</span> <span class="n">tg_op</span> <span class="nb">text</span><span class="p">;</span> <span class="c1">-- writing operation that was performed</span>
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">version_control</span> <span class="k">ADD</span> <span class="k">COLUMN</span> <span class="n">logged_at</span> <span class="nb">timestamp</span><span class="p">;</span> <span class="c1">-- timestamp for the operation</span>
+</code></pre></div></div>
+
+<p>And create the function itself:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">carto_version_control</span><span class="p">()</span> <span class="k">RETURNS</span> <span class="k">TRIGGER</span> <span class="k">AS</span> <span class="err">$$</span>
+    <span class="k">BEGIN</span>
+        <span class="n">IF</span> <span class="p">(</span><span class="n">TG_OP</span> <span class="o">=</span> <span class="s1">'DELETE'</span><span class="p">)</span> <span class="k">THEN</span>
+            <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">version_control</span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">tg_op</span><span class="p">,</span> <span class="k">data</span><span class="p">,</span> <span class="n">source_id</span><span class="p">,</span> <span class="k">table_name</span><span class="p">,</span> <span class="n">logged_at</span><span class="p">)</span>
+              <span class="k">SELECT</span> <span class="k">OLD</span><span class="p">.</span><span class="n">the_geom</span><span class="p">,</span> <span class="s1">'DELETE'</span><span class="p">,</span> <span class="n">row_to_json</span><span class="p">(</span><span class="k">OLD</span><span class="p">),</span> <span class="k">OLD</span><span class="p">.</span><span class="n">cartodb_id</span><span class="p">,</span> <span class="n">TG_TABLE_NAME</span><span class="p">::</span><span class="nb">text</span><span class="p">,</span> <span class="n">now</span><span class="p">();</span>
+            <span class="k">RETURN</span> <span class="k">OLD</span><span class="p">;</span>
+        <span class="n">ELSIF</span> <span class="p">(</span><span class="n">TG_OP</span> <span class="o">=</span> <span class="s1">'UPDATE'</span><span class="p">)</span> <span class="k">THEN</span>
+            <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">version_control</span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">tg_op</span><span class="p">,</span> <span class="k">data</span><span class="p">,</span> <span class="n">source_id</span><span class="p">,</span> <span class="k">table_name</span><span class="p">,</span> <span class="n">logged_at</span><span class="p">)</span>
+              <span class="k">SELECT</span> <span class="k">NEW</span><span class="p">.</span><span class="n">the_geom</span><span class="p">,</span> <span class="s1">'UPDATE'</span><span class="p">,</span> <span class="n">row_to_json</span><span class="p">(</span><span class="k">NEW</span><span class="p">),</span> <span class="k">NEW</span><span class="p">.</span><span class="n">cartodb_id</span><span class="p">,</span> <span class="n">TG_TABLE_NAME</span><span class="p">::</span><span class="nb">text</span><span class="p">,</span> <span class="n">now</span><span class="p">();</span>
+            <span class="k">RETURN</span> <span class="k">NEW</span><span class="p">;</span>
+        <span class="n">ELSIF</span> <span class="p">(</span><span class="n">TG_OP</span> <span class="o">=</span> <span class="s1">'INSERT'</span><span class="p">)</span> <span class="k">THEN</span>
+            <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">version_control</span><span class="p">(</span><span class="n">the_geom</span><span class="p">,</span> <span class="n">tg_op</span><span class="p">,</span> <span class="k">data</span><span class="p">,</span> <span class="n">source_id</span><span class="p">,</span> <span class="k">table_name</span><span class="p">,</span> <span class="n">logged_at</span><span class="p">)</span>
+              <span class="k">SELECT</span> <span class="k">NEW</span><span class="p">.</span><span class="n">the_geom</span><span class="p">,</span> <span class="s1">'INSERT'</span><span class="p">,</span> <span class="n">row_to_json</span><span class="p">(</span><span class="k">NEW</span><span class="p">),</span> <span class="k">NEW</span><span class="p">.</span><span class="n">cartodb_id</span><span class="p">,</span> <span class="n">TG_TABLE_NAME</span><span class="p">::</span><span class="nb">text</span><span class="p">,</span> <span class="n">now</span><span class="p">();</span>
+            <span class="k">RETURN</span> <span class="k">NEW</span><span class="p">;</span>
+        <span class="k">END</span> <span class="n">IF</span><span class="p">;</span>
+        <span class="k">RETURN</span> <span class="k">NULL</span><span class="p">;</span>
+    <span class="k">END</span><span class="p">;</span>
+<span class="err">$$</span> <span class="k">LANGUAGE</span> <span class="n">plpgsql</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Once we’ve created the function, we need to add a trigger to any table we want to audit:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TRIGGER</span> <span class="n">carto_version_trigger</span>
+<span class="k">AFTER</span> <span class="k">UPDATE</span> <span class="k">OR</span> <span class="k">DELETE</span> <span class="k">OR</span> <span class="k">INSERT</span> <span class="k">ON</span> <span class="n">dummy_dataset</span>
+    <span class="k">FOR</span> <span class="k">EACH</span> <span class="k">ROW</span> <span class="k">EXECUTE</span> <span class="k">PROCEDURE</span> <span class="n">version_control</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>The trigger will be fired after each <code class="highlighter-rouge">UPDATE</code>, <code class="highlighter-rouge">DELETE</code> or <code class="highlighter-rouge">INSERT</code> operation that is made to <code class="highlighter-rouge">dummy_dataset</code> <strong>(remember to update the trigger with the proper table name)</strong>. Then the <code class="highlighter-rouge">carto_version_control()</code> function will make an <code class="highlighter-rouge">INSERT</code> to <code class="highlighter-rouge">version_control</code> table, adding a row with data coming from the operation itself.</p>
+
+<p>Each <code class="highlighter-rouge">control_version</code> row will log:</p>
+
+<ul>
+  <li>The deleted/updated/inserted geometry</li>
+  <li>The name of the operation that was made</li>
+  <li>The whole modified row as a JSON object</li>
+  <li><code class="highlighter-rouge">cartodb_id</code> from the modified row</li>
+  <li>The name of the table that was affected by the operation (useful in case we add the trigger to several different tables)</li>
+  <li>Timestamp of when the trigger was fired</li>
+</ul>
+
+<p><strong>NOTE:</strong> After each <code class="highlighter-rouge">INSERT</code> that is made to a cartodbfied table, there is a subsequent <code class="highlighter-rouge">UPDATE</code> that is triggered to populate either <code class="highlighter-rouge">the_geom</code> or <code class="highlighter-rouge">the_geom_webmercator</code> as well as <code class="highlighter-rouge">cartodb_id</code>.</p>
+
+<p>This is due to the triggers that are added to every table as part of the <code class="highlighter-rouge">CDB_CartodbfyTable()</code> proccess, and will result in almost identical rows in our <code class="highlighter-rouge">version_control</code> table that could help us understand what does it means to ‘cartodbfy a table’.</p>
+
+<p>To retrieve information from <code class="highlighter-rouge">version_control</code> table, we could run a query like:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="p">(</span><span class="n">json_populate_record</span><span class="p">(</span><span class="k">null</span><span class="p">::</span><span class="n">dummy_dataset</span><span class="p">,</span> <span class="k">data</span><span class="p">)).</span><span class="o">*</span>
+<span class="k">FROM</span> <span class="n">version_control</span> <span class="k">LIMIT</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<p>Which will generate a row from the JSON <code class="highlighter-rouge">data</code> column in <code class="highlighter-rouge">dummy_dataset</code> table. We could also apply a filter to get more relevant information, for example:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span>
+  <span class="p">(</span><span class="n">json_populate_record</span><span class="p">(</span><span class="k">null</span><span class="p">::</span><span class="n">dummy_dataset</span><span class="p">,</span> <span class="k">data</span><span class="p">)).</span><span class="o">*</span>
+<span class="k">FROM</span>
+  <span class="n">version_control</span>
+<span class="k">WHERE</span>
+  <span class="k">table_name</span> <span class="k">LIKE</span> <span class="s1">'dummy_dataset'</span>
+</code></pre></div></div>
+
+<p>to get a row for each modified row in <code class="highlighter-rouge">dummy_dataset</code> table.</p>
+
+<h2 id="a-different-example">A different example</h2>
+
+<p>This is another example of stored procedure that will allow to insert a point with the <code class="highlighter-rouge">public</code> user role. This is most helpful in order to <a href="http://bl.ocks.org/ernesmb/beb25f539f8ff38bbd891e6d114ea7f4">setup a point collector app</a>.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">insertpoint</span><span class="p">(</span>
+        <span class="n">lon</span> <span class="nb">numeric</span><span class="p">,</span>
+        <span class="n">lat</span> <span class="nb">numeric</span><span class="p">,</span>
+        <span class="n">tablename</span> <span class="nb">text</span>
+  <span class="p">)</span>
+<span class="k">RETURNS</span> <span class="k">TABLE</span><span class="p">(</span><span class="n">cartodb_id</span> <span class="nb">INT</span><span class="p">)</span>
+<span class="k">LANGUAGE</span> <span class="s1">'plpgsql'</span> <span class="k">SECURITY</span> <span class="k">DEFINER</span>
+<span class="k">RETURNS</span> <span class="k">NULL</span> <span class="k">ON</span> <span class="k">NULL</span> <span class="k">INPUT</span> <span class="k">AS</span> <span class="err">$</span><span class="k">function</span><span class="err">$</span>
+<span class="k">DECLARE</span>
+  <span class="k">sql</span> <span class="nb">text</span><span class="p">;</span>
+<span class="k">BEGIN</span>
+<span class="k">sql</span> <span class="o">=</span> <span class="s1">'WITH do_insert AS (
+  INSERT INTO '</span> <span class="o">||</span><span class="n">quote_ident</span><span class="p">(</span><span class="n">tablename</span><span class="p">)</span><span class="o">||</span> <span class="s1">'(the_geom)
+  VALUES '</span><span class="o">||</span><span class="s1">'('</span><span class="o">||</span>
+    <span class="s1">'ST_SetSRID(ST_MakePoint('</span><span class="o">||</span><span class="n">lon</span><span class="o">||</span><span class="s1">','</span><span class="o">||</span><span class="n">lat</span><span class="o">||</span><span class="s1">'), 4326)'</span><span class="o">||</span><span class="s1">')'</span><span class="o">||</span>
+  <span class="s1">'RETURNING cartodb_id)'</span><span class="o">||</span>
+  <span class="s1">'SELECT cartodb_id FROM do_insert'</span><span class="p">;</span>
+<span class="k">RETURN</span> <span class="n">QUERY</span> <span class="k">EXECUTE</span> <span class="k">sql</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="err">$</span><span class="k">function</span><span class="err">$</span>
+</code></pre></div></div>
+
+<h2 id="further-reading">Further reading</h2>
+
+<ul>
+  <li>
+    <p>This <a href="http://www.postgresqltutorial.com/postgresql-stored-procedures/">tutorial</a> explains the basics of the PostgreSQL stored procedure language in a very friendly way. Many explanations from this document have been extracted from there.</p>
+  </li>
+  <li>
+    <p>The <a href="http://www.postgresql.org/docs/9.4/static/plpgsql.html">Pl/pgSQL section</a> on the PostgreSQL documentation is a complete and detailed resource by itself, read it to learn all about pl/pgSQL.</p>
+  </li>
+  <li>
+    <p>Look and understand the different PostgreSQL/PostGIS functions that we have in the <a href="https://github.com/CartoDB/cartodb-postgresql/tree/master/scripts-available">cartodb-postgresql</a> repo or other postgreSQL related repos (dataservices…).</p>
+  </li>
+  <li>
+    <p>PostgreSQL, PostGIS blogs, etc; to find different PostGIS functions that you can build with pl/pgSQL. I would recommend looking for <code class="highlighter-rouge">Fun with PostGIS</code> and have some fun looking at what people do :)</p>
+  </li>
+</ul>
+
+
+  <div id="related" class="u-tspace--64">
+    
+    
+  </div>
+</div>
+<div class="grid-cell--col1 grid-cell--col12--mobile"></div>
+<aside class="grid-cell--col3 Aside-inner grid-cell--col12--mobile">
+    <div class="Aside-module is-fixed" id="Index-aside" style="top: 66px; width: 240px;">
+      <ul class="Index-list">
+      <li class="Index-listItem"><a href="https://carto.com/help/working-with-data/sql-stored-procedures/#what-is-a-stored-procedure" class="is-txtBaseGrey">What is a stored procedure?</a></li><li class="Index-listItem"><a href="https://carto.com/help/working-with-data/sql-stored-procedures/#basic-structure-of-a-plpgsql-function" class="is-txtBaseGrey">Basic structure of a PL/pgSQL function</a></li><li class="Index-listItem"><a href="https://carto.com/help/working-with-data/sql-stored-procedures/#errors-and-messages" class="is-txtBaseGrey">Errors and messages</a></li><li class="Index-listItem"><a href="https://carto.com/help/working-with-data/sql-stored-procedures/#dynamic-plpgsql-functions" class="is-txtBaseGrey">Dynamic PL/pgSQL functions</a></li><li class="Index-listItem"><a href="https://carto.com/help/working-with-data/sql-stored-procedures/#functions-that-doesnt-return-any-row" class="is-txtBaseGrey">Functions that doesn’t return any row</a></li><li class="Index-listItem"><a href="https://carto.com/help/working-with-data/sql-stored-procedures/#function-that-returns-a-table" class="is-txtBaseGrey">Function that returns a table</a></li><li class="Index-listItem"><a href="https://carto.com/help/working-with-data/sql-stored-procedures/#functions-with-security-definer" class="is-txtBaseGrey">Functions with Security Definer</a></li><li class="Index-listItem"><a href="https://carto.com/help/working-with-data/sql-stored-procedures/#trigger-functions" class="is-txtBaseGrey">Trigger functions</a></li><li class="Index-listItem is-LinkDecorated"><a href="https://carto.com/help/working-with-data/sql-stored-procedures/#control-structures" class="is-txtBaseGrey">Control structures</a></li><li class="Index-listItem"><a href="https://carto.com/help/working-with-data/sql-stored-procedures/#plpgsql-and-postgis" class="is-txtBaseGrey">Pl/pgSQL and PostGIS</a></li><li class="Index-listItem"><a href="https://carto.com/help/working-with-data/sql-stored-procedures/#exercise" class="is-txtBaseGrey">Exercise</a></li><li class="Index-listItem"><a href="https://carto.com/help/working-with-data/sql-stored-procedures/#a-different-example" class="is-txtBaseGrey">A different example</a></li><li class="Index-listItem"><a href="https://carto.com/help/working-with-data/sql-stored-procedures/#further-reading" class="is-txtBaseGrey">Further reading</a></li></ul>
+      
+    </div>
+  </aside>
+
+    </div>
+        
+    </section>
+    <footer class="Footer-container">
+  <div class="grid Footer mobile--flex container">
+    <!-- <div class="grid-cell grid-cell--col12 u-vspace--8">
+      <p class="title is-small">Products</p>
+    </div>
+    <ul class="grid-cell grid-cell--col6">
+      
+    </ul>
+    <ul class="grid-cell grid-cell--col6">
+      
+    </ul> -->
+    <div class="grid-cell grid-cell--col12 u-vspace--8">
+      <p class="title is-small">Solutions</p>
+    </div>
+    <ul class="grid-cell grid-cell--col6">
+      
+        <li class="FooterElement"><a href="https://carto.com/solutions/site-planning/" class="FooterLink js-Action--Footerlinks text is-small">Site Planning</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/solutions/territory-management/" class="FooterLink js-Action--Footerlinks text is-small">Territory Management</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/solutions/logistics-optimization/" class="FooterLink js-Action--Footerlinks text is-small">Logistics Optimization</a></li>
+      
+    </ul>
+    <ul class="grid-cell grid-cell--col6">
+      
+        <li class="FooterElement"><a href="https://carto.com/solutions/geomarketing/" class="FooterLink js-Action--Footerlinks text is-small">Geomarketing</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/solutions/mobility-planning/" class="FooterLink js-Action--Footerlinks text is-small">Mobility Planning</a></li>
+      
+    </ul>
+
+    <div class="grid-cell grid-cell--col12 u-tspace--32 u-vspace--8">
+      <p class="title is-small">Platform</p>
+    </div>
+    <ul class="grid-cell grid-cell--col6">
+      
+        <li class="FooterElement"><a href="https://carto.com/platform/data-ingestion-management/" class="FooterLink js-Action--Footerlinks text is-small">Data Ingestion &amp; Management</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/platform/data-enrichment/" class="FooterLink js-Action--Footerlinks text is-small">Data Enrichment</a></li>
+      
+    </ul>
+    <ul class="grid-cell grid-cell--col6">
+      
+        <li class="FooterElement"><a href="https://carto.com/platform/analysis/" class="FooterLink js-Action--Footerlinks text is-small">Analysis</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/platform/solutions-visualization/" class="FooterLink js-Action--Footerlinks text is-small">Solutions &amp; Visualization</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/platform/integration/" class="FooterLink js-Action--Footerlinks text is-small">Integration</a></li>
+      
+    </ul>
+
+    <div class="grid-cell grid-cell--col12 u-tspace--32 u-vspace--8">
+      <p class="title is-small">Resources</p>
+    </div>
+    <ul class="grid-cell grid-cell--col6">
+      
+        <li class="FooterElement"><a href="https://carto.com/location-intelligence/" class="FooterLink js-Action--Footerlinks text is-small">Location Intelligence</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/webinars/" class="FooterLink js-Action--Footerlinks text is-small">Webinars</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/resources/#testimonials" class="FooterLink js-Action--Footerlinks text is-small">Testimonials</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/developers/" class="FooterLink js-Action--Footerlinks text is-small">Developers</a></li>
+      
+    </ul>
+    <ul class="grid-cell grid-cell--col6">
+      
+        <li class="FooterElement"><a href="https://carto.com/help/" class="FooterLink js-Action--Footerlinks text is-small">Help</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/community/" class="FooterLink js-Action--Footerlinks text is-small">Community</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/brand/" class="FooterLink js-Action--Footerlinks text is-small">Brand</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/blog/" class="FooterLink js-Action--Footerlinks text is-small">Blog</a></li>
+      
+    </ul>
+
+
+    <div class="grid-cell grid-cell--col12 u-tspace--32 u-vspace--8 ">
+      <p class="title is-small">About us</p>
+    </div>
+    <ul class="grid-cell grid-cell--col6">
+      
+        <li class="FooterElement"><a href="https://carto.com/team/" class="FooterLink js-Action--Footerlinks text is-small">Team</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/careers/" class="FooterLink js-Action--Footerlinks text is-small">Careers</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/press/" class="FooterLink js-Action--Footerlinks text is-small">Press</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/partners/" class="FooterLink js-Action--Footerlinks text is-small">Partners</a></li>
+      
+    </ul>
+    <ul class="grid-cell grid-cell--col6">
+      
+        <li class="FooterElement"><a href="https://carto.com/contributions/" class="FooterLink js-Action--Footerlinks text is-small">Contributions</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/legal/" class="FooterLink js-Action--Footerlinks text is-small">Terms of Service</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/privacy/" class="FooterLink js-Action--Footerlinks text is-small">Privacy Notice</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/request-live-demo/" class="FooterLink js-Action--Footerlinks text is-small">Request a Live Demo</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="grid Footer desktop--flex container">
+    <div class="Footer-logo grid-cell grid-cell--col4">
+      <svg width="82px" height="32px" viewBox="388 665 82 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g id="logo" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(388.000000, 665.000000)">
+    <path d="M66,32 C74.836556,32 82,24.836556 82,16 C82,7.163444 74.836556,0 66,0 C57.163444,0 50,7.163444 50,16 C50,24.836556 57.163444,32 66,32 Z" id="Symbol" fill-opacity="0.100000001" fill="#162945"></path>
+    <path d="M5.7551281,21.4831351 C7.99692789,21.4831351 9.29251349,20.4759018 10.2532848,19.1078685 L8.12794217,17.5444018 C7.51654222,18.3111018 6.89058514,18.8222351 5.8279138,18.8222351 C4.40131393,18.8222351 3.39687117,17.5895018 3.39687117,16.0110018 L3.39687117,15.9809351 C3.39687117,14.4475351 4.40131393,13.1847351 5.8279138,13.1847351 C6.80324229,13.1847351 7.4728708,13.6808351 8.05515646,14.4174685 L10.1804991,12.7187018 C9.27795635,11.4408685 7.93869933,10.5388685 5.85702809,10.5388685 C2.77091408,10.5388685 0.5,12.9442018 0.5,16.0110018 L0.5,16.0410685 C0.5,19.1830351 2.84369979,21.4831351 5.7551281,21.4831351 L5.7551281,21.4831351 Z M15.0972624,21.2726685 L18.0523621,21.2726685 L18.7802192,19.3784685 L22.7252045,19.3784685 L23.4530616,21.2726685 L26.4809471,21.2726685 L22.1429189,10.6741685 L19.4207334,10.6741685 L15.0972624,21.2726685 Z M19.6099763,17.1084351 L20.7599904,14.1318351 L21.8954475,17.1084351 L19.6099763,17.1084351 Z M31.979996,21.2726685 L34.8040814,21.2726685 L34.8040814,18.0856018 L36.0559956,18.0856018 L38.1085526,21.2726685 L41.3547951,21.2726685 L38.9237525,17.6045351 C40.1902238,17.0483018 41.0199809,15.9809351 41.0199809,14.3573351 L41.0199809,14.3272685 C41.0199809,13.2899685 40.7142809,12.4932018 40.1174381,11.8768351 C39.4332524,11.1702685 38.356024,10.7493351 36.7984098,10.7493351 L31.979996,10.7493351 L31.979996,21.2726685 Z M34.8040814,15.8005351 L34.8040814,13.2599018 L36.6673956,13.2599018 C37.5990526,13.2599018 38.1958954,13.6808351 38.1958954,14.5227018 L38.1958954,14.5527685 C38.1958954,15.3194685 37.6281669,15.8005351 36.6819527,15.8005351 L34.8040814,15.8005351 Z M49.4450152,21.2726685 L52.2691007,21.2726685 L52.2691007,13.3050018 L55.3261004,13.3050018 L55.3261004,10.7493351 L46.4025727,10.7493351 L46.4025727,13.3050018 L49.4450152,13.3050018 L49.4450152,21.2726685 Z M66,21.5 C69.0375661,21.5 71.5,19.0375661 71.5,16 C71.5,12.9624339 69.0375661,10.5 66,10.5 C62.9624339,10.5 60.5,12.9624339 60.5,16 C60.5,19.0375661 62.9624339,21.5 66,21.5 Z" id="Logotype" fill="#162945"></path>
+  </g>
+</svg>
+    </div>
+
+    <ul class="grid-cell grid-cell--col2">
+      <li class="FooterElement title is-small">Solutions</li>
+      
+      <li class="FooterElement"><a href="https://carto.com/solutions/site-planning/" class="FooterLink js-Action--Footerlinks text is-small">Site Planning</a></li>
+      
+      <li class="FooterElement"><a href="https://carto.com/solutions/territory-management/" class="FooterLink js-Action--Footerlinks text is-small">Territory Management</a></li>
+      
+      <li class="FooterElement"><a href="https://carto.com/solutions/logistics-optimization/" class="FooterLink js-Action--Footerlinks text is-small">Logistics Optimization</a></li>
+      
+      <li class="FooterElement"><a href="https://carto.com/solutions/geomarketing/" class="FooterLink js-Action--Footerlinks text is-small">Geomarketing</a></li>
+      
+      <li class="FooterElement"><a href="https://carto.com/solutions/mobility-planning/" class="FooterLink js-Action--Footerlinks text is-small">Mobility Planning</a></li>
+      
+    </ul>
+
+    <ul class="grid-cell grid-cell--col2">
+      <li class="FooterElement title is-small">Platform</li>
+      
+      <li class="FooterElement"><a href="https://carto.com/platform/data-ingestion-management/" class="FooterLink js-Action--Footerlinks text is-small">Data Ingestion &amp; Management</a></li>
+      
+      <li class="FooterElement"><a href="https://carto.com/platform/data-enrichment/" class="FooterLink js-Action--Footerlinks text is-small">Data Enrichment</a></li>
+      
+      <li class="FooterElement"><a href="https://carto.com/platform/analysis/" class="FooterLink js-Action--Footerlinks text is-small">Analysis</a></li>
+      
+      <li class="FooterElement"><a href="https://carto.com/platform/solutions-visualization/" class="FooterLink js-Action--Footerlinks text is-small">Solutions &amp; Visualization</a></li>
+      
+      <li class="FooterElement"><a href="https://carto.com/platform/integration/" class="FooterLink js-Action--Footerlinks text is-small">Integration</a></li>
+      
+    </ul>
+
+    <ul class="grid-cell grid-cell--col2">
+      <li class="FooterElement title is-small">Resources</li>
+      
+      <li class="FooterElement"><a href="https://carto.com/location-intelligence/" class="FooterLink js-Action--Footerlinks text is-small">Location Intelligence</a></li>
+      
+      <li class="FooterElement"><a href="https://carto.com/webinars/" class="FooterLink js-Action--Footerlinks text is-small">Webinars</a></li>
+      
+      <li class="FooterElement"><a href="https://carto.com/resources/#testimonials" class="FooterLink js-Action--Footerlinks text is-small">Testimonials</a></li>
+      
+      <li class="FooterElement"><a href="https://carto.com/developers/" class="FooterLink js-Action--Footerlinks text is-small">Developers</a></li>
+      
+      <li class="FooterElement"><a href="https://carto.com/help/" class="FooterLink js-Action--Footerlinks text is-small">Help</a></li>
+      
+      <li class="FooterElement"><a href="https://carto.com/community/" class="FooterLink js-Action--Footerlinks text is-small">Community</a></li>
+      
+      <li class="FooterElement"><a href="https://carto.com/brand/" class="FooterLink js-Action--Footerlinks text is-small">Brand</a></li>
+      
+      <li class="FooterElement"><a href="https://carto.com/blog/" class="FooterLink js-Action--Footerlinks text is-small">Blog</a></li>
+      
+    </ul>
+
+    <ul class="grid-cell grid-cell--col2">
+      <li class="FooterElement title is-small">About us</li>
+      
+        <li class="FooterElement"><a href="https://carto.com/team/" class="FooterLink js-Action--Footerlinks text is-small ">Team</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/careers/" class="FooterLink js-Action--Footerlinks text is-small ">Careers</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/press/" class="FooterLink js-Action--Footerlinks text is-small ">Press</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/partners/" class="FooterLink js-Action--Footerlinks text is-small ">Partners</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/contributions/" class="FooterLink js-Action--Footerlinks text is-small ">Contributions</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/legal/" class="FooterLink js-Action--Footerlinks text is-small ">Terms of Service</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/privacy/" class="FooterLink js-Action--Footerlinks text is-small ">Privacy Notice</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/request-live-demo/" class="FooterLink js-Action--Footerlinks text is-small ">Request a Live Demo</a></li>
+      
+        <li class="FooterElement"><a href="https://carto.com/contact/" class="FooterLink text is-small js-ContactLink">Contact</a></li>
+    </ul>
+  </div>
+
+  <div class="Footer-social grid container u-tspace--64 u-vspace--64 u-vspace--16--mobile">
+    <div class="grid-cell grid-cell--col6 grid-cell--col3--tablet grid-cell--col6--mobile">
+      <p class="text is-small desktop">© CARTO 2019</p>
+
+      <a href="https://carto.com/" class="mobile">
+        <svg width="64px" height="26px" viewBox="0 0 64 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Logo" fill="#2E3C43">
+      <path d="M51.4782609,25.0434783 C58.3938264,25.0434783 64,19.4373047 64,12.5217391 C64,5.60617357 58.3938264,0 51.4782609,0 C44.5626953,0 38.9565217,5.60617357 38.9565217,12.5217391 C38.9565217,19.4373047 44.5626953,25.0434783 51.4782609,25.0434783 Z" id="Halo" opacity="0.1"></path>
+      <path d="M4.10070996,16.6828535 C5.85004329,16.6828535 6.86102165,15.9184709 7.61073593,14.8802796 L5.95227706,13.6937753 C5.47518615,14.2756187 4.98673593,14.6635144 4.15750649,14.6635144 C3.04429437,14.6635144 2.26050216,13.7280014 2.26050216,12.5300883 L2.26050216,12.5072709 C2.26050216,11.343584 3.04429437,10.3852535 4.15750649,10.3852535 C4.91858009,10.3852535 5.44110823,10.7617405 5.89548052,11.3207666 L7.55393939,10.031584 C6.84966234,9.06184484 5.80460606,8.3773231 4.18022511,8.3773231 C1.77205195,8.3773231 0,10.2027144 0,12.5300883 L0,12.5529057 C0,14.9373231 1.82884848,16.6828535 4.10070996,16.6828535 L4.10070996,16.6828535 Z M11.3906147,16.5231318 L13.6965541,16.5231318 L14.2645194,15.0856361 L17.3428917,15.0856361 L17.9108571,16.5231318 L20.273593,16.5231318 L16.8885194,8.48000136 L14.764329,8.48000136 L11.3906147,16.5231318 Z M14.9119999,13.3629231 L15.8093852,11.1040014 L16.6954112,13.3629231 L14.9119999,13.3629231 Z M24.5646406,16.5231318 L26.7683462,16.5231318 L26.7683462,14.1044883 L27.7452466,14.1044883 L29.346909,16.5231318 L31.8800345,16.5231318 L29.9830302,13.7394101 C30.9712899,13.3172883 31.6187705,12.5072709 31.6187705,11.2751318 L31.6187705,11.2523144 C31.6187705,10.4651144 31.380225,9.86045353 30.9144934,9.39269701 C30.380606,8.85648832 29.5400172,8.53704484 28.3245713,8.53704484 L24.5646406,8.53704484 L24.5646406,16.5231318 Z M26.7683462,12.3703666 L26.7683462,10.442297 L28.2223376,10.442297 C28.9493332,10.442297 29.4150648,10.7617405 29.4150648,11.4006274 L29.4150648,11.4234448 C29.4150648,12.0052883 28.9720518,12.3703666 28.2336969,12.3703666 L26.7683462,12.3703666 Z M38.1930388,16.5231318 L38.1930388,10.4765231 L35.8189436,10.4765231 L35.8189436,8.53704484 L42.782199,8.53704484 L42.782199,10.4765231 L40.3967444,10.4765231 L40.3967444,16.5231318 L38.1930388,16.5231318 Z M51.2291907,16.6956522 C48.9240021,16.6956522 47.0552776,14.8269277 47.0552776,12.5217391 C47.0552776,10.2165506 48.9240021,8.34782609 51.2291907,8.34782609 C53.5343792,8.34782609 55.4031037,10.2165506 55.4031037,12.5217391 C55.4031037,14.8269277 53.5343792,16.6956522 51.2291907,16.6956522 Z"></path>
+    </g>
+  </g>
+</svg>
+      </a>
+
+    </div>
+    <div class="grid-cell grid-cell--col6 grid-cell--col9--tablet grid-cell--col6--mobile u-flex">
+
+      <!-- Youtube -->
+      <a href="https://www.youtube.com/user/CartoDB/" target="_blank" rel="nofollow" class="Footer-icon u-rspace--16">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="20px" height="18px">
+  <path fill="#2E3C43" d="M550 124c-7-24-25-42-49-49-42-11-213-11-213-11S117 64 75 75c-24 7-42 25-49 49-11 43-11 132-11 132s0 90 11 133c7 23 25 41 49 48 42 11 213 11 213 11s171 0 213-11c24-7 42-25 49-48 11-43 11-133 11-133s0-89-11-132zM232 338V175l143 81-143 82z"></path>
+</svg>
+      </a>
+
+      <!-- Facebook -->
+      <a href="https://www.facebook.com/CartoDB" target="_blank" rel="nofollow" class="Footer-icon u-rspace--16">
+        <svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <path d="M15.1169495,0 L0.88311046,0 C0.395244536,0 0,0.395243055 0,0.883047202 L0,15.1169528 C0,15.604637 0.395244536,16 0.88311046,16 L8.54610649,16 L8.54610649,9.80398211 L6.46101621,9.80398211 L6.46101621,7.38924067 L8.54610649,7.38924067 L8.54610649,5.60845879 C8.54610649,3.54184058 9.80827523,2.4165399 11.6518905,2.4165399 C12.534941,2.4165399 13.2938968,2.48230384 13.515169,2.51167879 L13.515169,4.67139763 L12.2364543,4.67199712 C11.2338653,4.67199712 11.03975,5.14841098 11.03975,5.84753498 L11.03975,7.38924067 L13.4308805,7.38924067 L13.1195048,9.80398211 L11.03975,9.80398211 L11.03975,16 L15.1169495,16 C15.6046356,16 16,15.604637 16,15.1169528 L16,0.883047202 C16,0.395243055 15.6046356,0 15.1169495,0" id="Facebook" fill="#2E3C43"></path>
+  </g>
+</svg>
+      </a>
+
+
+      <!-- Twitter -->
+      <a href="https://twitter.com/CARTO" target="_blank" rel="nofollow" class="Footer-icon u-rspace--16">
+        <svg width="16px" height="13px" viewBox="0 0 16 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <path d="M0,11.3482487 C0.256805296,11.3780914 0.518116976,11.3933585 0.783057171,11.3933585 C2.32096273,11.3933585 3.7363766,10.8767565 4.85981199,10.0101072 C3.42338783,9.98400922 2.21111233,9.04978171 1.79342331,7.76596783 C1.99381104,7.80370334 2.19946596,7.82392496 2.41097333,7.82392496 C2.71038443,7.82392496 3.00037309,7.78446111 3.27584769,7.71060321 C1.77411025,7.41378894 0.64265701,6.10773704 0.64265701,4.54208788 C0.64265701,4.52849157 0.64265701,4.51495288 0.642891108,4.50147179 C1.08551154,4.74349756 1.591631,4.88885128 2.12976334,4.90561622 C1.24897034,4.32616011 0.669402685,3.33708648 0.669402685,2.21602499 C0.669402685,1.62383674 0.83128132,1.06875028 1.11383738,0.591496908 C2.73285782,2.54648435 5.15161491,3.83294836 7.87979078,3.96770157 C7.8238414,3.73120651 7.79475475,3.48457183 7.79475475,3.23131183 C7.79475475,1.44679671 9.26453784,0 11.0774498,0 C12.0215663,0 12.8746772,0.392449297 13.4734994,1.02047187 C14.2212078,0.875521429 14.9237353,0.606591112 15.5579648,0.236322228 C15.3128644,0.990859581 14.7924065,1.6241248 14.1146348,2.02406359 C14.7786532,1.94594244 15.4113025,1.77224388 16,1.51523913 C15.5598961,2.16325289 15.0033286,2.73239655 14.3620176,3.18798801 C14.3683383,3.32654358 14.3714986,3.46590572 14.3714986,3.6060168 C14.3714986,7.87612095 11.0697831,12.8 5.0319324,12.8 C3.17817038,12.8 1.45269395,12.2650776 0,11.3482487 Z" id="Twitter" fill="#2E3C43"></path>
+  </g>
+</svg>
+      </a>
+
+      <!-- Linkedin -->
+      <a href="https://www.linkedin.com/company/carto" target="_blank" rel="nofollow" class="Footer-icon u-rspace--16">
+        <svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <path d="M6.11489139e-15,14.8538596 L0,14.8538596 L0,1.14614038 C0,0.513101458 0.52935165,0 1.18237072,0 L14.8176293,0 C15.4706268,0 16,0.513101458 16,1.14614038 L16,14.8538596 C16,15.4866847 15.4706268,16 14.8176293,16 L1.18237072,16 C0.52935165,16 6.11489139e-15,15.4866847 6.11489139e-15,14.8538596 Z M4.8500952,2.60634161 L4.8500952,2.60634161 L2.4334384,2.60634161 L2.4334384,9.83123772 L4.8500952,9.83123772 L4.8500952,2.60634161 Z M3.64175604,10.8176753 L3.64171301,10.8176753 L3.62600716,10.8176753 C2.81500446,10.8176753 2.29057972,11.3724662 2.29057972,12.0657946 C2.29057972,12.7747298 2.83107607,13.3141277 3.65774158,13.3141277 C4.48449316,13.3141277 4.99331964,12.7747298 5.00902548,12.0657946 C5.00902548,11.3724662 4.48449316,10.8176753 3.64175604,10.8176753 Z M6.18730838,2.60634161 L6.18737293,2.60634161 C6.18737293,2.60634161 6.21908583,9.15330242 6.18737293,9.83123772 L8.60400822,9.83123772 L8.60400822,8.78344179 L8.58787207,8.78344179 C8.90586172,9.27666056 9.47820007,10.000775 10.7819146,10.000775 C12.3718844,10.000775 13.5641304,8.96815831 13.5641304,6.74899451 L13.5641304,2.60634161 L11.1476888,2.60634161 L11.1476888,6.47149214 C11.1476888,7.44275044 10.7978786,8.10529269 9.92340709,8.10529269 C9.25580094,8.10529269 8.85816328,7.65846684 8.6834626,7.22703403 C8.61964952,7.07267601 8.60394367,6.85695961 8.60394367,6.64102941 L8.60394367,2.60634161 L6.18730838,2.60634161 Z" id="Linkedin" fill="#2E3C43" transform="translate(8.000000, 8.000000) scale(1, -1) translate(-8.000000, -8.000000) "></path>
+  </g>
+</svg>
+      </a>
+
+    </div>
+  </div>
+</footer>
+
+    <!-- HangarAlpha -->
+    <script src="./PostgreSQL Stored Procedures _ CARTO_files/jquery.min.js"></script>
+    <script src="./PostgreSQL Stored Procedures _ CARTO_files/underscore-min.js"></script>
+    <script src="./PostgreSQL Stored Procedures _ CARTO_files/backbone-min.js"></script>
+    <script src="./PostgreSQL Stored Procedures _ CARTO_files/hangaralpha.min.js"></script>
+    <!-- END HangarAlpha-->
+    <script src="./PostgreSQL Stored Procedures _ CARTO_files/main.js"></script>
+    <script src="./PostgreSQL Stored Procedures _ CARTO_files/aside.js"></script>
+    <script src="./PostgreSQL Stored Procedures _ CARTO_files/sidebar.js"></script>
+
+  
+<script type="text/javascript" id="">console.log("Activated");window["ga-disable-UA-20934186-31"]=!0;window["ga-disable-UA-20934186-25"]=!0;</script><script type="text/javascript" id="">var htmlString='\x3cdiv class\x3d"hangar2"\x3e\x3cdiv class\x3d"user-consent is-bgNavyBlue is-txtWhite js-gtm-consent" style\x3d"position: fixed;justify-content: center;align-items: center;bottom: 0;width: 100%;display: flex;padding: 40px 10px;z-index: 1000;background-color: #f2f6f9;color: #162945;box-shadow: 0px -3px 10px 0px rgba(22, 41, 69, 0.24);"\x3e\x3cdiv class\x3d"container grid" style\x3d"justify-content: center"\x3e\x3cdiv style\x3d"display: flex; align-items: center;" class\x3d"grid-cell grid-cell--col10 grid-cell--col12--tablet"\x3e\x3cp class\x3d"f12 is-small text" style\x3d"padding-right: 20px;/* max-width: 920px; */"\x3eWe\u2019d like to set analytics cookies to help us to improve our website by collecting and reporting information on how you use it. The cookies collect information in an anonymous form. By clicking \u201cAccept\u201d you allow these cookies to be placed.\x3c/p\x3e\x3ca class\x3d"js-consent" style\x3d" flex-shrink: 0;font: 600 12px/16px Montserrat,\x26quot;Helvetica Neue\x26quot;,Helvetica,Arial,sans-serif; padding: 8px 16px;border-radius: 4px;background-color: #eb1510;color: #fff;cursor: pointer;display: inline-block; text-align: center;white-space: nowrap; position: relative; overflow: hidden;"\x3eAccept\x3c/a\x3e\x3c/div\x3e\x3c/div\x3e\x3c/div\x3e\x3c/div\x3e',
+div=document.createElement("div");div.innerHTML=htmlString.trim();console.log(div.firstChild);document.querySelector("body").insertBefore(div,null);</script><div><div class="hangar2"><div class="user-consent is-bgNavyBlue is-txtWhite js-gtm-consent" style="position: fixed;justify-content: center;align-items: center;bottom: 0;width: 100%;display: flex;padding: 40px 10px;z-index: 1000;background-color: #f2f6f9;color: #162945;box-shadow: 0px -3px 10px 0px rgba(22, 41, 69, 0.24);"><div class="container grid" style="justify-content: center"><div style="display: flex; align-items: center;" class="grid-cell grid-cell--col10 grid-cell--col12--tablet"><p class="f12 is-small text" style="padding-right: 20px;/* max-width: 920px; */">We’d like to set analytics cookies to help us to improve our website by collecting and reporting information on how you use it. The cookies collect information in an anonymous form. By clicking “Accept” you allow these cookies to be placed.</p><a class="js-consent" style=" flex-shrink: 0;font: 600 12px/16px Montserrat,&quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif; padding: 8px 16px;border-radius: 4px;background-color: #eb1510;color: #fff;cursor: pointer;display: inline-block; text-align: center;white-space: nowrap; position: relative; overflow: hidden;">Accept</a></div></div></div></div></div></body></html>

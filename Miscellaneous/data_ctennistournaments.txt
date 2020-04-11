@@ -1,0 +1,73 @@
+{'tournament_category': 'atpcup', 'tournament_name': 'ATP Cup', 'tournament_country': 'Australia', 'tournament_label': 'Brisbane/Perth/Sydney', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'Qatar ExxonMobil Open', 'tournament_country': 'Qatar', 'tournament_label': 'Doha', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'Adelaide International', 'tournament_country': 'Australia', 'tournament_label': 'Adelaide', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'ASB Classic', 'tournament_country': 'New Zealand', 'tournament_label': 'Auckland', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'grandslam', 'tournament_name': 'Australian Open', 'tournament_country': 'Australia', 'tournament_label': 'Melbourne', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'Cordoba Open', 'tournament_country': 'Argentina', 'tournament_label': 'Cordoba', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'atp250', 'tournament_name': 'Tata Open Maharashtra', 'tournament_country': 'India', 'tournament_label': 'Pune', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'Open Sud de France', 'tournament_country': 'France', 'tournament_label': 'Montpellier', 'tournament_surface': 'Indoor Hard'}
+{'tournament_category': 'atp500', 'tournament_name': 'ABN AMRO World Tennis Tournament', 'tournament_country': 'Netherlands', 'tournament_label': 'Rotterdam', 'tournament_surface': 'Indoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'New York Open', 'tournament_country': 'U.S.A', 'tournament_label': 'New York', 'tournament_surface': 'Indoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'Argentina Open', 'tournament_country': 'Argentina', 'tournament_label': 'Buenos Aires', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'atp500', 'tournament_name': 'Rio Open presented by Claro', 'tournament_country': 'Brazil', 'tournament_label': 'Rio de Janeiro', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'atp250', 'tournament_name': 'Open 13 Provence', 'tournament_country': 'France', 'tournament_label': 'Marseille', 'tournament_surface': 'Indoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'Delray Beach Open by VITACOST.com', 'tournament_country': 'U.S.A.', 'tournament_label': 'Delray Beach', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atp500', 'tournament_name': 'Dubai Duty Free Tennis Championships', 'tournament_country': 'U.A.E.', 'tournament_label': 'Dubai', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atp500', 'tournament_name': 'Abierto Mexicano Telcel presentado por HSBC', 'tournament_country': 'Mexico', 'tournament_label': 'Acapulco', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'Chile Dove Men+Care Open', 'tournament_country': 'Chile', 'tournament_label': 'Santiago', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'itf', 'tournament_name': 'Davis Cup Qualifiers', 'tournament_country': 'Multiple Locations', 'tournament_label': 'Multiple Locations', 'tournament_surface': ''}
+{'tournament_category': 'atpmasters1000', 'tournament_name': 'BNP Paribas Open', 'tournament_country': 'U.S.A.', 'tournament_label': 'Indian Wells', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atpmasters1000', 'tournament_name': 'Miami Open presented by Itau', 'tournament_country': 'U.S.A.', 'tournament_label': 'Miami', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': "Fayez Sarofim & Co. U.S. Men's Clay Court Championship", 'tournament_country': 'U.S.A.', 'tournament_label': 'Houston', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'atp250', 'tournament_name': 'Grand Prix Hassan II', 'tournament_country': 'Morocco', 'tournament_label': 'Marrakech', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'atpmasters1000', 'tournament_name': 'Rolex Monte-Carlo Masters', 'tournament_country': 'Monaco', 'tournament_label': 'Monte Carlo', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'atp500', 'tournament_name': 'Barcelona Open Banc Sabadell', 'tournament_country': 'Spain', 'tournament_label': 'Barcelona', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'atp250', 'tournament_name': 'Hungarian Open', 'tournament_country': 'Hungary', 'tournament_label': 'Budapest', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'atp250', 'tournament_name': 'BMW Open by FWU', 'tournament_country': 'Germany', 'tournament_label': 'Munich', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'atp250', 'tournament_name': 'Millennium Estoril Open', 'tournament_country': 'Portugal', 'tournament_label': 'Estoril', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'atpmasters1000', 'tournament_name': 'Mutua Madrid Open', 'tournament_country': 'Spain', 'tournament_label': 'Madrid', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'atpmasters1000', 'tournament_name': "Internazionali BNL d'Italia", 'tournament_country': 'Italy', 'tournament_label': 'Rome', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'atp250', 'tournament_name': 'Banque Eric Sturdza Geneva Open', 'tournament_country': 'Switzerland', 'tournament_label': 'Geneva', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'atp250', 'tournament_name': 'Open Parc Auvergne-Rhone-Alpes Lyon', 'tournament_country': 'France', 'tournament_label': 'Lyon', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'grandslam', 'tournament_name': 'Roland Garros', 'tournament_country': 'France', 'tournament_label': 'Paris', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'atp250', 'tournament_name': 'MercedesCup', 'tournament_country': 'Germany', 'tournament_label': 'Stuttgart', 'tournament_surface': 'Outdoor Grass'}
+{'tournament_category': 'atp250', 'tournament_name': 'Libema Open', 'tournament_country': 'Netherlands', 'tournament_label': 's-Hertogenbosch', 'tournament_surface': 'Outdoor Grass'}
+{'tournament_category': 'atp500', 'tournament_name': 'Fever-Tree Championships', 'tournament_country': 'Great Britain', 'tournament_label': 'London', 'tournament_surface': 'Outdoor Grass'}
+{'tournament_category': 'atp500', 'tournament_name': 'NOVENTI OPEN', 'tournament_country': 'Germany', 'tournament_label': 'Halle', 'tournament_surface': 'Outdoor Grass'}
+{'tournament_category': 'atp250', 'tournament_name': 'Mallorca Championships', 'tournament_country': 'Spain', 'tournament_label': 'Mallorca', 'tournament_surface': 'Outdoor Grass'}
+{'tournament_category': 'atp250', 'tournament_name': 'Nature Valley International', 'tournament_country': 'Great Britain', 'tournament_label': 'Eastbourne', 'tournament_surface': 'Outdoor Grass'}
+{'tournament_category': 'grandslam', 'tournament_name': 'Wimbledon', 'tournament_country': 'Great Britain', 'tournament_label': 'London', 'tournament_surface': 'Outdoor Grass'}
+{'tournament_category': 'atp500', 'tournament_name': 'Hamburg European Open', 'tournament_country': 'Germany', 'tournament_label': 'Hamburg', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'atp250', 'tournament_name': 'Hall of Fame Open', 'tournament_country': 'U.S.A.', 'tournament_label': 'Newport', 'tournament_surface': 'Outdoor Grass'}
+{'tournament_category': 'atp250', 'tournament_name': 'Nordea Open', 'tournament_country': 'Sweden', 'tournament_label': 'Bastad', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'itf', 'tournament_name': 'Davis Cup Group II', 'tournament_country': 'Multiple Locations', 'tournament_label': 'Multiple Locations', 'tournament_surface': ''}
+{'tournament_category': 'atp250', 'tournament_name': 'Abierto de Tenis Mifel presentado por Cinemex', 'tournament_country': 'Mexico', 'tournament_label': 'Los Cabos', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'J. Safra Sarasin Swiss Open Gstaad', 'tournament_country': 'Switzerland', 'tournament_label': 'Gstaad', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'atp250', 'tournament_name': 'Plava Laguna Croatia Open Umag', 'tournament_country': 'Croatia', 'tournament_label': 'Umag', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'olympicgames', 'tournament_name': 'Tokyo Olympic Games', 'tournament_country': 'Japan', 'tournament_label': 'Tokyo', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'BB&T Atlanta Open presented by First Data', 'tournament_country': 'U.S.A.', 'tournament_label': 'Atlanta', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'Generali Open', 'tournament_country': 'Austria', 'tournament_label': 'Kitzbuhel', 'tournament_surface': 'Outdoor Clay'}
+{'tournament_category': 'atp500', 'tournament_name': 'Citi Open', 'tournament_country': 'U.S.A.', 'tournament_label': 'Washington', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atpmasters1000', 'tournament_name': 'Rogers Cup', 'tournament_country': 'Canada', 'tournament_label': 'Toronto', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atpmasters1000', 'tournament_name': 'Western & Southern Open', 'tournament_country': 'U.S.A.', 'tournament_label': 'Cincinnati', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'Winston-Salem Open', 'tournament_country': 'U.S.A.', 'tournament_label': 'Winston-Salem', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'grandslam', 'tournament_name': 'US Open', 'tournament_country': 'U.S.A.', 'tournament_label': 'New York', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'itf', 'tournament_name': 'Davis Cup Groups I and II', 'tournament_country': 'Multiple Locations', 'tournament_label': 'Multiple Locations', 'tournament_surface': ''}
+{'tournament_category': 'atp250', 'tournament_name': 'St. Petersburg Open', 'tournament_country': 'Russia', 'tournament_label': 'St. Petersburg', 'tournament_surface': 'Indoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'Moselle Open', 'tournament_country': 'France', 'tournament_label': 'Metz', 'tournament_surface': 'Indoor Hard'}
+{'tournament_category': 'lvr', 'tournament_name': 'Laver Cup', 'tournament_country': 'U.S.A.', 'tournament_label': 'Boston', 'tournament_surface': 'Indoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'Chengdu Open', 'tournament_country': 'China', 'tournament_label': 'Chengdu', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'Huajin Securities Zhuhai Championships', 'tournament_country': 'China', 'tournament_label': 'Zhuhai', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'Sofia Open', 'tournament_country': 'Bulgaria', 'tournament_label': 'Sofia', 'tournament_surface': 'Indoor Hard'}
+{'tournament_category': 'atp500', 'tournament_name': 'China Open', 'tournament_country': 'China', 'tournament_label': 'Beijing', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atp500', 'tournament_name': 'Rakuten Japan Open Tennis Championships', 'tournament_country': 'Japan', 'tournament_label': 'Tokyo', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atpmasters1000', 'tournament_name': 'Rolex Shanghai Masters', 'tournament_country': 'China', 'tournament_label': 'Shanghai', 'tournament_surface': 'Outdoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'VTB Kremlin Cup', 'tournament_country': 'Russia', 'tournament_label': 'Moscow', 'tournament_surface': 'Indoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'European Open', 'tournament_country': 'Belgium', 'tournament_label': 'Antwerp', 'tournament_surface': 'Indoor Hard'}
+{'tournament_category': 'atp250', 'tournament_name': 'Stockholm Open', 'tournament_country': 'Sweden', 'tournament_label': 'Stockholm', 'tournament_surface': 'Indoor Hard'}
+{'tournament_category': 'atp500', 'tournament_name': 'Erste Bank Open', 'tournament_country': 'Austria', 'tournament_label': 'Vienna', 'tournament_surface': 'Indoor Hard'}
+{'tournament_category': 'atp500', 'tournament_name': 'Swiss Indoors Basel', 'tournament_country': 'Switzerland', 'tournament_label': 'Basel', 'tournament_surface': 'Indoor Hard'}
+{'tournament_category': 'atpmasters1000', 'tournament_name': 'Rolex Paris Masters', 'tournament_country': 'France', 'tournament_label': 'Paris', 'tournament_surface': 'Indoor Hard'}
+{'tournament_category': 'notdefined', 'tournament_name': 'Next Gen ATP Finals', 'tournament_country': 'Italy', 'tournament_label': 'Milan', 'tournament_surface': 'Indoor Hard'}
+{'tournament_category': 'finals', 'tournament_name': 'Nitto ATP Finals', 'tournament_country': 'Great Britain', 'tournament_label': 'London', 'tournament_surface': 'Indoor Hard'}
+{'tournament_category': 'itf', 'tournament_name': 'Davis Cup Finals', 'tournament_country': 'Spain', 'tournament_label': 'Madrid', 'tournament_surface': ''}

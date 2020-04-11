@@ -1,0 +1,2348 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0014)about:internet -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    
+    <title>
+      Guide avancé d'écriture des scripts Bash
+    </title>
+    <link rel="stylesheet" type="text/css" href="./Guide avancé d&#39;écriture des scripts Bash_files/abs.css">
+    <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+    <meta name="description" content="Ce tutoriel ne suppose aucune connaissance de la programmation de scripts, mais permet une progression rapide vers un niveau intermédiaire/avancé d&#39;instruction tout en se plongeant dans de petites pépites du royaume d&#39;UNIX. Il est utile comme livre, comme manuel permettant d&#39;étudier seul, et comme référence et source de connaissance sur les techniques de programmation de scripts. Les exercices et les exemples grandement commentés invitent à une participation active du lecteur avec en tête l&#39;idée que la seule façon pour vraiment apprendre la programmation de scripts est d&#39;écrire des scripts. Ce livre est adapté à une utilisation en classe en tant qu&#39;introduction générale aux concepts de la programmation.">
+    <link rel="stylesheet" href="./Guide avancé d&#39;écriture des scripts Bash_files/abs-print.css" type="text/css" media="print">
+  </head>
+  <body id="lfs" class="exploration en profondeur de l&#39;art de la programmation shell">
+    <div xml:lang="fr" class="book" title="Guide avancé d&#39;écriture des scripts Bash" lang="fr">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title">
+              <a id="idm448984" name="idm448984"></a>Guide avancé d'écriture
+              des scripts Bash
+            </h1>
+          </div>
+          <div>
+            <h2 class="subtitle">
+              Une exploration en profondeur de l'art de la programmation
+              shell
+            </h2>
+          </div>
+          <div>
+            <div class="author">
+              <h3 class="author">
+                <span class="firstname">Mendel</span> <span class="surname">Cooper</span>
+              </h3>
+              <div class="affiliation">
+                <span class="orgname"><br></span>
+                <div class="address">
+                  <p>
+                    <tt class="email">&lt;<a class="email" href="mailto:thegrendel.abs@gmail.com">thegrendel.abs@gmail.com</a>&gt;</tt>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="releaseinfo">
+              6.4.05
+            </p>
+          </div>
+          <div>
+            <p class="pubdate">
+              27 Sep 2011
+            </p>
+          </div>
+          <div>
+            <div class="revhistory">
+              <table border="1" width="100%" summary="Revision history">
+                <tbody><tr>
+                  <th align="left" valign="top" colspan="3">
+                    <strong>Historique des versions</strong>
+                  </th>
+                </tr>
+                <tr>
+                  <td align="left">
+                    Version 6.2
+                  </td>
+                  <td align="left">
+                    17 Mar 2010
+                  </td>
+                  <td align="left">
+                    mc
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="3">
+                    Version 'ROWANBERRY'
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left">
+                    Version 6.3
+                  </td>
+                  <td align="left">
+                    27 Apr 2011
+                  </td>
+                  <td align="left">
+                    mc
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="3">
+                    Version 'SWOZZLEBERRY'
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left">
+                    Version 6.4
+                  </td>
+                  <td align="left">
+                    30 août 2011
+                  </td>
+                  <td align="left">
+                    mc
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="3">
+                    Version 'VORTEXBERRY'
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left">
+                    Version 6.4fr
+                  </td>
+                  <td align="left">
+                    5 janvier 2012
+                  </td>
+                  <td align="left">
+                    ob
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="3">
+                    Mise à jour de la traduction française. <span class="emphasis"><em>Encore en cours de relecture.</em></span>
+                  </td>
+                </tr>
+              </tbody></table>
+            </div>
+          </div>
+          <div>
+            <div class="abstract" title="Résumé">
+              <p class="title">
+                <strong>Résumé</strong>
+              </p>
+              <p>
+                Ce tutoriel ne suppose aucune connaissance de la
+                programmation de scripts, mais permet une progression rapide
+                vers un niveau intermédiaire/avancé d'instruction
+                <span class="emphasis"><em>tout en se plongeant dans de
+                petites pépites du royaume d'<span class="trademark">UNIX</span>®</em></span>. Il est utile comme
+                livre, comme manuel permettant d'étudier seul, et comme
+                référence et source de connaissance sur les techniques de
+                programmation de scripts. Les exercices et les exemples
+                grandement commentés invitent à une participation active du
+                lecteur avec en tête l'idée que <strong class="userinput"><tt>la seule façon pour vraiment apprendre la
+                programmation de scripts est d'écrire des
+                scripts</tt></strong>.
+              </p>
+              <p>
+                Ce livre est adapté à une utilisation en classe en tant
+                qu'introduction générale aux concepts de la programmation.
+              </p>
+            </div>
+          </div>
+        </div>
+        <hr>
+      </div>
+      <div class="dedication" title="Dédicace">
+        <div class="titlepage">
+          <h2 class="dedication"></h2>
+        </div>
+        <p>
+          À Anita, source de toute magie
+        </p>
+      </div>
+      <div class="toc">
+        <p>
+          <strong>Table des matières</strong>
+        </p>
+        <dl>
+          <dt>
+            <span class="part"><a href="https://abs.traduc.org/abs-fr/pt01.html">1ère Partie.
+            Introduction</a></span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch01.html">1. Pourquoi
+                programmer en Shell ?</a></span>
+              </dt>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch02.html">2. Le lancement
+                avec <span class="quote">«&nbsp;<span class="quote">#!</span>&nbsp;»</span></a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch02.html#invoking">2.1.
+                    Appel du script</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch02s02.html">2.2. Exercices
+                    préliminaires</a></span>
+                  </dt>
+                </dl>
+              </dd>
+            </dl>
+          </dd>
+          <dt>
+            <span class="part"><a href="https://abs.traduc.org/abs-fr/pt02.html">2ème Partie. Les
+            bases</a></span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch03.html">3. Les caractères
+                spéciaux</a></span>
+              </dt>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch04.html">4. Introduction aux
+                variables et aux paramètres</a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch04.html#varsubn">4.1.
+                    Remplacement d'une variable par sa valeur</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch04s02.html">4.2.
+                    Affectation d'une variable</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch04s03.html">4.3. Les
+                    variables Bash ne sont pas typées</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch04s04.html">4.4. Types de
+                    variables spéciales</a></span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch05.html">5. Guillemets et
+                apostrophes</a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch05.html#quotingvar">5.1.
+                    Placer des variables entre guillemets</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch05s02.html">5.2.
+                    Échappement</a></span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch06.html">6. Fin du script et
+                état de sortie</a></span>
+              </dt>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch07.html">7. Les
+                tests</a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch07.html#testconstructs">7.1. Les contrôles de
+                    test</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch07s02.html">7.2. Les
+                    opérateurs de test de fichiers</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch07s03.html">7.3. Autres
+                    opérateurs de comparaison</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch07s04.html">7.4. Les tests
+                    <em class="replaceable"><tt>if/then</tt></em>
+                    imbriqués</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch07s05.html">7.5. Tester
+                    votre connaissance des tests</a></span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch08.html">8. Opérations et
+                sujets connexes</a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch08.html#ops">8.1. Les
+                    opérateurs</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch08s02.html">8.2. Les
+                    constantes numériques</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch08s03.html">8.3. Les
+                    expressions entre doubles parenthèses</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch08s04.html">8.4.
+                    Précédence des opérateurs</a></span>
+                  </dt>
+                </dl>
+              </dd>
+            </dl>
+          </dd>
+          <dt>
+            <span class="part"><a href="https://abs.traduc.org/abs-fr/pt03.html">3ème Partie. Dans le vif
+            du sujet</a></span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch09.html">9. Un nouveau
+                regard sur les variables</a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch09.html#internalvariables">9.1. Les variables
+                    internes</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch09s02.html">9.2. Typer les
+                    variables : <span class="command"><strong>declare</strong></span> ou <span class="command"><strong>typeset</strong></span></a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch09s03.html">9.3. $RANDOM :
+                    générer un entier aléatoire</a></span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch10.html">10. Les
+                manipulations de variables</a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch10.html#String-Manipulation">10.1. Manipulation de
+                    chaînes de caractères</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch10s02.html">10.2.
+                    Remplacement de paramètres</a></span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch11.html">11. Boucles et
+                branchements</a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch11.html#loops1">11.1.
+                    Boucles</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch11s02.html">11.2. Boucles
+                    imbriquées</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch11s03.html">11.3. Contrôle
+                    des boucles</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch11s04.html">11.4. Tests et
+                    branchements</a></span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch12.html">12. Substitution de
+                commandes</a></span>
+              </dt>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch13.html">13. Expansion
+                arithmétique</a></span>
+              </dt>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch14.html">14.
+                Récréation</a></span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="part"><a href="https://abs.traduc.org/abs-fr/pt04.html">4ème Partie.
+            Commandes</a></span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch15.html">15. Commandes
+                internes et intégrées</a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch15.html#idp1636136">15.1.
+                    Commandes de contrôle des jobs</a></span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch16.html">16. Filtres
+                externes, programmes et commandes</a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch16.html#basic">16.1.
+                    Commandes de base</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch16s02.html">16.2.
+                    Commandes complexes</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch16s03.html">16.3.
+                    Commandes de date et d'heure</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch16s04.html">16.4.
+                    Commandes d'analyse de texte</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch16s05.html">16.5.
+                    Commandes pour les fichiers et l'archivage</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch16s06.html">16.6.
+                    Commandes de communications</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch16s07.html">16.7.
+                    Commandes de contrôle du terminal</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch16s08.html">16.8.
+                    Commandes mathématiques</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch16s09.html">16.9.
+                    Commandes diverses</a></span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch17.html">17. Commandes
+                système et d'administration</a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch17.html#sysscripts">17.1.
+                    Analyser un script système</a></span>
+                  </dt>
+                </dl>
+              </dd>
+            </dl>
+          </dd>
+          <dt>
+            <span class="part"><a href="https://abs.traduc.org/abs-fr/pt05.html">5ème Partie. Thèmes
+            avancés</a></span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch18.html">18. Expressions
+                rationnelles</a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch18.html#idp3078184">18.1.
+                    Une brève introduction aux expressions
+                    rationnelles</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch18s02.html">18.2.
+                    Remplacement</a></span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch19.html">19. Documents
+                intégrés</a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch19.html#idp3211568">19.1.
+                    Chaînes en ligne</a></span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch20.html">20. Redirection
+                d'E/S (entrées/sorties)</a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch20.html#idp3262824">20.1.
+                    Utiliser <em class="firstterm">exec</em></a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch20s02.html">20.2.
+                    Rediriger les blocs de code</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch20s03.html">20.3.
+                    Applications</a></span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch21.html">21.
+                Sous-shells</a></span>
+              </dt>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch22.html">22. Shells
+                restreints</a></span>
+              </dt>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch23.html">23. Substitution de
+                processus</a></span>
+              </dt>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch24.html">24.
+                Fonctions</a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch24.html#complexfunct">24.1. Fonctions complexes et
+                    complexité des fonctions</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch24s02.html">24.2.
+                    Variables locales</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch24s03.html">24.3.
+                    Récursion sans variables locales</a></span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch25.html">25.
+                Alias</a></span>
+              </dt>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch26.html">26. Constructeurs
+                de listes</a></span>
+              </dt>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch27.html">27.
+                Tableaux</a></span>
+              </dt>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch28.html">28. Références
+                indirectes</a></span>
+              </dt>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch29.html">29. <tt class="filename">/dev</tt> et <tt class="filename">/proc</tt></a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch29.html#devref1">29.1.
+                    <tt class="filename">/dev</tt></a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch29s02.html">29.2.
+                    <tt class="filename">/proc</tt></a></span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch30.html">30. Programmation
+                réseau</a></span>
+              </dt>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch31.html">31. Des Zéros et
+                des Nuls</a></span>
+              </dt>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch32.html">32.
+                Débogage</a></span>
+              </dt>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch33.html">33.
+                Options</a></span>
+              </dt>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch34.html">34.
+                Pièges</a></span>
+              </dt>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch35.html">35. Écrire des
+                scripts avec style</a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch35.html#unofficialst">35.1. Feuille de style non
+                    officielle d'écriture de scripts</a></span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch36.html">36.
+                Divers</a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch36.html#intandnonint">36.1. Shells et scripts
+                    interactifs et non interactifs</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch36s02.html">36.2. Scripts
+                    d'appel</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch36s03.html">36.3. Tests et
+                    comparaisons : alternatives</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch36s04.html">36.4.
+                    Récursion : un script s'appelant lui-même</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch36s05.html">36.5.
+                    <span class="quote">«&nbsp;<span class="quote">Coloriser</span>&nbsp;»</span> les
+                    scripts</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch36s06.html">36.6.
+                    Optimisations</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch36s07.html">36.7. Astuces
+                    assorties</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch36s08.html">36.8.
+                    Problèmes de sécurité</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch36s09.html">36.9.
+                    Problèmes de portabilité</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch36s10.html">36.10. Scripts
+                    sous Windows</a></span>
+                  </dt>
+                </dl>
+              </dd>
+              <dt>
+                <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch37.html">37. Bash, versions
+                2, 3 et 4</a></span>
+              </dt>
+              <dd>
+                <dl>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch37.html#bashver2">37.1.
+                    Bash, version 2</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch37s02.html">37.2. Bash,
+                    version 3</a></span>
+                  </dt>
+                  <dt>
+                    <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch37s03.html">37.3. Bash,
+                    version 4</a></span>
+                  </dt>
+                </dl>
+              </dd>
+            </dl>
+          </dd>
+          <dt>
+            <span class="chapter"><a href="https://abs.traduc.org/abs-fr/ch38.html">38. Notes
+            finales</a></span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch38.html#authorsnote">38.1.
+                Note de l'auteur</a></span>
+              </dt>
+              <dt>
+                <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch38s02.html">38.2. À propos de
+                l'auteur</a></span>
+              </dt>
+              <dt>
+                <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch38s03.html">38.3. Où trouver
+                de l'aide</a></span>
+              </dt>
+              <dt>
+                <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch38s04.html">38.4. Outils
+                utilisés pour fabriquer ce livre</a></span>
+              </dt>
+              <dt>
+                <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch38s05.html">38.5.
+                Remerciements</a></span>
+              </dt>
+              <dt>
+                <span class="sect1"><a href="https://abs.traduc.org/abs-fr/ch38s06.html">38.6. Limitation
+                de responsabilité</a></span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="bibliography"><a href="https://abs.traduc.org/abs-fr/bi01.html">Bibliographie</a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/apa.html">A. Scripts
+            supplémentaires</a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/apb.html">B. Fiches de
+            référence</a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/apc.html">C. Petit guide sur Sed
+            et Awk</a></span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="sect1"><a href="https://abs.traduc.org/abs-fr/apc.html#idp4815792">C.1.
+                Sed</a></span>
+              </dt>
+              <dt>
+                <span class="sect1"><a href="https://abs.traduc.org/abs-fr/apcs02.html">C.2. Awk</a></span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/apd.html">D. Codes de sortie
+            ayant une signification particulière</a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/ape.html">E. Une introduction
+            détaillée sur les redirections d'entrées/sorties</a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/apf.html">F. Options en ligne de
+            commande</a></span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="sect1"><a href="https://abs.traduc.org/abs-fr/apf.html#standard-options">F.1.
+                Options standards en ligne de commande</a></span>
+              </dt>
+              <dt>
+                <span class="sect1"><a href="https://abs.traduc.org/abs-fr/apfs02.html">F.2. Options en
+                ligne de commande de Bash</a></span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/apg.html">G. Fichiers
+            importants</a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/aph.html">H. Répertoires système
+            importants</a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/api.html">I. An Introduction to
+            Programmable Completion</a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/apj.html">J.
+            Localisation</a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/apk.html">K. Commandes
+            d'historique</a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/apl.html">L. Exemples de fichiers
+            <tt class="filename">.bashrc</tt> et <tt class="filename">.bash_profile</tt></a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/apm.html">M. Convertir des
+            fichiers batch DOS en scripts shell</a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/apn.html">N. Exercices</a></span>
+          </dt>
+          <dd>
+            <dl>
+              <dt>
+                <span class="sect1"><a href="https://abs.traduc.org/abs-fr/apn.html#scriptanalysis">N.1.
+                Analyse de scripts</a></span>
+              </dt>
+              <dt>
+                <span class="sect1"><a href="https://abs.traduc.org/abs-fr/apns02.html">N.2. Écriture de
+                scripts</a></span>
+              </dt>
+            </dl>
+          </dd>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/apo.html">O. Historique des
+            révisions</a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/app.html">P. Sites de
+            téléchargement, miroirs</a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/apq.html">Q. Liste de choses à
+            faire</a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/apr.html">R. Droits
+            d'utilisation</a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/aps.html">S. Copyright</a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/apt.html">T. Table
+            ASCII</a></span>
+          </dt>
+          <dt>
+            <span class="appendix"><a href="https://abs.traduc.org/abs-fr/apu.html">U. Index</a></span>
+          </dt>
+        </dl>
+      </div>
+      <div class="list-of-tables">
+        <p>
+          <strong>Liste des tableaux</strong>
+        </p>
+        <dl>
+          <dt>
+            8.1. <a href="https://abs.traduc.org/abs-fr/ch08s04.html#idm11252936">Précédence des
+            opérateurs</a>
+          </dt>
+          <dt>
+            15.1. <a href="https://abs.traduc.org/abs-fr/ch15.html#jobidtable">Identifiants de jobs</a>
+          </dt>
+          <dt>
+            33.1. <a href="https://abs.traduc.org/abs-fr/ch33.html#optionstable">Options de bash</a>
+          </dt>
+          <dt>
+            36.1. <a href="https://abs.traduc.org/abs-fr/ch36s05.html#coloriztable">Nombres représentant
+            les couleurs des séquences d'échappement</a>
+          </dt>
+          <dt>
+            B.1. <a href="https://abs.traduc.org/abs-fr/apb.html#specshvartab">Variables spéciales du
+            shell</a>
+          </dt>
+          <dt>
+            B.2. <a href="https://abs.traduc.org/abs-fr/apb.html#bincomptab">Opérateurs de test :
+            comparaison binaire</a>
+          </dt>
+          <dt>
+            B.3. <a href="https://abs.traduc.org/abs-fr/apb.html#filestab">Opérateurs de test :
+            fichiers</a>
+          </dt>
+          <dt>
+            B.4. <a href="https://abs.traduc.org/abs-fr/apb.html#parsubtab">Substitution et expansion de
+            paramètres</a>
+          </dt>
+          <dt>
+            B.5. <a href="https://abs.traduc.org/abs-fr/apb.html#stringopstab">Opérations sur les
+            chaînes</a>
+          </dt>
+          <dt>
+            B.6. <a href="https://abs.traduc.org/abs-fr/apb.html#idp4771512">Syntaxes diverses</a>
+          </dt>
+          <dt>
+            C.1. <a href="https://abs.traduc.org/abs-fr/apc.html#sedbasictable">Opérateurs sed basiques</a>
+          </dt>
+          <dt>
+            C.2. <a href="https://abs.traduc.org/abs-fr/apc.html#sedoptable">Exemples d'opérateurs sed</a>
+          </dt>
+          <dt>
+            D.1. <a href="https://abs.traduc.org/abs-fr/apd.html#idp4829536">Codes de sortie <em class="firstterm">réservés</em></a>
+          </dt>
+          <dt>
+            M.1. <a href="https://abs.traduc.org/abs-fr/apm.html#idp4963624">Mots clés / variables /
+            opérateurs des fichiers batch, et leur équivalent shell</a>
+          </dt>
+          <dt>
+            M.2. <a href="https://abs.traduc.org/abs-fr/apm.html#idp5064504">Commandes DOS et leur
+            équivalent UNIX</a>
+          </dt>
+          <dt>
+            O.1. <a href="https://abs.traduc.org/abs-fr/apo.html#idp5222696">Historique des révisions</a>
+          </dt>
+        </dl>
+      </div>
+      <div class="list-of-examples">
+        <p>
+          <strong>Liste des exemples</strong>
+        </p>
+        <dl>
+          <dt>
+            2.1. <a href="https://abs.traduc.org/abs-fr/ch02.html#ex1"><em class="firstterm">cleanup</em> :
+            Un script pour nettoyer les journaux de trace dans /var/log</a>
+          </dt>
+          <dt>
+            2.2. <a href="https://abs.traduc.org/abs-fr/ch02.html#ex1a"><em class="firstterm">cleanup</em>
+            : Un script de nettoyage amélioré</a>
+          </dt>
+          <dt>
+            2.3. <a href="https://abs.traduc.org/abs-fr/ch02.html#ex2"><em class="firstterm">cleanup</em> :
+            Une version améliorée et généralisée des scripts précédents</a>
+          </dt>
+          <dt>
+            3.1. <a href="https://abs.traduc.org/abs-fr/ch03.html#ex8">Blocs de code et redirection
+            d'entrées/sorties</a>
+          </dt>
+          <dt>
+            3.2. <a href="https://abs.traduc.org/abs-fr/ch03.html#rpmcheck">Enregistrer la sortie d'un bloc
+            de code dans un fichier</a>
+          </dt>
+          <dt>
+            3.3. <a href="https://abs.traduc.org/abs-fr/ch03.html#bgloop">Exécuter une boucle en tâche de
+            fond</a>
+          </dt>
+          <dt>
+            3.4. <a href="https://abs.traduc.org/abs-fr/ch03.html#ex58">Sauvegarde de tous les fichiers
+            modifiés depuis 24 heures</a>
+          </dt>
+          <dt>
+            4.1. <a href="https://abs.traduc.org/abs-fr/ch04.html#ex9">Affectation d'une variable et son
+            remplacement par sa valeur</a>
+          </dt>
+          <dt>
+            4.2. <a href="https://abs.traduc.org/abs-fr/ch04s02.html#ex15">Affectation basique de
+            variable</a>
+          </dt>
+          <dt>
+            4.3. <a href="https://abs.traduc.org/abs-fr/ch04s02.html#ex16">Affectation de variable, basique
+            et plus élaborée</a>
+          </dt>
+          <dt>
+            4.4. <a href="https://abs.traduc.org/abs-fr/ch04s03.html#intorstring">Entier ou chaîne de
+            caractères ?</a>
+          </dt>
+          <dt>
+            4.5. <a href="https://abs.traduc.org/abs-fr/ch04s04.html#ex17">Paramètres de position</a>
+          </dt>
+          <dt>
+            4.6. <a href="https://abs.traduc.org/abs-fr/ch04s04.html#ex18"><em class="firstterm">wh</em>,
+            recherche d'un nom de domaine avec <em class="firstterm">whois</em></a>
+          </dt>
+          <dt>
+            4.7. <a href="https://abs.traduc.org/abs-fr/ch04s04.html#ex19">Utiliser <em class="firstterm">shift</em></a>
+          </dt>
+          <dt>
+            5.1. <a href="https://abs.traduc.org/abs-fr/ch05.html#weirdvars">Afficher des variables
+            bizarres</a>
+          </dt>
+          <dt>
+            5.2. <a href="https://abs.traduc.org/abs-fr/ch05s02.html#escaped">Caractères d'échappement</a>
+          </dt>
+          <dt>
+            5.3. <a href="https://abs.traduc.org/abs-fr/ch05s02.html#bashek">Détecte les pressions sur le
+            clavier</a>
+          </dt>
+          <dt>
+            6.1. <a href="https://abs.traduc.org/abs-fr/ch06.html#ex5">exit / code d'état de sortie</a>
+          </dt>
+          <dt>
+            6.2. <a href="https://abs.traduc.org/abs-fr/ch06.html#negcond">Inverser une condition en
+            utilisant <span class="token">!</span></a>
+          </dt>
+          <dt>
+            7.1. <a href="https://abs.traduc.org/abs-fr/ch07.html#ex10">Qu'est-ce qui est vrai ?</a>
+          </dt>
+          <dt>
+            7.2. <a href="https://abs.traduc.org/abs-fr/ch07.html#ex11">Équivalences entre <em class="firstterm">test</em>, <tt class="filename">/usr/bin/test</tt>,
+            <span class="token">[ ]</span>, et <tt class="filename">/usr/bin/[</tt></a>
+          </dt>
+          <dt>
+            7.3. <a href="https://abs.traduc.org/abs-fr/ch07.html#arithtests">Tests arithmétiques avec
+            <span class="token">(( ))</span></a>
+          </dt>
+          <dt>
+            7.4. <a href="https://abs.traduc.org/abs-fr/ch07s02.html#brokenlink">Test de liens cassés</a>
+          </dt>
+          <dt>
+            7.5. <a href="https://abs.traduc.org/abs-fr/ch07s03.html#ex13">Comparaisons des nombres et des
+            chaînes de caractères</a>
+          </dt>
+          <dt>
+            7.6. <a href="https://abs.traduc.org/abs-fr/ch07s03.html#strtest">Vérifier si une chaîne est
+            <em class="firstterm">vide</em></a>
+          </dt>
+          <dt>
+            7.7. <a href="https://abs.traduc.org/abs-fr/ch07s03.html#ex14"><em class="firstterm">zmore</em></a>
+          </dt>
+          <dt>
+            8.1. <a href="https://abs.traduc.org/abs-fr/ch08.html#gcd">Le PGCD (plus grand diviseur
+            commun)</a>
+          </dt>
+          <dt>
+            8.2. <a href="https://abs.traduc.org/abs-fr/ch08.html#arithops">Utiliser les opérations
+            arithmétiques</a>
+          </dt>
+          <dt>
+            8.3. <a href="https://abs.traduc.org/abs-fr/ch08.html#andor">Tests de conditions composées avec
+            utilisation de &amp;&amp; et de ||</a>
+          </dt>
+          <dt>
+            8.4. <a href="https://abs.traduc.org/abs-fr/ch08s02.html#numbers">Représentation des constantes
+            numériques</a>
+          </dt>
+          <dt>
+            8.5. <a href="https://abs.traduc.org/abs-fr/ch08s03.html#cvars">Manipulation de variables à la
+            manière de C.</a>
+          </dt>
+          <dt>
+            9.1. <a href="https://abs.traduc.org/abs-fr/ch09.html#ifsh">$IFS et blancs</a>
+          </dt>
+          <dt>
+            9.2. <a href="https://abs.traduc.org/abs-fr/ch09.html#tmdin">Saisie avec un délai</a>
+          </dt>
+          <dt>
+            9.3. <a href="https://abs.traduc.org/abs-fr/ch09.html#timeout">Encore une fois, saisie avec
+            délai</a>
+          </dt>
+          <dt>
+            9.4. <a href="https://abs.traduc.org/abs-fr/ch09.html#tout"><em class="firstterm">Lecture</em>
+            avec délai</a>
+          </dt>
+          <dt>
+            9.5. <a href="https://abs.traduc.org/abs-fr/ch09.html#amiroot">Suis-je root ?</a>
+          </dt>
+          <dt>
+            9.6. <a href="https://abs.traduc.org/abs-fr/ch09.html#arglist"><em class="firstterm">arglist</em> : Affichage des arguments avec $* et
+            $@</a>
+          </dt>
+          <dt>
+            9.7. <a href="https://abs.traduc.org/abs-fr/ch09.html#incompat">Comportement de <tt class="varname">$*</tt> et <tt class="varname">$@</tt> incohérent</a>
+          </dt>
+          <dt>
+            9.8. <a href="https://abs.traduc.org/abs-fr/ch09.html#ifsempty"><tt class="varname">$*</tt> et
+            <tt class="varname">$@</tt> lorsque <tt class="varname">$IFS</tt>
+            est vide</a>
+          </dt>
+          <dt>
+            9.9. <a href="https://abs.traduc.org/abs-fr/ch09.html#uscref">Variable tiret bas</a>
+          </dt>
+          <dt>
+            9.10. <a href="https://abs.traduc.org/abs-fr/ch09s02.html#ex20">Utiliser <em class="firstterm">declare</em> pour typer des variables</a>
+          </dt>
+          <dt>
+            9.11. <a href="https://abs.traduc.org/abs-fr/ch09s03.html#ex21">Générer des nombres
+            aléatoires</a>
+          </dt>
+          <dt>
+            9.12. <a href="https://abs.traduc.org/abs-fr/ch09s03.html#pickcard">Piocher une carte au hasard
+            dans un tas</a>
+          </dt>
+          <dt>
+            9.13. <a href="https://abs.traduc.org/abs-fr/ch09s03.html#brownian">Simulation « Brownian
+            Motion »</a>
+          </dt>
+          <dt>
+            9.14. <a href="https://abs.traduc.org/abs-fr/ch09s03.html#randombetween">Un nombre au hasard
+            entre deux valeurs</a>
+          </dt>
+          <dt>
+            9.15. <a href="https://abs.traduc.org/abs-fr/ch09s03.html#randomtest">Lancement d'un seul dé
+            avec RANDOM</a>
+          </dt>
+          <dt>
+            9.16. <a href="https://abs.traduc.org/abs-fr/ch09s03.html#seedingrandom">Réinitialiser
+            RANDOM</a>
+          </dt>
+          <dt>
+            9.17. <a href="https://abs.traduc.org/abs-fr/ch09s03.html#random2">Nombres pseudo-aléatoires,
+            en utilisant awk</a>
+          </dt>
+          <dt>
+            10.1. <a href="https://abs.traduc.org/abs-fr/ch10.html#paragraphspace">Insérer un saut de ligne
+            entre les paragraphes d'un fichier texte</a>
+          </dt>
+          <dt>
+            10.2. <a href="https://abs.traduc.org/abs-fr/ch10.html#randstring">Générer <span class="quote">«&nbsp;<span class="quote">de manière
+            aléatoire</span>&nbsp;»</span> une chaîne de huit caractères</a>
+          </dt>
+          <dt>
+            10.3. <a href="https://abs.traduc.org/abs-fr/ch10.html#cvt">Conversion de formats de fichiers
+            graphiques avec modification du nom de fichier</a>
+          </dt>
+          <dt>
+            10.4. <a href="https://abs.traduc.org/abs-fr/ch10.html#ra2ogg">Conversion de fichiers audio en
+            <em class="firstterm">ogg</em></a>
+          </dt>
+          <dt>
+            10.5. <a href="https://abs.traduc.org/abs-fr/ch10.html#getoptsimple">Émuler <em class="firstterm">getopt</em></a>
+          </dt>
+          <dt>
+            10.6. <a href="https://abs.traduc.org/abs-fr/ch10.html#substringex">Autres moyens pour extraire
+            ou situer des sous-chaînes</a>
+          </dt>
+          <dt>
+            10.7. <a href="https://abs.traduc.org/abs-fr/ch10s02.html#ex6">Utiliser le remplacement et les
+            messages d'erreur</a>
+          </dt>
+          <dt>
+            10.8. <a href="https://abs.traduc.org/abs-fr/ch10s02.html#usagemessage">Remplacement de
+            paramètres et messages d'<span class="quote">«&nbsp;<span class="quote">usage</span>&nbsp;»</span></a>
+          </dt>
+          <dt>
+            10.9. <a href="https://abs.traduc.org/abs-fr/ch10s02.html#length">Longueur d'une variable</a>
+          </dt>
+          <dt>
+            10.10. <a href="https://abs.traduc.org/abs-fr/ch10s02.html#pattmatching">Correspondance de
+            motifs dans le remplacement de paramètres</a>
+          </dt>
+          <dt>
+            10.11. <a href="https://abs.traduc.org/abs-fr/ch10s02.html#rfe">Renommer des extensions de
+            fichiers <span class="token">:</span></a>
+          </dt>
+          <dt>
+            10.12. <a href="https://abs.traduc.org/abs-fr/ch10s02.html#ex7">Utilisation de la concordance
+            de motifs pour analyser diverses chaînes de caractères</a>
+          </dt>
+          <dt>
+            10.13. <a href="https://abs.traduc.org/abs-fr/ch10s02.html#varmatch">Motifs correspondant au
+            préfixe ou au suffixe d'une chaîne de caractères</a>
+          </dt>
+          <dt>
+            11.1. <a href="https://abs.traduc.org/abs-fr/ch11.html#ex22">Des boucles <em class="firstterm">for</em> simples</a>
+          </dt>
+          <dt>
+            11.2. <a href="https://abs.traduc.org/abs-fr/ch11.html#ex22a">Boucle <em class="firstterm">for</em> avec deux paramètres dans chaque élément de
+            la [liste]</a>
+          </dt>
+          <dt>
+            11.3. <a href="https://abs.traduc.org/abs-fr/ch11.html#fileinfo"><span class="emphasis"><em>Fileinfo</em></span> : opérer sur une variable
+            contenant une liste de fichiers</a>
+          </dt>
+          <dt>
+            11.4. <a href="https://abs.traduc.org/abs-fr/ch11.html#listglob">Agir sur des fichiers à l'aide
+            d'une boucle <em class="firstterm">for</em></a>
+          </dt>
+          <dt>
+            11.5. <a href="https://abs.traduc.org/abs-fr/ch11.html#ex23"><tt class="userinput">in
+            [liste]</tt> manquant dans une boucle <em class="firstterm">for</em></a>
+          </dt>
+          <dt>
+            11.6. <a href="https://abs.traduc.org/abs-fr/ch11.html#forloopcmd">Générer la <tt class="userinput">[liste]</tt> dans une boucle <em class="firstterm">for</em> avec la substitution de commandes</a>
+          </dt>
+          <dt>
+            11.7. <a href="https://abs.traduc.org/abs-fr/ch11.html#bingrep">Un remplaçant de <em class="firstterm">grep</em> pour les fichiers binaires</a>
+          </dt>
+          <dt>
+            11.8. <a href="https://abs.traduc.org/abs-fr/ch11.html#userlist">Afficher tous les utilisateurs
+            du système</a>
+          </dt>
+          <dt>
+            11.9. <a href="https://abs.traduc.org/abs-fr/ch11.html#findstring">Rechercher les auteurs de
+            tous les binaires d'un répertoire</a>
+          </dt>
+          <dt>
+            11.10. <a href="https://abs.traduc.org/abs-fr/ch11.html#symlinks">Afficher les <em class="firstterm">liens symboliques</em> dans un répertoire</a>
+          </dt>
+          <dt>
+            11.11. <a href="https://abs.traduc.org/abs-fr/ch11.html#symlinks2">Liens symboliques dans un
+            répertoire, sauvés dans un fichier</a>
+          </dt>
+          <dt>
+            11.12. <a href="https://abs.traduc.org/abs-fr/ch11.html#forloopc">Une boucle <em class="firstterm">for</em> comme en C</a>
+          </dt>
+          <dt>
+            11.13. <a href="https://abs.traduc.org/abs-fr/ch11.html#ex24">Utiliser <em class="firstterm">efax</em> en mode batch</a>
+          </dt>
+          <dt>
+            11.14. <a href="https://abs.traduc.org/abs-fr/ch11.html#ex25">Simple boucle <em class="firstterm">while</em></a>
+          </dt>
+          <dt>
+            11.15. <a href="https://abs.traduc.org/abs-fr/ch11.html#ex26">Une autre boucle <em class="firstterm">while</em></a>
+          </dt>
+          <dt>
+            11.16. <a href="https://abs.traduc.org/abs-fr/ch11.html#ex26a">Boucle <em class="firstterm">while</em> avec de multiples conditions</a>
+          </dt>
+          <dt>
+            11.17. <a href="https://abs.traduc.org/abs-fr/ch11.html#whloopc">Syntaxe à la C pour une boucle
+            <em class="firstterm">while</em></a>
+          </dt>
+          <dt>
+            11.18. <a href="https://abs.traduc.org/abs-fr/ch11.html#ex27">Boucle <em class="firstterm">until</em></a>
+          </dt>
+          <dt>
+            11.19. <a href="https://abs.traduc.org/abs-fr/ch11s02.html#nestedloop">Boucles imbriquées</a>
+          </dt>
+          <dt>
+            11.20. <a href="https://abs.traduc.org/abs-fr/ch11s03.html#ex28">Effets de <em class="firstterm">break</em> et <span class="command">continue</span>
+            dans une boucle</a>
+          </dt>
+          <dt>
+            11.21. <a href="https://abs.traduc.org/abs-fr/ch11s03.html#breaklevels">Sortir de plusieurs
+            niveaux de boucle</a>
+          </dt>
+          <dt>
+            11.22. <a href="https://abs.traduc.org/abs-fr/ch11s03.html#continuelevels">Continuer à un plus
+            haut niveau de boucle</a>
+          </dt>
+          <dt>
+            11.23. <a href="https://abs.traduc.org/abs-fr/ch11s03.html#continuenex">Utiliser <em class="firstterm">continue N</em> dans une tâche courante</a>
+          </dt>
+          <dt>
+            11.24. <a href="https://abs.traduc.org/abs-fr/ch11s04.html#ex29">Utiliser <em class="firstterm">case</em></a>
+          </dt>
+          <dt>
+            11.25. <a href="https://abs.traduc.org/abs-fr/ch11s04.html#ex30">Créer des menus en utilisant
+            <em class="firstterm">case</em></a>
+          </dt>
+          <dt>
+            11.26. <a href="https://abs.traduc.org/abs-fr/ch11s04.html#casecmd">Utiliser la <em class="firstterm">substitution de commandes</em> pour générer la
+            variable <em class="firstterm">case</em></a>
+          </dt>
+          <dt>
+            11.27. <a href="https://abs.traduc.org/abs-fr/ch11s04.html#matchstring">Simple correspondance
+            de chaîne</a>
+          </dt>
+          <dt>
+            11.28. <a href="https://abs.traduc.org/abs-fr/ch11s04.html#isalpha">Vérification d'une entrée
+            alphabétique</a>
+          </dt>
+          <dt>
+            11.29. <a href="https://abs.traduc.org/abs-fr/ch11s04.html#ex31">Créer des menus en utilisant
+            <em class="firstterm">select</em></a>
+          </dt>
+          <dt>
+            11.30. <a href="https://abs.traduc.org/abs-fr/ch11s04.html#ex32">Créer des menus en utilisant
+            <span class="command">select</span> dans une fonction</a>
+          </dt>
+          <dt>
+            12.1. <a href="https://abs.traduc.org/abs-fr/ch12.html#stupscr">Astuces de script stupides</a>
+          </dt>
+          <dt>
+            12.2. <a href="https://abs.traduc.org/abs-fr/ch12.html#csubloop">Générer le contenu d'une
+            variable à partir d'une boucle</a>
+          </dt>
+          <dt>
+            12.3. <a href="https://abs.traduc.org/abs-fr/ch12.html#agram2">Découvrir des anagrammes</a>
+          </dt>
+          <dt>
+            15.1. <a href="https://abs.traduc.org/abs-fr/ch15.html#spawnscr">Un script qui engendre
+            plusieurs instances de lui-même</a>
+          </dt>
+          <dt>
+            15.2. <a href="https://abs.traduc.org/abs-fr/ch15.html#ex47"><em class="firstterm">printf</em>
+            en action</a>
+          </dt>
+          <dt>
+            15.3. <a href="https://abs.traduc.org/abs-fr/ch15.html#ex36">Affectation d'une variable, en
+            utilisant <em class="firstterm">read</em></a>
+          </dt>
+          <dt>
+            15.4. <a href="https://abs.traduc.org/abs-fr/ch15.html#readnovar">Qu'arrive-t'il quand
+            <em class="firstterm">read</em> n'a pas de variable</a>
+          </dt>
+          <dt>
+            15.5. <a href="https://abs.traduc.org/abs-fr/ch15.html#readr">Lecture de plusieurs lignes par
+            <em class="firstterm">read</em></a>
+          </dt>
+          <dt>
+            15.6. <a href="https://abs.traduc.org/abs-fr/ch15.html#arrowdetect">Détecter les flèches de
+            direction</a>
+          </dt>
+          <dt>
+            15.7. <a href="https://abs.traduc.org/abs-fr/ch15.html#readredir">Utiliser <em class="firstterm">read</em> avec la redirection de fichier</a>
+          </dt>
+          <dt>
+            15.8. <a href="https://abs.traduc.org/abs-fr/ch15.html#readpipe">Problèmes lors de la lecture
+            d'un tube</a>
+          </dt>
+          <dt>
+            15.9. <a href="https://abs.traduc.org/abs-fr/ch15.html#ex37">Modifier le répertoire courant</a>
+          </dt>
+          <dt>
+            15.10. <a href="https://abs.traduc.org/abs-fr/ch15.html#ex46">Laisser <em class="firstterm">let</em> faire un peu d'arithmétique.</a>
+          </dt>
+          <dt>
+            15.11. <a href="https://abs.traduc.org/abs-fr/ch15.html#ex43">Montrer l'effet d'<em class="firstterm">eval</em></a>
+          </dt>
+          <dt>
+            15.12. <a href="https://abs.traduc.org/abs-fr/ch15.html#arrchoice">Utilisation de <em class="firstterm">eval</em> pour sélectionner des variables</a>
+          </dt>
+          <dt>
+            15.13. <a href="https://abs.traduc.org/abs-fr/ch15.html#echoparams"><em class="firstterm">Afficher</em> les <em class="firstterm">paramètres en
+            ligne de commande</em></a>
+          </dt>
+          <dt>
+            15.14. <a href="https://abs.traduc.org/abs-fr/ch15.html#ex44">Forcer une déconnexion</a>
+          </dt>
+          <dt>
+            15.15. <a href="https://abs.traduc.org/abs-fr/ch15.html#rot14">Une version de <em class="firstterm">rot13</em></a>
+          </dt>
+          <dt>
+            15.16. <a href="https://abs.traduc.org/abs-fr/ch15.html#ex34">Utiliser <em class="firstterm">set</em> avec les paramètres de position</a>
+          </dt>
+          <dt>
+            15.17. <a href="https://abs.traduc.org/abs-fr/ch15.html#revposparams">Inverser les paramètres
+            de position</a>
+          </dt>
+          <dt>
+            15.18. <a href="https://abs.traduc.org/abs-fr/ch15.html#setpos">Réaffecter les paramètres de
+            position</a>
+          </dt>
+          <dt>
+            15.19. <a href="https://abs.traduc.org/abs-fr/ch15.html#uns"><span class="quote">«&nbsp;<span class="quote">Dés-assigner</span>&nbsp;»</span> une variable</a>
+          </dt>
+          <dt>
+            15.20. <a href="https://abs.traduc.org/abs-fr/ch15.html#coltotaler3">Utiliser <em class="firstterm">export</em> pour passer une variable à un script
+            <em class="firstterm">awk</em> embarqué</a>
+          </dt>
+          <dt>
+            15.21. <a href="https://abs.traduc.org/abs-fr/ch15.html#ex33">Utiliser <em class="firstterm">getopts</em> pour lire les options/arguments passés à
+            un script</a>
+          </dt>
+          <dt>
+            15.22. <a href="https://abs.traduc.org/abs-fr/ch15.html#ex38"><span class="quote">«&nbsp;<span class="quote">Inclure</span>&nbsp;»</span>
+            un fichier de données</a>
+          </dt>
+          <dt>
+            15.23. <a href="https://abs.traduc.org/abs-fr/ch15.html#selfsource">Un script (inutile) qui se
+            charge lui-même</a>
+          </dt>
+          <dt>
+            15.24. <a href="https://abs.traduc.org/abs-fr/ch15.html#ex54">Effets d'<em class="firstterm">exec</em></a>
+          </dt>
+          <dt>
+            15.25. <a href="https://abs.traduc.org/abs-fr/ch15.html#selfexec">Un script lançant <em class="firstterm">exec</em> sur lui-même</a>
+          </dt>
+          <dt>
+            15.26. <a href="https://abs.traduc.org/abs-fr/ch15.html#ex39">Attendre la fin d'un processus
+            avant de continuer</a>
+          </dt>
+          <dt>
+            15.27. <a href="https://abs.traduc.org/abs-fr/ch15.html#selfdestruct">Un script qui se tue
+            lui-même</a>
+          </dt>
+          <dt>
+            16.1. <a href="https://abs.traduc.org/abs-fr/ch16.html#ex40">Utilisation de <em class="firstterm">ls</em> pour créer une liste de fichiers à graver sur
+            un <abbr class="abbrev">CDR</abbr></a>
+          </dt>
+          <dt>
+            16.2. <a href="https://abs.traduc.org/abs-fr/ch16.html#hellol">Hello or Good-bye</a>
+          </dt>
+          <dt>
+            16.3. <a href="https://abs.traduc.org/abs-fr/ch16s02.html#ex57"><em class="firstterm">Badname</em> élimine dans le répertoire courant les
+            fichiers dont le nom contient des caractères incorrects et des
+            espaces blancs.</a>
+          </dt>
+          <dt>
+            16.4. <a href="https://abs.traduc.org/abs-fr/ch16s02.html#idelete">Effacer un fichier par son
+            numéro d'<em class="firstterm">inode</em></a>
+          </dt>
+          <dt>
+            16.5. <a href="https://abs.traduc.org/abs-fr/ch16s02.html#ex41">Fichier de traces utilisant
+            <em class="firstterm">xargs</em> pour surveiller les journaux
+            système</a>
+          </dt>
+          <dt>
+            16.6. <a href="https://abs.traduc.org/abs-fr/ch16s02.html#ex42">Copier les fichiers du
+            répertoire courant vers un autre répertoire en utilisant
+            <span class="command">xargs</span></a>
+          </dt>
+          <dt>
+            16.7. <a href="https://abs.traduc.org/abs-fr/ch16s02.html#killbyname">Tuer des processus par
+            leur nom</a>
+          </dt>
+          <dt>
+            16.8. <a href="https://abs.traduc.org/abs-fr/ch16s02.html#wf2"><span class="command">Analyse de
+            la fréquence des mots</span> en utilisant <em class="firstterm">xargs</em></a>
+          </dt>
+          <dt>
+            16.9. <a href="https://abs.traduc.org/abs-fr/ch16s02.html#ex45">Utiliser <em class="firstterm">expr</em></a>
+          </dt>
+          <dt>
+            16.10. <a href="https://abs.traduc.org/abs-fr/ch16s03.html#ex51">Utiliser <em class="firstterm">date</em></a>
+          </dt>
+          <dt>
+            16.11. <a href="https://abs.traduc.org/abs-fr/ch16s03.html#datecalc">Calcul de <em class="firstterm">Date</em></a>
+          </dt>
+          <dt>
+            16.12. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#wf">Analyse de fréquence
+            d'apparition des mots</a>
+          </dt>
+          <dt>
+            16.13. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#scriptdetector">Quels fichiers sont
+            des scripts ?</a>
+          </dt>
+          <dt>
+            16.14. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#rnd">Générer des nombres aléatoires
+            de dix chiffres</a>
+          </dt>
+          <dt>
+            16.15. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#ex12">Utiliser <em class="firstterm">tail</em> pour surveiller le journal des traces
+            système</a>
+          </dt>
+          <dt>
+            16.16. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#fromsh">Afficher les lignes
+            <em class="firstterm">From</em> des courriels stockés sous forme
+            de fichiers</a>
+          </dt>
+          <dt>
+            16.17. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#grp">Émuler <em class="firstterm">grep</em> dans un script</a>
+          </dt>
+          <dt>
+            16.18. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#cwsolver">Résolveur de mots
+            croisés</a>
+          </dt>
+          <dt>
+            16.19. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#dictlookup">Rechercher des
+            définitions dans <em class="citetitle">le dictionnaire Webster de
+            1913</em></a>
+          </dt>
+          <dt>
+            16.20. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#lookup">Chercher les mots dans une
+            liste pour tester leur validité</a>
+          </dt>
+          <dt>
+            16.21. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#ex49"><em class="firstterm">toupper</em> : Transforme un fichier en
+            majuscule.</a>
+          </dt>
+          <dt>
+            16.22. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#lowercase"><em class="firstterm">lowercase</em> : Change tous les noms de fichier du
+            répertoire courant en minuscule.</a>
+          </dt>
+          <dt>
+            16.23. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#du"><em class="firstterm">du</em> :
+            Convertit les fichiers texte DOS vers UNIX.</a>
+          </dt>
+          <dt>
+            16.24. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#rot13"><em class="firstterm">rot13</em> : rot13, cryptage ultra-faible.</a>
+          </dt>
+          <dt>
+            16.25. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#cryptoquote">Générer des énigmes
+            <span class="quote">«&nbsp;<span class="quote">Crypto-Citations</span>&nbsp;»</span></a>
+          </dt>
+          <dt>
+            16.26. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#ex50">Affichage d'un fichier
+            formaté.</a>
+          </dt>
+          <dt>
+            16.27. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#col">Utiliser <em class="firstterm">column</em> pour formater l'affichage des
+            répertoires</a>
+          </dt>
+          <dt>
+            16.28. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#lnum"><em class="firstterm">nl</em>
+            : un script d'autonumérotation.</a>
+          </dt>
+          <dt>
+            16.29. <a href="https://abs.traduc.org/abs-fr/ch16s04.html#manview"><em class="firstterm">manview</em> : Visualisation de pages man
+            formatées</a>
+          </dt>
+          <dt>
+            16.30. <a href="https://abs.traduc.org/abs-fr/ch16s05.html#ex48">Utiliser <em class="firstterm">cpio</em> pour déplacer un répertoire complet</a>
+          </dt>
+          <dt>
+            16.31. <a href="https://abs.traduc.org/abs-fr/ch16s05.html#derpm">Déballer une archive
+            <em class="firstterm">rpm</em></a>
+          </dt>
+          <dt>
+            16.32. <a href="https://abs.traduc.org/abs-fr/ch16s05.html#stripc">Supprimer les commentaires
+            des programmes C</a>
+          </dt>
+          <dt>
+            16.33. <a href="https://abs.traduc.org/abs-fr/ch16s05.html#what">Explorer <tt class="filename">/usr/X11R6/bin</tt></a>
+          </dt>
+          <dt>
+            16.34. <a href="https://abs.traduc.org/abs-fr/ch16s05.html#wstrings">Une commande <em class="firstterm">strings</em> <span class="quote">«&nbsp;<span class="quote">améliorée</span>&nbsp;»</span></a>
+          </dt>
+          <dt>
+            16.35. <a href="https://abs.traduc.org/abs-fr/ch16s05.html#filecomp">Utiliser <em class="firstterm">cmp</em> pour comparer deux fichiers à l'intérieur
+            d'un script.</a>
+          </dt>
+          <dt>
+            16.36. <a href="https://abs.traduc.org/abs-fr/ch16s05.html#ex35"><em class="firstterm">basename</em> et <em class="firstterm">dirname</em></a>
+          </dt>
+          <dt>
+            16.37. <a href="https://abs.traduc.org/abs-fr/ch16s05.html#splitcopy">Un script qui se copie
+            lui-même en sections</a>
+          </dt>
+          <dt>
+            16.38. <a href="https://abs.traduc.org/abs-fr/ch16s05.html#fileintegrity">Vérifier l'intégrité
+            d'un fichier</a>
+          </dt>
+          <dt>
+            16.39. <a href="https://abs.traduc.org/abs-fr/ch16s05.html#ex52">Décoder des fichier codés avec
+            uudecode</a>
+          </dt>
+          <dt>
+            16.40. <a href="https://abs.traduc.org/abs-fr/ch16s06.html#spamlookup">Trouver où dénoncer un
+            spammeur</a>
+          </dt>
+          <dt>
+            16.41. <a href="https://abs.traduc.org/abs-fr/ch16s06.html#isspammer">Analyser le domaine d'un
+            courrier indésirable</a>
+          </dt>
+          <dt>
+            16.42. <a href="https://abs.traduc.org/abs-fr/ch16s06.html#quotefetch">Obtenir la cote d'une
+            valeur de bourse</a>
+          </dt>
+          <dt>
+            16.43. <a href="https://abs.traduc.org/abs-fr/ch16s06.html#fc4upd">Mettre à jour FC4</a>
+          </dt>
+          <dt>
+            16.44. <a href="https://abs.traduc.org/abs-fr/ch16s06.html#remote">Utilisation de <em class="firstterm">ssh</em></a>
+          </dt>
+          <dt>
+            16.45. <a href="https://abs.traduc.org/abs-fr/ch16s06.html#selfmailer">Un script qui envoie son
+            fichier source</a>
+          </dt>
+          <dt>
+            16.46. <a href="https://abs.traduc.org/abs-fr/ch16s08.html#primes2">Générer des nombres
+            premiers</a>
+          </dt>
+          <dt>
+            16.47. <a href="https://abs.traduc.org/abs-fr/ch16s08.html#monthlypmt">Paiement mensuel sur une
+            hypothèque</a>
+          </dt>
+          <dt>
+            16.48. <a href="https://abs.traduc.org/abs-fr/ch16s08.html#base">Conversion de base</a>
+          </dt>
+          <dt>
+            16.49. <a href="https://abs.traduc.org/abs-fr/ch16s08.html#altbc">Appeler <em class="firstterm">bc</em> en utilisant un <em class="firstterm">document en ligne</em></a>
+          </dt>
+          <dt>
+            16.50. <a href="https://abs.traduc.org/abs-fr/ch16s08.html#cannon">Calculer PI</a>
+          </dt>
+          <dt>
+            16.51. <a href="https://abs.traduc.org/abs-fr/ch16s08.html#hexconvert">Convertir une valeur
+            décimale en hexadécimal</a>
+          </dt>
+          <dt>
+            16.52. <a href="https://abs.traduc.org/abs-fr/ch16s08.html#factr">Factorisation</a>
+          </dt>
+          <dt>
+            16.53. <a href="https://abs.traduc.org/abs-fr/ch16s08.html#hypot">Calculer l'hypoténuse d'un
+            triangle</a>
+          </dt>
+          <dt>
+            16.54. <a href="https://abs.traduc.org/abs-fr/ch16s09.html#ex53">Utiliser <em class="firstterm">seq</em> pour générer l'incrément d'une boucle</a>
+          </dt>
+          <dt>
+            16.55. <a href="https://abs.traduc.org/abs-fr/ch16s09.html#lettercount">Compteur de lettres</a>
+          </dt>
+          <dt>
+            16.56. <a href="https://abs.traduc.org/abs-fr/ch16s09.html#ex33a">Utiliser <em class="firstterm">getopt</em> pour analyser les paramètres de la ligne
+            de commande</a>
+          </dt>
+          <dt>
+            16.57. <a href="https://abs.traduc.org/abs-fr/ch16s09.html#selfcopy">Un script qui se copie
+            lui-même</a>
+          </dt>
+          <dt>
+            16.58. <a href="https://abs.traduc.org/abs-fr/ch16s09.html#exercisingdd">S'exercer à <em class="firstterm">dd</em></a>
+          </dt>
+          <dt>
+            16.59. <a href="https://abs.traduc.org/abs-fr/ch16s09.html#ddkeypress">Capturer une saisie</a>
+          </dt>
+          <dt>
+            16.60. <a href="https://abs.traduc.org/abs-fr/ch16s09.html#blotout">Effacer les fichiers de
+            façon sûre</a>
+          </dt>
+          <dt>
+            16.61. <a href="https://abs.traduc.org/abs-fr/ch16s09.html#tempfilename">Générateur de nom de
+            fichier</a>
+          </dt>
+          <dt>
+            16.62. <a href="https://abs.traduc.org/abs-fr/ch16s09.html#unitconversion">Convertir des mètres
+            en miles</a>
+          </dt>
+          <dt>
+            16.63. <a href="https://abs.traduc.org/abs-fr/ch16s09.html#m4">Utiliser <em class="firstterm">m4</em></a>
+          </dt>
+          <dt>
+            17.1. <a href="https://abs.traduc.org/abs-fr/ch17.html#setnewpw">Configurer un nouveau mot de
+            passe</a>
+          </dt>
+          <dt>
+            17.2. <a href="https://abs.traduc.org/abs-fr/ch17.html#erase">Configurer un caractère
+            d'<em class="firstterm">effacement</em></a>
+          </dt>
+          <dt>
+            17.3. <a href="https://abs.traduc.org/abs-fr/ch17.html#secretpw"><em class="firstterm">Mot de
+            passe secret</em> : Désactiver l'écho du terminal</a>
+          </dt>
+          <dt>
+            17.4. <a href="https://abs.traduc.org/abs-fr/ch17.html#keypress">Détection de l'appui sur une
+            touche</a>
+          </dt>
+          <dt>
+            17.5. <a href="https://abs.traduc.org/abs-fr/ch17.html#iscan">Vérification d'<em class="firstterm">identd</em> sur un serveur distant</a>
+          </dt>
+          <dt>
+            17.6. <a href="https://abs.traduc.org/abs-fr/ch17.html#killprocess"><em class="firstterm">pidof</em> aide à la suppression d'un processus</a>
+          </dt>
+          <dt>
+            17.7. <a href="https://abs.traduc.org/abs-fr/ch17.html#isomountref">Vérifier une image</a>
+          </dt>
+          <dt>
+            17.8. <a href="https://abs.traduc.org/abs-fr/ch17.html#createfs">Création d'un système de
+            fichiers dans un fichier</a>
+          </dt>
+          <dt>
+            17.9. <a href="https://abs.traduc.org/abs-fr/ch17.html#adddrv">Ajoute un nouveau disque dur</a>
+          </dt>
+          <dt>
+            17.10. <a href="https://abs.traduc.org/abs-fr/ch17.html#rot13a">Utiliser <em class="firstterm">umask</em> pour cacher un fichier en sortie</a>
+          </dt>
+          <dt>
+            17.11. <a href="https://abs.traduc.org/abs-fr/ch17.html#ex55"><em class="firstterm">killall</em>, à partir de <tt class="filename">/etc/rc.d/init.d</tt></a>
+          </dt>
+          <dt>
+            19.1. <a href="https://abs.traduc.org/abs-fr/ch19.html#ex70"><em class="firstterm">broadcast</em> : envoie des messages à chaque
+            personne connectée</a>
+          </dt>
+          <dt>
+            19.2. <a href="https://abs.traduc.org/abs-fr/ch19.html#ex69"><em class="firstterm">fichierstupide</em> : Crée un fichier stupide de deux
+            lignes</a>
+          </dt>
+          <dt>
+            19.3. <a href="https://abs.traduc.org/abs-fr/ch19.html#ex71">Message multi-lignes en utilisant
+            <em class="firstterm">cat</em></a>
+          </dt>
+          <dt>
+            19.4. <a href="https://abs.traduc.org/abs-fr/ch19.html#ex71a">Message multi-lignes, aves les
+            tabulations supprimées</a>
+          </dt>
+          <dt>
+            19.5. <a href="https://abs.traduc.org/abs-fr/ch19.html#ex71b">Document intégré avec paramètres
+            substituables</a>
+          </dt>
+          <dt>
+            19.6. <a href="https://abs.traduc.org/abs-fr/ch19.html#ex72">Télécharger un ensemble de
+            fichiers dans le répertoire de récupération <em class="firstterm">Sunsite</em></a>
+          </dt>
+          <dt>
+            19.7. <a href="https://abs.traduc.org/abs-fr/ch19.html#ex71c">Substitution de paramètres
+            désactivée</a>
+          </dt>
+          <dt>
+            19.8. <a href="https://abs.traduc.org/abs-fr/ch19.html#generatescript">Un script générant un
+            autre script</a>
+          </dt>
+          <dt>
+            19.9. <a href="https://abs.traduc.org/abs-fr/ch19.html#hf">Documents intégrés et fonctions</a>
+          </dt>
+          <dt>
+            19.10. <a href="https://abs.traduc.org/abs-fr/ch19.html#anonheredoc">document intégré
+            <span class="quote">«&nbsp;<span class="quote">anonyme</span>&nbsp;»</span></a>
+          </dt>
+          <dt>
+            19.11. <a href="https://abs.traduc.org/abs-fr/ch19.html#commentblock">Décommenter un bloc de
+            code</a>
+          </dt>
+          <dt>
+            19.12. <a href="https://abs.traduc.org/abs-fr/ch19.html#selfdocument">Un script
+            auto-documenté</a>
+          </dt>
+          <dt>
+            19.13. <a href="https://abs.traduc.org/abs-fr/ch19.html#prependex">Ajouter une ligne au début
+            d'un fichier</a>
+          </dt>
+          <dt>
+            19.14. <a href="https://abs.traduc.org/abs-fr/ch19.html#mailboxgrep">Analyser une boîte
+            mail</a>
+          </dt>
+          <dt>
+            20.1. <a href="https://abs.traduc.org/abs-fr/ch20.html#redir1">Rediriger <tt class="filename">stdin</tt> en utilisant <em class="firstterm">exec</em></a>
+          </dt>
+          <dt>
+            20.2. <a href="https://abs.traduc.org/abs-fr/ch20.html#reassignstdout">Rediriger <tt class="filename">stdout</tt> en utilisant <em class="firstterm">exec</em></a>
+          </dt>
+          <dt>
+            20.3. <a href="https://abs.traduc.org/abs-fr/ch20.html#upperconv">Rediriger à la fois
+            <tt class="filename">stdin</tt> et <tt class="filename">stdout</tt> dans le même script avec <em class="firstterm">exec</em></a>
+          </dt>
+          <dt>
+            20.4. <a href="https://abs.traduc.org/abs-fr/ch20.html#avoidsubshell">Éviter un sous-shell</a>
+          </dt>
+          <dt>
+            20.5. <a href="https://abs.traduc.org/abs-fr/ch20s02.html#redir2">Boucle <em class="firstterm">while</em> redirigée</a>
+          </dt>
+          <dt>
+            20.6. <a href="https://abs.traduc.org/abs-fr/ch20s02.html#redir2a">Autre forme de boucle
+            <em class="firstterm">while</em> redirigée</a>
+          </dt>
+          <dt>
+            20.7. <a href="https://abs.traduc.org/abs-fr/ch20s02.html#redir3">Boucle <em class="firstterm">until</em> redirigée</a>
+          </dt>
+          <dt>
+            20.8. <a href="https://abs.traduc.org/abs-fr/ch20s02.html#redir4">Boucle <em class="firstterm">for</em> redirigée</a>
+          </dt>
+          <dt>
+            20.9. <a href="https://abs.traduc.org/abs-fr/ch20s02.html#redir4a">Rediriger la boucle
+            <em class="firstterm">for</em> (à la fois <tt class="filename">stdin</tt> et <tt class="filename">stdout</tt>)</a>
+          </dt>
+          <dt>
+            20.10. <a href="https://abs.traduc.org/abs-fr/ch20s02.html#redir5">Rediriger un test <em class="firstterm">if/then</em></a>
+          </dt>
+          <dt>
+            20.11. <a href="https://abs.traduc.org/abs-fr/ch20s02.html#namesdata">Fichier de données
+            <em class="firstterm">nom.données</em> pour les exemples
+            ci-dessus</a>
+          </dt>
+          <dt>
+            20.12. <a href="https://abs.traduc.org/abs-fr/ch20s03.html#logevents">Enregistrer des
+            événements</a>
+          </dt>
+          <dt>
+            21.1. <a href="https://abs.traduc.org/abs-fr/ch21.html#subshell">Étendue des variables dans un
+            sous-shell</a>
+          </dt>
+          <dt>
+            21.2. <a href="https://abs.traduc.org/abs-fr/ch21.html#allprofs">Lister les profils
+            utilisateurs</a>
+          </dt>
+          <dt>
+            21.3. <a href="https://abs.traduc.org/abs-fr/ch21.html#parallel-processes">Exécuter des
+            processus en parallèle dans les sous-shells</a>
+          </dt>
+          <dt>
+            22.1. <a href="https://abs.traduc.org/abs-fr/ch22.html#restricted">Exécuter un script en mode
+            restreint</a>
+          </dt>
+          <dt>
+            23.1. <a href="https://abs.traduc.org/abs-fr/ch23.html#wrps">Redirection de bloc de code dans
+            une unique instance</a>
+          </dt>
+          <dt>
+            23.2. <a href="https://abs.traduc.org/abs-fr/ch23.html#psubp">Redirection de la sortie d'une
+            <em class="firstterm">substitution de processus</em> vers une
+            boucle.</a>
+          </dt>
+          <dt>
+            24.1. <a href="https://abs.traduc.org/abs-fr/ch24.html#ex59">Fonctions simples</a>
+          </dt>
+          <dt>
+            24.2. <a href="https://abs.traduc.org/abs-fr/ch24.html#ex60">Fonction prenant des
+            paramètres</a>
+          </dt>
+          <dt>
+            24.3. <a href="https://abs.traduc.org/abs-fr/ch24.html#funccmdlinearg">Fonctions et arguments
+            en ligne de commande passés au script</a>
+          </dt>
+          <dt>
+            24.4. <a href="https://abs.traduc.org/abs-fr/ch24.html#indfunc">Passer une référence indirecte
+            à une fonction</a>
+          </dt>
+          <dt>
+            24.5. <a href="https://abs.traduc.org/abs-fr/ch24.html#dereferencecl">Déréférencer un paramètre
+            passé à une fonction</a>
+          </dt>
+          <dt>
+            24.6. <a href="https://abs.traduc.org/abs-fr/ch24.html#refparams">De nouveau, déréférencer un
+            paramètre passé à une fonction</a>
+          </dt>
+          <dt>
+            24.7. <a href="https://abs.traduc.org/abs-fr/ch24.html#max">Maximum de deux nombres</a>
+          </dt>
+          <dt>
+            24.8. <a href="https://abs.traduc.org/abs-fr/ch24.html#ex61">Convertir des nombres en chiffres
+            romains</a>
+          </dt>
+          <dt>
+            24.9. <a href="https://abs.traduc.org/abs-fr/ch24.html#returntest">Tester les valeurs de retour
+            importantes dans une fonction</a>
+          </dt>
+          <dt>
+            24.10. <a href="https://abs.traduc.org/abs-fr/ch24.html#max2">Comparer deux grands entiers</a>
+          </dt>
+          <dt>
+            24.11. <a href="https://abs.traduc.org/abs-fr/ch24.html#realname">Vrai nom pour un
+            utilisateur</a>
+          </dt>
+          <dt>
+            24.12. <a href="https://abs.traduc.org/abs-fr/ch24s02.html#ex62">Visibilité de la variable
+            locale</a>
+          </dt>
+          <dt>
+            24.13. <a href="https://abs.traduc.org/abs-fr/ch24s02.html#recursiondemo">Démonstration d'une
+            fonction récursive simple</a>
+          </dt>
+          <dt>
+            24.14. <a href="https://abs.traduc.org/abs-fr/ch24s02.html#recursiondemo2">Autre démonstration
+            simple</a>
+          </dt>
+          <dt>
+            24.15. <a href="https://abs.traduc.org/abs-fr/ch24s02.html#ex63">Récursion en utilisant une
+            variable locale</a>
+          </dt>
+          <dt>
+            24.16. <a href="https://abs.traduc.org/abs-fr/ch24s03.html#fibo"><em class="firstterm">La
+            séquence de Fibonacci</em></a>
+          </dt>
+          <dt>
+            24.17. <a href="https://abs.traduc.org/abs-fr/ch24s03.html#hanoi"><em class="firstterm">Les
+            tours d'Hanoi</em></a>
+          </dt>
+          <dt>
+            25.1. <a href="https://abs.traduc.org/abs-fr/ch25.html#al">Alias à l'intérieur d'un script</a>
+          </dt>
+          <dt>
+            25.2. <a href="https://abs.traduc.org/abs-fr/ch25.html#unal"><em class="firstterm">unalias</em>
+            : Configurer et supprimer un alias</a>
+          </dt>
+          <dt>
+            26.1. <a href="https://abs.traduc.org/abs-fr/ch26.html#ex64">Utiliser une <em class="firstterm">liste ET</em> pour tester des arguments de la ligne
+            de commande</a>
+          </dt>
+          <dt>
+            26.2. <a href="https://abs.traduc.org/abs-fr/ch26.html#andlist2">Un autre test des arguments de
+            la ligne de commande en utilisant une <em class="firstterm">liste
+            and</em></a>
+          </dt>
+          <dt>
+            26.3. <a href="https://abs.traduc.org/abs-fr/ch26.html#ex65">Emploi de <em class="firstterm">listes OU</em> en combinaison avec une <em class="firstterm">liste ET</em></a>
+          </dt>
+          <dt>
+            27.1. <a href="https://abs.traduc.org/abs-fr/ch27.html#ex66">Utilisation d'un tableau
+            simple</a>
+          </dt>
+          <dt>
+            27.2. <a href="https://abs.traduc.org/abs-fr/ch27.html#poem">Formatage d'un poème</a>
+          </dt>
+          <dt>
+            27.3. <a href="https://abs.traduc.org/abs-fr/ch27.html#arraystrops">Opérations de chaînes sur
+            des tableaux</a>
+          </dt>
+          <dt>
+            27.4. <a href="https://abs.traduc.org/abs-fr/ch27.html#scriptarray">Charger le contenu d'un
+            script dans un tableau</a>
+          </dt>
+          <dt>
+            27.5. <a href="https://abs.traduc.org/abs-fr/ch27.html#ex67">Quelques propriétés spéciales des
+            tableaux</a>
+          </dt>
+          <dt>
+            27.6. <a href="https://abs.traduc.org/abs-fr/ch27.html#emptyarray">Des tableaux vides et des
+            éléments vides</a>
+          </dt>
+          <dt>
+            27.7. <a href="https://abs.traduc.org/abs-fr/ch27.html#arrayassign">Initialiser des
+            tableaux</a>
+          </dt>
+          <dt>
+            27.8. <a href="https://abs.traduc.org/abs-fr/ch27.html#copyarray">Copier et concaténer des
+            tableaux</a>
+          </dt>
+          <dt>
+            27.9. <a href="https://abs.traduc.org/abs-fr/ch27.html#arrayappend">Plus sur la concaténation
+            de tableaux</a>
+          </dt>
+          <dt>
+            27.10. <a href="https://abs.traduc.org/abs-fr/ch27.html#bubble">Le tri bulle : <span class="foreignphrase"><em class="foreignphrase">Bubble
+            Sort</em></span></a>
+          </dt>
+          <dt>
+            27.11. <a href="https://abs.traduc.org/abs-fr/ch27.html#embarr">Tableaux imbriqués et
+            références indirectes</a>
+          </dt>
+          <dt>
+            27.12. <a href="https://abs.traduc.org/abs-fr/ch27.html#ex68">Le crible d'Ératosthène</a>
+          </dt>
+          <dt>
+            27.13. <a href="https://abs.traduc.org/abs-fr/ch27.html#ex68a">Le crible d'Ératosthène,
+            optimisé</a>
+          </dt>
+          <dt>
+            27.14. <a href="https://abs.traduc.org/abs-fr/ch27.html#stackex">Émuler une pile</a>
+          </dt>
+          <dt>
+            27.15. <a href="https://abs.traduc.org/abs-fr/ch27.html#qfunction">Application complexe des
+            tableaux <span class="emphasis"><em>Exploration d'une étrange
+            série mathématique</em></span></a>
+          </dt>
+          <dt>
+            27.16. <a href="https://abs.traduc.org/abs-fr/ch27.html#twodim">Simuler un tableau à deux
+            dimensions, puis son test</a>
+          </dt>
+          <dt>
+            28.1. <a href="https://abs.traduc.org/abs-fr/ch28.html#indref">Références indirectes aux
+            variables</a>
+          </dt>
+          <dt>
+            28.2. <a href="https://abs.traduc.org/abs-fr/ch28.html#coltotaler2">Passer une référence
+            indirecte à <em class="firstterm">awk</em></a>
+          </dt>
+          <dt>
+            29.1. <a href="https://abs.traduc.org/abs-fr/ch29.html#devtcp">Utiliser <tt class="filename">/dev/tcp</tt> pour corriger des problèmes</a>
+          </dt>
+          <dt>
+            29.2. <a href="https://abs.traduc.org/abs-fr/ch29.html#musicscr">Jouer de la musique</a>
+          </dt>
+          <dt>
+            29.3. <a href="https://abs.traduc.org/abs-fr/ch29s02.html#pidid">Trouver le processus associé à
+            un PID</a>
+          </dt>
+          <dt>
+            29.4. <a href="https://abs.traduc.org/abs-fr/ch29s02.html#constat">État de la connexion</a>
+          </dt>
+          <dt>
+            30.1. <a href="https://abs.traduc.org/abs-fr/ch30.html#testcgi">Affiche l'environnement
+            serveur</a>
+          </dt>
+          <dt>
+            30.2. <a href="https://abs.traduc.org/abs-fr/ch30.html#ipaddresses">Adresses IP</a>
+          </dt>
+          <dt>
+            31.1. <a href="https://abs.traduc.org/abs-fr/ch31.html#cookies">Cacher le cookie jar</a>
+          </dt>
+          <dt>
+            31.2. <a href="https://abs.traduc.org/abs-fr/ch31.html#ex73">Créer un fichier de swap en
+            utilisant <tt class="filename">/dev/zero</tt></a>
+          </dt>
+          <dt>
+            31.3. <a href="https://abs.traduc.org/abs-fr/ch31.html#ramdisk">Créer un disque ram</a>
+          </dt>
+          <dt>
+            32.1. <a href="https://abs.traduc.org/abs-fr/ch32.html#ex74">Un script bogué</a>
+          </dt>
+          <dt>
+            32.2. <a href="https://abs.traduc.org/abs-fr/ch32.html#missingkeyword">Mot clé manquant</a>
+          </dt>
+          <dt>
+            32.3. <a href="https://abs.traduc.org/abs-fr/ch32.html#ex75"><em class="firstterm">test24</em>,
+            un autre script bogué</a>
+          </dt>
+          <dt>
+            32.4. <a href="https://abs.traduc.org/abs-fr/ch32.html#assert">Tester une condition avec un
+            <em class="firstterm">assert</em></a>
+          </dt>
+          <dt>
+            32.5. <a href="https://abs.traduc.org/abs-fr/ch32.html#ex76">Récupérer la sortie</a>
+          </dt>
+          <dt>
+            32.6. <a href="https://abs.traduc.org/abs-fr/ch32.html#online">Nettoyage après un <span class="keycap">Control-C</span></a>
+          </dt>
+          <dt>
+            32.7. <a href="https://abs.traduc.org/abs-fr/ch32.html#progressbar2">Implémentation simple
+            d'une barre de progression</a>
+          </dt>
+          <dt>
+            32.8. <a href="https://abs.traduc.org/abs-fr/ch32.html#vartrace">Suivre une variable</a>
+          </dt>
+          <dt>
+            32.9. <a href="https://abs.traduc.org/abs-fr/ch32.html#multipleproc">Lancer plusieurs processus
+            (sur une machine SMP)</a>
+          </dt>
+          <dt>
+            34.1. <a href="https://abs.traduc.org/abs-fr/ch34.html#badop">Les comparaisons d'entiers et de
+            chaînes ne sont pas équivalentes</a>
+          </dt>
+          <dt>
+            34.2. <a href="https://abs.traduc.org/abs-fr/ch34.html#subpit">Problèmes des sous-shell</a>
+          </dt>
+          <dt>
+            34.3. <a href="https://abs.traduc.org/abs-fr/ch34.html#badread">Envoyer la sortie de <em class="firstterm">echo</em> dans un tube pour un <em class="firstterm">read</em></a>
+          </dt>
+          <dt>
+            36.1. <a href="https://abs.traduc.org/abs-fr/ch36s02.html#ex3"><em class="firstterm">Script
+            d'appel</em></a>
+          </dt>
+          <dt>
+            36.2. <a href="https://abs.traduc.org/abs-fr/ch36s02.html#ex4">Un <em class="firstterm">script
+            d'appel</em> légèrement plus complexe</a>
+          </dt>
+          <dt>
+            36.3. <a href="https://abs.traduc.org/abs-fr/ch36s02.html#loggingwrapper">Un <em class="firstterm">script d'appel</em> générique qui écrit dans un
+            fichier de traces</a>
+          </dt>
+          <dt>
+            36.4. <a href="https://abs.traduc.org/abs-fr/ch36s02.html#prasc">Un <em class="firstterm">script d'appel</em> autour d'un script awk</a>
+          </dt>
+          <dt>
+            36.5. <a href="https://abs.traduc.org/abs-fr/ch36s02.html#coltotaler">Un <em class="firstterm">script d'appel</em> autour d'un autre script awk</a>
+          </dt>
+          <dt>
+            36.6. <a href="https://abs.traduc.org/abs-fr/ch36s02.html#ex56">Perl inclus dans un script
+            <em class="firstterm">Bash</em></a>
+          </dt>
+          <dt>
+            36.7. <a href="https://abs.traduc.org/abs-fr/ch36s02.html#bashandperl">Combinaison de scripts
+            Bash et Perl</a>
+          </dt>
+          <dt>
+            36.8. <a href="https://abs.traduc.org/abs-fr/ch36s04.html#recurse">Un script (inutile) qui
+            s'appelle récursivement</a>
+          </dt>
+          <dt>
+            36.9. <a href="https://abs.traduc.org/abs-fr/ch36s04.html#pbook">Un script (utile) qui
+            s'appelle récursivement</a>
+          </dt>
+          <dt>
+            36.10. <a href="https://abs.traduc.org/abs-fr/ch36s04.html#usrmnt">Un autre script (utile) qui
+            s'appelle récursivement</a>
+          </dt>
+          <dt>
+            36.11. <a href="https://abs.traduc.org/abs-fr/ch36s05.html#ex30a">Une base de données
+            d'adresses <span class="quote">«&nbsp;<span class="quote">colorisée</span>&nbsp;»</span></a>
+          </dt>
+          <dt>
+            36.12. <a href="https://abs.traduc.org/abs-fr/ch36s05.html#drawbox">Dessiner une boîte</a>
+          </dt>
+          <dt>
+            36.13. <a href="https://abs.traduc.org/abs-fr/ch36s05.html#colorecho">Afficher du texte
+            colorisé</a>
+          </dt>
+          <dt>
+            36.14. <a href="https://abs.traduc.org/abs-fr/ch36s05.html#horserace">Un jeu de <span class="quote">«&nbsp;<span class="quote">courses de
+            chevaux</span>&nbsp;»</span></a>
+          </dt>
+          <dt>
+            36.15. <a href="https://abs.traduc.org/abs-fr/ch36s07.html#progressbar">Barre de
+            progression</a>
+          </dt>
+          <dt>
+            36.16. <a href="https://abs.traduc.org/abs-fr/ch36s07.html#multiplication">Astuce de valeur de
+            retour</a>
+          </dt>
+          <dt>
+            36.17. <a href="https://abs.traduc.org/abs-fr/ch36s07.html#sumproduct">Une astuce permettant de
+            renvoyer plus d'une valeur de retour</a>
+          </dt>
+          <dt>
+            36.18. <a href="https://abs.traduc.org/abs-fr/ch36s07.html#arrfunc">Passer et renvoyer un
+            tableau</a>
+          </dt>
+          <dt>
+            36.19. <a href="https://abs.traduc.org/abs-fr/ch36s07.html#agram">Un peu de fun avec des
+            anagrammes</a>
+          </dt>
+          <dt>
+            36.20. <a href="https://abs.traduc.org/abs-fr/ch36s07.html#dialog">Widgets appelés à partir
+            d'un script shell</a>
+          </dt>
+          <dt>
+            36.21. <a href="https://abs.traduc.org/abs-fr/ch36s09.html#testsuite">Suite de test</a>
+          </dt>
+          <dt>
+            37.1. <a href="https://abs.traduc.org/abs-fr/ch37.html#ex77">Expansion d'une chaîne de
+            caractères</a>
+          </dt>
+          <dt>
+            37.2. <a href="https://abs.traduc.org/abs-fr/ch37.html#ex78">Références de variables indirectes
+            - la nouvelle façon</a>
+          </dt>
+          <dt>
+            37.3. <a href="https://abs.traduc.org/abs-fr/ch37.html#resistor">Simple application de base de
+            données, utilisant les références de variables indirectes</a>
+          </dt>
+          <dt>
+            37.4. <a href="https://abs.traduc.org/abs-fr/ch37.html#cards">Utiliser des tableaux et autres
+            astuces pour gérer quatre mains aléatoires dans un jeu de
+            cartes</a>
+          </dt>
+          <dt>
+            37.5. <a href="https://abs.traduc.org/abs-fr/ch37s03.html#fetchaddress">Petite base de données
+            d'adresses</a>
+          </dt>
+          <dt>
+            37.6. <a href="https://abs.traduc.org/abs-fr/ch37s03.html#fetchaddress2">Base de données
+            d'adresses un peu plus élaborée</a>
+          </dt>
+          <dt>
+            37.7. <a href="https://abs.traduc.org/abs-fr/ch37s03.html#case4">Tests de caractères</a>
+          </dt>
+          <dt>
+            37.8. <a href="https://abs.traduc.org/abs-fr/ch37s03.html#readn">Lecture de N caractères</a>
+          </dt>
+          <dt>
+            37.9. <a href="https://abs.traduc.org/abs-fr/ch37s03.html#herecommsub">Utilisation d'un
+            <em class="firstterm">here document</em> pour assigner une valeur
+            à une variable</a>
+          </dt>
+          <dt>
+            37.10. <a href="https://abs.traduc.org/abs-fr/ch37s03.html#lastpipeopt">Envoyer (par pipe) un
+            flux d'entrée vers read</a>
+          </dt>
+          <dt>
+            37.11. <a href="https://abs.traduc.org/abs-fr/ch37s03.html#negarray">Indices de tableau
+            négatifs</a>
+          </dt>
+          <dt>
+            37.12. <a href="https://abs.traduc.org/abs-fr/ch37s03.html#negoffset">Paramètre négatif dans
+            une extraction de chaîne</a>
+          </dt>
+          <dt>
+            A.1. <a href="https://abs.traduc.org/abs-fr/apa.html#mailformat"><em class="firstterm">mailformat</em> : Formater un courrier
+            électronique</a>
+          </dt>
+          <dt>
+            A.2. <a href="https://abs.traduc.org/abs-fr/apa.html#rn"><em class="firstterm">rn</em> : Un
+            utilitaire simple pour renommer des fichiers</a>
+          </dt>
+          <dt>
+            A.3. <a href="https://abs.traduc.org/abs-fr/apa.html#blankrename"><em class="firstterm">blank-rename</em> : Renommer les fichiers dont le nom
+            contient des espaces</a>
+          </dt>
+          <dt>
+            A.4. <a href="https://abs.traduc.org/abs-fr/apa.html#encryptedpw"><em class="firstterm">encryptedpw</em> : Charger un fichier sur un site
+            ftp, en utilisant un mot de passe chiffré en local</a>
+          </dt>
+          <dt>
+            A.5. <a href="https://abs.traduc.org/abs-fr/apa.html#copycd"><em class="firstterm">copy-cd</em>
+            : Recopier un CD de données</a>
+          </dt>
+          <dt>
+            A.6. <a href="https://abs.traduc.org/abs-fr/apa.html#collatz">Séries de Collatz</a>
+          </dt>
+          <dt>
+            A.7. <a href="https://abs.traduc.org/abs-fr/apa.html#daysbetween"><em class="firstterm">days-between</em> : Calculer le nombre de jours entre
+            deux dates</a>
+          </dt>
+          <dt>
+            A.8. <a href="https://abs.traduc.org/abs-fr/apa.html#makedict"><em class="firstterm">makedict</em> : Créer un <em class="firstterm">dictionnaire</em></a>
+          </dt>
+          <dt>
+            A.9. <a href="https://abs.traduc.org/abs-fr/apa.html#soundex"><em class="firstterm">soundex</em> : Conversion phonétique</a>
+          </dt>
+          <dt>
+            A.10. <a href="https://abs.traduc.org/abs-fr/apa.html#lifeslow"><em class="firstterm">Le Jeu de
+            la Vie</em></a>
+          </dt>
+          <dt>
+            A.11. <a href="https://abs.traduc.org/abs-fr/apa.html#gen0data">Fichier de données pour le
+            <em class="firstterm">Jeu de la Vie</em></a>
+          </dt>
+          <dt>
+            A.12. <a href="https://abs.traduc.org/abs-fr/apa.html#behead"><em class="firstterm">behead</em>: Supprimer les en-têtes des courriers
+            électroniques et des nouvelles</a>
+          </dt>
+          <dt>
+            A.13. <a href="https://abs.traduc.org/abs-fr/apa.html#pw"><em class="firstterm">password</em>:
+            Générer des mots de passe aléatoires de 8 caractères</a>
+          </dt>
+          <dt>
+            A.14. <a href="https://abs.traduc.org/abs-fr/apa.html#fifo"><em class="firstterm">fifo</em>:
+            Faire des sauvegardes journalières, avec des tubes nommés</a>
+          </dt>
+          <dt>
+            A.15. <a href="https://abs.traduc.org/abs-fr/apa.html#primes">Générer des nombres premiers en
+            utilisant l'opérateur modulo</a>
+          </dt>
+          <dt>
+            A.16. <a href="https://abs.traduc.org/abs-fr/apa.html#tree"><em class="firstterm">tree</em>:
+            Afficher l'arborescence d'un répertoire</a>
+          </dt>
+          <dt>
+            A.17. <a href="https://abs.traduc.org/abs-fr/apa.html#tree2"><em class="firstterm">tree2</em> :
+            un autre script d'arborescence de répertoires</a>
+          </dt>
+          <dt>
+            A.18. <a href="https://abs.traduc.org/abs-fr/apa.html#string"><em class="firstterm">string</em>: Manipuler les chaînes de caractères
+            comme en C</a>
+          </dt>
+          <dt>
+            A.19. <a href="https://abs.traduc.org/abs-fr/apa.html#directoryinfo">Informations sur les
+            répertoires</a>
+          </dt>
+          <dt>
+            A.20. <a href="https://abs.traduc.org/abs-fr/apa.html#hashlib">Bibliothèque de fonctions de
+            hachage</a>
+          </dt>
+          <dt>
+            A.21. <a href="https://abs.traduc.org/abs-fr/apa.html#hashexample">Coloriser du texte en
+            utilisant les fonctions de hachage</a>
+          </dt>
+          <dt>
+            A.22. <a href="https://abs.traduc.org/abs-fr/apa.html#hashex2">Pour en savoir plus sur les
+            fonctions de hachage</a>
+          </dt>
+          <dt>
+            A.23. <a href="https://abs.traduc.org/abs-fr/apa.html#usbinst">Monter des périphériques de
+            stockage USB</a>
+          </dt>
+          <dt>
+            A.24. <a href="https://abs.traduc.org/abs-fr/apa.html#tohtml">Convertir en HTML</a>
+          </dt>
+          <dt>
+            A.25. <a href="https://abs.traduc.org/abs-fr/apa.html#archivweblogs">Préserver les weblogs</a>
+          </dt>
+          <dt>
+            A.26. <a href="https://abs.traduc.org/abs-fr/apa.html#protectliteral">Protéger les chaînes
+            littérales</a>
+          </dt>
+          <dt>
+            A.27. <a href="https://abs.traduc.org/abs-fr/apa.html#unprotectliteral">Ne pas protéger les
+            chaînes littérales</a>
+          </dt>
+          <dt>
+            A.28. <a href="https://abs.traduc.org/abs-fr/apa.html#isspammer2">Identification d'un
+            spammer</a>
+          </dt>
+          <dt>
+            A.29. <a href="https://abs.traduc.org/abs-fr/apa.html#whx">Chasse aux spammeurs</a>
+          </dt>
+          <dt>
+            A.30. <a href="https://abs.traduc.org/abs-fr/apa.html#wgetter2">Rendre <em class="firstterm">wget</em> plus facile à utiliser</a>
+          </dt>
+          <dt>
+            A.31. <a href="https://abs.traduc.org/abs-fr/apa.html#bashpodder">Un script de <em class="firstterm">podcasting</em></a>
+          </dt>
+          <dt>
+            A.32. <a href="https://abs.traduc.org/abs-fr/apa.html#nightlybackup">Sauvegarde de nuit pour un
+            disque firewire</a>
+          </dt>
+          <dt>
+            A.33. <a href="https://abs.traduc.org/abs-fr/apa.html#cdll">Une commande <em class="firstterm">cd</em> étendue</a>
+          </dt>
+          <dt>
+            A.34. <a href="https://abs.traduc.org/abs-fr/apa.html#soundcardon">Un script de configuration
+            d'une carte son</a>
+          </dt>
+          <dt>
+            A.35. <a href="https://abs.traduc.org/abs-fr/apa.html#findsplit">Localise les paragraphes
+            divisés dans un fichier texte</a>
+          </dt>
+          <dt>
+            A.36. <a href="https://abs.traduc.org/abs-fr/apa.html#insertionsort">Tri d'insertion</a>
+          </dt>
+          <dt>
+            A.37. <a href="https://abs.traduc.org/abs-fr/apa.html#stddev">Écart-type</a>
+          </dt>
+          <dt>
+            A.38. <a href="https://abs.traduc.org/abs-fr/apa.html#padsw">Générateur de fichiers <em class="firstterm">pad</em> pour les auteurs de shareware</a>
+          </dt>
+          <dt>
+            A.39. <a href="https://abs.traduc.org/abs-fr/apa.html#maned">Éditeur de <em class="firstterm">man page</em></a>
+          </dt>
+          <dt>
+            A.40. <a href="https://abs.traduc.org/abs-fr/apa.html#petals">Pétales autour d'une rose</a>
+          </dt>
+          <dt>
+            A.41. <a href="https://abs.traduc.org/abs-fr/apa.html#qky">Quacky : un jeu de mots de type
+            Perquackey</a>
+          </dt>
+          <dt>
+            A.42. <a href="https://abs.traduc.org/abs-fr/apa.html#nim">Nim</a>
+          </dt>
+          <dt>
+            A.43. <a href="https://abs.traduc.org/abs-fr/apa.html#stopwatch">Chronomètre en ligne de
+            commande</a>
+          </dt>
+          <dt>
+            A.44. <a href="https://abs.traduc.org/abs-fr/apa.html#homework">Création de devoirs sur la
+            programmation shell en général</a>
+          </dt>
+          <dt>
+            A.45. <a href="https://abs.traduc.org/abs-fr/apa.html#ktour">Le Circuit du Chevalier</a>
+          </dt>
+          <dt>
+            A.46. <a href="https://abs.traduc.org/abs-fr/apa.html#msquare">Carrés magiques</a>
+          </dt>
+          <dt>
+            A.47. <a href="https://abs.traduc.org/abs-fr/apa.html#fifteen">Taquin</a>
+          </dt>
+          <dt>
+            A.48. <a href="https://abs.traduc.org/abs-fr/apa.html#hanoi2"><em class="firstterm">Tours de
+            Hanoi, version graphique</em></a>
+          </dt>
+          <dt>
+            A.49. <a href="https://abs.traduc.org/abs-fr/apa.html#hanoi2a"><em class="firstterm">Tours de
+            Hanoi, autre version graphique</em></a>
+          </dt>
+          <dt>
+            A.50. <a href="https://abs.traduc.org/abs-fr/apa.html#usegetopt">Autre version du script
+            getopt-simple.sh</a>
+          </dt>
+          <dt>
+            A.51. <a href="https://abs.traduc.org/abs-fr/apa.html#usegetopt2">La version de l'exemple
+            <em class="firstterm">UseGetOpt.sh</em> utilisée dans l'appendice
+            de complétion par Tab</a>
+          </dt>
+          <dt>
+            A.52. <a href="https://abs.traduc.org/abs-fr/apa.html#showallc">Voir tour à tour tous les fonds
+            colorés existants</a>
+          </dt>
+          <dt>
+            A.53. <a href="https://abs.traduc.org/abs-fr/apa.html#samorse">Pratiquer le code Morse</a>
+          </dt>
+          <dt>
+            A.54. <a href="https://abs.traduc.org/abs-fr/apa.html#base64">Encoder/décoder le Base64</a>
+          </dt>
+          <dt>
+            A.55. <a href="https://abs.traduc.org/abs-fr/apa.html#gronsfeld">L'algorithme de chiffrement de
+            Cronsfeld</a>
+          </dt>
+          <dt>
+            A.56. <a href="https://abs.traduc.org/abs-fr/apa.html#basicsreviewed">Les bases revisitées</a>
+          </dt>
+          <dt>
+            C.1. <a href="https://abs.traduc.org/abs-fr/apcs02.html#lettercount2">Compteur d'occurences des
+            lettres</a>
+          </dt>
+          <dt>
+            I.1. <a href="https://abs.traduc.org/abs-fr/api.html#usegetoptex">Completion script for
+            <em class="firstterm">UseGetOpt.sh</em></a>
+          </dt>
+          <dt>
+            L.1. <a href="https://abs.traduc.org/abs-fr/apl.html#bashrc">Exemple de fichier <tt class="filename">.bashrc</tt></a>
+          </dt>
+          <dt>
+            L.2. <a href="https://abs.traduc.org/abs-fr/apl.html#bashprof">Fichier <tt class="filename">.bash_profile</tt></a>
+          </dt>
+          <dt>
+            M.1. <a href="https://abs.traduc.org/abs-fr/apm.html#VIEWDAT">VIEWDATA.BAT : Fichier Batch
+            DOS</a>
+          </dt>
+          <dt>
+            M.2. <a href="https://abs.traduc.org/abs-fr/apm.html#viewdata"><em class="firstterm">viewdata.sh</em> : Conversion du script shell
+            VIEWDATA.BAT</a>
+          </dt>
+          <dt>
+            T.1. <a href="https://abs.traduc.org/abs-fr/apt.html#asciish">Un script qui génère une table
+            ASCII</a>
+          </dt>
+        </dl>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="next">
+          <a accesskey="n" href="https://abs.traduc.org/abs-fr/pt01.html" title="Introduction">Suivant</a>
+          <p>
+            Introduction
+          </p>
+        </li>
+        <li class="up">.
+        </li>
+        <li class="home">.
+        </li>
+      </ul>
+    </div>
+  
+
+</body></html>
