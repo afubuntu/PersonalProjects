@@ -233,93 +233,93 @@ create or replace function sp_feed_ctcleanmstats
 
 			_insert_count:=0;
 			loop
-			fetch _alt_cursor into _stats_record;
-			exit when not found;
+				fetch _alt_cursor into _stats_record;
+				exit when not found;
 
-			if not exists(
-				select 1 from ctenniscleanstats
-				where  ((player1=_stats_record.player1 and player2=_stats_record.player2 and score=_stats_record.score)
-					or (_stats_record.player1=player2 and _stats_record.player2=player1 and _stats_record.score=fn_rscore(score)))
-				   and ((_stats_record.startdate>=startdate and _stats_record.enddate<=enddate)
-				   	or (_stats_record.startdate+interval '1 day'>=startdate and _stats_record.enddate+interval '1 day'<=enddate)
-				   	or (_stats_record.startdate+interval '-1 day'>=startdate and _stats_record.enddate+interval '-1 day'<=enddate))
-				   and _stats_record.tournament not in ('ATP Cup','Laver Cup')
-			       and _stats_record.tournament not like '%WTA Elite Trophy%'
-			       and _stats_record.tournament not like '%WTA Finals%'
-			       and _stats_record.tournament not like '%ATP Finals%'
-				         ) then
+				if not exists(
+					select 1 from ctenniscleanstats
+					where  ((player1=_stats_record.player1 and player2=_stats_record.player2 and score=_stats_record.score)
+						or (_stats_record.player1=player2 and _stats_record.player2=player1 and _stats_record.score=fn_rscore(score)))
+					   and ((_stats_record.startdate>=startdate and _stats_record.enddate<=enddate)
+					   	or (_stats_record.startdate+interval '1 day'>=startdate and _stats_record.enddate+interval '1 day'<=enddate)
+					   	or (_stats_record.startdate+interval '-1 day'>=startdate and _stats_record.enddate+interval '-1 day'<=enddate))
+					   and _stats_record.tournament not in ('ATP Cup','Laver Cup')
+				       and _stats_record.tournament not like '%WTA Elite Trophy%'
+				       and _stats_record.tournament not like '%WTA Finals%'
+				       and _stats_record.tournament not like '%ATP Finals%'
+					         ) then
 
-				_insert_count:=_insert_count+1;
-				insert into ctenniscleanstats
-				(
-					startdate,
-					enddate,
-					player1,
-					player2,
-					tournament,
-					tournament_category,
-					surface,
-					round,
-					score,
-					player_sets_won1,
-					player_sets_won2,
-					player_games_won1,
-					player_games_won2,
-					total_serv1,
-					total_serv2,       
-					first_serv1,
-					first_serv2,
-					first_serv_won1,
-					first_serv_won2,
-					second_serv_won1,
-					second_serv_won2,
-					total_break_points1,
-					total_break_points2,
-					break_points_won1,
-					break_points_won2,
-					double_fault1,
-					double_fault2,
-					aces1,
-					aces2,
-					source,
-					createdon,
-					updatedon
-				)
-				select
-					_stats_record.startdate,
-					_stats_record.enddate,
-					_stats_record.player1,
-					_stats_record.player2,
-					_stats_record.tournament,
-					_stats_record.tournament_category,
-					_stats_record.surface,
-					_stats_record.round,
-					_stats_record.score,
-					_stats_record.player_sets_won1,
-					_stats_record.player_sets_won2,
-					_stats_record.player_games_won1,
-					_stats_record.player_games_won2,
-					_stats_record.total_serv1,
-					_stats_record.total_serv2,       
-					_stats_record.first_serv1,
-					_stats_record.first_serv2,
-					_stats_record.first_serv_won1,
-					_stats_record.first_serv_won2,
-					_stats_record.second_serv_won1,
-					_stats_record.second_serv_won2,
-					_stats_record.total_break_points1,
-					_stats_record.total_break_points2,
-					_stats_record.break_points_won1,
-					_stats_record.break_points_won2,
-					_stats_record.double_fault1,
-					_stats_record.double_fault2,
-					_stats_record.aces1,
-					_stats_record.aces2,
-					_stats_record.source,
-					_stats_record.createdon,
-					current_timestamp;
-				raise notice 'Insertion - stats : % : {%; %; %; %; %}',_insert_count,_stats_record.startdate,_stats_record.player1,_stats_record.player2,_stats_record.tournament,_stats_record.score;
-			end if;
+					_insert_count:=_insert_count+1;
+					insert into ctenniscleanstats
+					(
+						startdate,
+						enddate,
+						player1,
+						player2,
+						tournament,
+						tournament_category,
+						surface,
+						round,
+						score,
+						player_sets_won1,
+						player_sets_won2,
+						player_games_won1,
+						player_games_won2,
+						total_serv1,
+						total_serv2,       
+						first_serv1,
+						first_serv2,
+						first_serv_won1,
+						first_serv_won2,
+						second_serv_won1,
+						second_serv_won2,
+						total_break_points1,
+						total_break_points2,
+						break_points_won1,
+						break_points_won2,
+						double_fault1,
+						double_fault2,
+						aces1,
+						aces2,
+						source,
+						createdon,
+						updatedon
+					)
+					select
+						_stats_record.startdate,
+						_stats_record.enddate,
+						_stats_record.player1,
+						_stats_record.player2,
+						_stats_record.tournament,
+						_stats_record.tournament_category,
+						_stats_record.surface,
+						_stats_record.round,
+						_stats_record.score,
+						_stats_record.player_sets_won1,
+						_stats_record.player_sets_won2,
+						_stats_record.player_games_won1,
+						_stats_record.player_games_won2,
+						_stats_record.total_serv1,
+						_stats_record.total_serv2,       
+						_stats_record.first_serv1,
+						_stats_record.first_serv2,
+						_stats_record.first_serv_won1,
+						_stats_record.first_serv_won2,
+						_stats_record.second_serv_won1,
+						_stats_record.second_serv_won2,
+						_stats_record.total_break_points1,
+						_stats_record.total_break_points2,
+						_stats_record.break_points_won1,
+						_stats_record.break_points_won2,
+						_stats_record.double_fault1,
+						_stats_record.double_fault2,
+						_stats_record.aces1,
+						_stats_record.aces2,
+						_stats_record.source,
+						_stats_record.createdon,
+						current_timestamp;
+					raise notice 'Insertion - stats : % : {%; %; %; %; %}',_insert_count,_stats_record.startdate,_stats_record.player1,_stats_record.player2,_stats_record.tournament,_stats_record.score;
+				end if;
 			end loop;
 			close _alt_cursor;
 		else
@@ -531,93 +531,93 @@ create or replace function sp_feed_ctcleanmstats
 
 			_insert_count:=0;
 			loop
-			fetch _alt_cursor into _stats_record;
-			exit when not found;
+				fetch _alt_cursor into _stats_record;
+				exit when not found;
 
-			if not exists(
-				select 1 from ctenniscleanstats
-				where  ((player1=_stats_record.player1 and player2=_stats_record.player2 and score=_stats_record.score)
-					or (_stats_record.player1=player2 and _stats_record.player2=player1 and _stats_record.score=fn_rscore(score)))
-				   and ((_stats_record.startdate>=startdate and _stats_record.enddate<=enddate)
-				   	or (_stats_record.startdate+interval '1 day'>=startdate and _stats_record.enddate+interval '1 day'<=enddate)
-				   	or (_stats_record.startdate+interval '-1 day'>=startdate and _stats_record.enddate+interval '-1 day'<=enddate))
-				   and _stats_record.tournament not in ('ATP Cup','Laver Cup')
-			       and _stats_record.tournament not like '%WTA Elite Trophy%'
-			       and _stats_record.tournament not like '%WTA Finals%'
-			       and _stats_record.tournament not like '%ATP Finals%'
-				         ) then
+				if not exists(
+					select 1 from ctenniscleanstats
+					where  ((player1=_stats_record.player1 and player2=_stats_record.player2 and score=_stats_record.score)
+						or (_stats_record.player1=player2 and _stats_record.player2=player1 and _stats_record.score=fn_rscore(score)))
+					   and ((_stats_record.startdate>=startdate and _stats_record.enddate<=enddate)
+					   	or (_stats_record.startdate+interval '1 day'>=startdate and _stats_record.enddate+interval '1 day'<=enddate)
+					   	or (_stats_record.startdate+interval '-1 day'>=startdate and _stats_record.enddate+interval '-1 day'<=enddate))
+					   and _stats_record.tournament not in ('ATP Cup','Laver Cup')
+				       and _stats_record.tournament not like '%WTA Elite Trophy%'
+				       and _stats_record.tournament not like '%WTA Finals%'
+				       and _stats_record.tournament not like '%ATP Finals%'
+					         ) then
 
-				_insert_count:=_insert_count+1;
-				insert into ctenniscleanstats
-				(
-					startdate,
-					enddate,
-					player1,
-					player2,
-					tournament,
-					tournament_category,
-					surface,
-					round,
-					score,
-					player_sets_won1,
-					player_sets_won2,
-					player_games_won1,
-					player_games_won2,
-					total_serv1,
-					total_serv2,       
-					first_serv1,
-					first_serv2,
-					first_serv_won1,
-					first_serv_won2,
-					second_serv_won1,
-					second_serv_won2,
-					total_break_points1,
-					total_break_points2,
-					break_points_won1,
-					break_points_won2,
-					double_fault1,
-					double_fault2,
-					aces1,
-					aces2,
-					source,
-					createdon,
-					updatedon
-				)
-				select
-					_stats_record.startdate,
-					_stats_record.enddate,
-					_stats_record.player1,
-					_stats_record.player2,
-					_stats_record.tournament,
-					_stats_record.tournament_category,
-					_stats_record.surface,
-					_stats_record.round,
-					_stats_record.score,
-					_stats_record.player_sets_won1,
-					_stats_record.player_sets_won2,
-					_stats_record.player_games_won1,
-					_stats_record.player_games_won2,
-					_stats_record.total_serv1,
-					_stats_record.total_serv2,       
-					_stats_record.first_serv1,
-					_stats_record.first_serv2,
-					_stats_record.first_serv_won1,
-					_stats_record.first_serv_won2,
-					_stats_record.second_serv_won1,
-					_stats_record.second_serv_won2,
-					_stats_record.total_break_points1,
-					_stats_record.total_break_points2,
-					_stats_record.break_points_won1,
-					_stats_record.break_points_won2,
-					_stats_record.double_fault1,
-					_stats_record.double_fault2,
-					_stats_record.aces1,
-					_stats_record.aces2,
-					_stats_record.source,
-					_stats_record.createdon,
-					current_timestamp;
-				raise notice 'Insertion - stats : % : {%; %; %; %; %}',_insert_count,_stats_record.startdate,_stats_record.player1,_stats_record.player2,_stats_record.tournament,_stats_record.score;
-			end if;
+					_insert_count:=_insert_count+1;
+					insert into ctenniscleanstats
+					(
+						startdate,
+						enddate,
+						player1,
+						player2,
+						tournament,
+						tournament_category,
+						surface,
+						round,
+						score,
+						player_sets_won1,
+						player_sets_won2,
+						player_games_won1,
+						player_games_won2,
+						total_serv1,
+						total_serv2,       
+						first_serv1,
+						first_serv2,
+						first_serv_won1,
+						first_serv_won2,
+						second_serv_won1,
+						second_serv_won2,
+						total_break_points1,
+						total_break_points2,
+						break_points_won1,
+						break_points_won2,
+						double_fault1,
+						double_fault2,
+						aces1,
+						aces2,
+						source,
+						createdon,
+						updatedon
+					)
+					select
+						_stats_record.startdate,
+						_stats_record.enddate,
+						_stats_record.player1,
+						_stats_record.player2,
+						_stats_record.tournament,
+						_stats_record.tournament_category,
+						_stats_record.surface,
+						_stats_record.round,
+						_stats_record.score,
+						_stats_record.player_sets_won1,
+						_stats_record.player_sets_won2,
+						_stats_record.player_games_won1,
+						_stats_record.player_games_won2,
+						_stats_record.total_serv1,
+						_stats_record.total_serv2,       
+						_stats_record.first_serv1,
+						_stats_record.first_serv2,
+						_stats_record.first_serv_won1,
+						_stats_record.first_serv_won2,
+						_stats_record.second_serv_won1,
+						_stats_record.second_serv_won2,
+						_stats_record.total_break_points1,
+						_stats_record.total_break_points2,
+						_stats_record.break_points_won1,
+						_stats_record.break_points_won2,
+						_stats_record.double_fault1,
+						_stats_record.double_fault2,
+						_stats_record.aces1,
+						_stats_record.aces2,
+						_stats_record.source,
+						_stats_record.createdon,
+						current_timestamp;
+					raise notice 'Insertion - stats : % : {%; %; %; %; %}',_insert_count,_stats_record.startdate,_stats_record.player1,_stats_record.player2,_stats_record.tournament,_stats_record.score;
+				end if;
 			end loop;
 			close _alt_cursor;
 		end if;
