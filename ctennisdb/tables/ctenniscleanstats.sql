@@ -14,6 +14,7 @@ begin
         enddate date,
         player1 varchar(200),
         player2 varchar(200),
+        gender varchar(1),
         tournament varchar(200),
         tournament_category varchar(100),
         surface varchar(200),
