@@ -3384,12 +3384,10 @@ class SingleWomenLiveTennisDataClass(AbstractTennisDataClass):
 
 ######################################################################### Class cTennisRunProcess ################################################################################
 class cTennisRunProcess:
-	dataSourceDico={'smo':SingleMenOfficialTennisDataClass,
-					'sml':SingleMenLiveTennisDataClass,
-					'swo':SingleWomenOfficialTennisDataClass,
-					'swl':SingleWomenLiveTennisDataClass}
+	dataSourceDico={'smo':SingleMenOfficialTennisDataClass,'sml':SingleMenLiveTennisDataClass,'swo':SingleWomenOfficialTennisDataClass,'swl':SingleWomenLiveTennisDataClass}
+	dataSourceLinksDico={'smo':'https://www.atptour.com','swo':'https://www.wtatennis.com','sml':'https://www.atptour.com','swl':'https://www.wtatennis.com'}
 
-	def __init__(self,pool_size=4,subset_count=2,_start=0,_end=-1,data_source='smo',log_file='main.log',_db_config_file='cTennisDbConnection.ini',_db_environ='DEV_DB',date_range=[],players_list=[]):
+	def __init__(self,pool_size=4,subset_count=2,_start=0,_end=-1,data_source='smo',log_file='main.log',_db_config_file='cTennisDbConnection.ini',_db_environ='DEV_DB',date_range=[],players_list=[],_split=0.5):
 		self.__internalPoolOfProcesses=None
 		self.__playersList=players_list
 		self.__dateRange=date_range
@@ -3401,6 +3399,7 @@ class cTennisRunProcess:
 		self.__logFile=log_file
 		self.__dbConfigFile=_db_config_file
 		self.__dbEnviron=_db_environ
+		self.__split=_split
 
 	def __removeLogFile(self):
 		_abs_path=os.path.abspath(self.__logFile)
@@ -3451,7 +3450,65 @@ class cTennisRunProcess:
 		for t in pool_stats:
 			print(f'Thread : {t} :: Usage : {pool_stats[t]}')
 		print(f'[{multiprocessing.current_process().name}] The extraction and insertion of matches stats took : {t1}')
-		
+	
+	@staticmethod
+	def __getControlDates(_source='https://www.atptour.com',_min_dates='2010-01-01',_connection_file='cTennisDbConnection.ini',_environ='DEV_DB'):
+		_control_dates=[]
+		db=cTennisDb.ctennisDbClass(_connection_file=_connection_file,_environ=_environ)
+		if db.connectWithConfig():
+			db.execute(f"select ctstartdate,max(ctenddate) ctenddate from ctennismatchesstats where ctstatsource='{_source}' and ctstartdate>='{_min_dates}' group by ctstartdate order by ctenddate")
+			_r=db.fetchone()
+			while _r:
+				_control_dates.append(_r[1])
+				_r=db.fetchone()
+		db.close()
+		return _control_dates
+
+	@staticmethod
+	def __feedCleanStatsProducer(_source='https://www.atptour.com',_min_dates='2010-01-01',_connection_file='cTennisDbConnection.ini',_environ='DEV_DB',date_range=[],_split=0.5,_control_dates=[]):
+		if not date_range:
+			date_range=[_min_dates,datetime.date.today().strftime('%Y-%m-%d')]
+		d0,d1=datetime.datetime.strptime(date_range[0],'%Y-%m-%d').date(),datetime.datetime.strptime(date_range[1],'%Y-%m-%d').date()
+		res=[]
+		d0i=None
+		_split=int(365*_split)
+
+		if not _control_dates:
+			_control_dates=cTennisRunProcess.__getControlDates(_source=_source,_min_dates=_min_dates,_connection_file=_connection_file,_environ=_environ)
+		_clen=len(_control_dates)
+		_cur_index=0
+		while d0<d1:
+			d0i=d0+datetime.timedelta(days=_split)
+			while _cur_index<_clen:
+				if d0i<=_control_dates[_cur_index]:
+					d0i=_control_dates[_cur_index]
+					break
+				else:
+					_cur_index+=1
+			res.append([d0.strftime('%Y-%m-%d'),d0i.strftime('%Y-%m-%d')])
+			d0=d0i+datetime.timedelta(days=1)
+		return res
+
+	def test__feedCleanStatsProducer(self):
+		print(self.__feedCleanStatsProducer(_source=cTennisRunProcess.dataSourceLinksDico[self.__dataSource],_min_dates='2010-01-01',_connection_file=self.__dbConfigFile,_environ=self.__dbEnviron,_split=self.__split))
+
+	@staticmethod
+	def __feedCleanStatsConsumer(_connection_file='cTennisDbConnection.ini',_environ='DEV_DB',_ctcode=None,_ctgender='M',date_range=[]):
+		try:
+			db=cTennisDb.ctennisDbClass(_connection_file=_connection_file,_environ=_environ)
+			if db.connectWithConfig():
+				print(f'[{multiprocessing.current_process().name}] Connection to the database is successful. Insertion of : {date_range}')
+
+				db.autocommit=True
+				_ctstartdate=datetime.datetime.strptime(date_range[0],'%Y-%m-%d').date()
+				_ctenddate=datetime.datetime.strptime(date_range[1],'%Y-%m-%d').date()
+				db.callproc('sp_feed_ctcleanmstats', (_ctcode,_ctstartdate,_ctenddate,_ctgender))
+				db.close()
+			
+				print(f'[{multiprocessing.current_process().name}] Stats from alternative source have been added.')
+		except Exception as e:
+			print(f'[{multiprocessing.current_process().name}] Stats from alternative source failed to be added with the following exception : {e}')
+
 	def start(self):
 		self.__removeLogFile()
 
@@ -3501,6 +3558,38 @@ class cTennisRunProcess:
 			pool_stats=self.__internalPoolOfProcesses.process_pool()
 			self.__internalPoolOfProcesses.close_pool()
 			print(pool_stats)
+
+	def runFeedCleanStats(self):
+		_ctgender='M'
+		if self.__dataSource in('swo','swl'):
+			_ctgender='W'
+		_row_min,_row_max=0,-1
+		try:
+			db=cTennisDb.ctennisDbClass(_connection_file=self.__dbConfigFile,_environ=self.__dbEnviron)
+			if db.connectWithConfig():
+				print(f'[{multiprocessing.current_process().name}] Connection to the database is successful. Insertion/Update of the players mapping is in progress ...')
+
+				db.autocommit=True
+				db.callproc('sp_setupmapping_stats', (_row_min,_row_max,_ctgender))
+				db.close()
+			
+				print(f'[{multiprocessing.current_process().name}] The mapping of players has been successfully done.')
+		except Exception as e:
+			print(f'[{multiprocessing.current_process().name}] The mapping of players failed with the following exception : {e}')
+
+		print(f'[{multiprocessing.current_process().name}] Feeding the table : ctenniscleanstats ...')
+		_min_dates=self.__dateRange[0] if self.__dateRange else '2010-01-01'
+		_control_dates=[]
+		_ctcode=self.__playersList[0] if len(self.__playersList)==1 else None
+		self.__internalPoolOfProcesses=cTennisPoolOfProcesses(pool_size=self.__poolSize,pool_target_prod=self.__feedCleanStatsProducer,pool_target_cons=self.__feedCleanStatsConsumer,
+			                                                  pool_data_prod=(cTennisRunProcess.dataSourceLinksDico[self.__dataSource],_min_dates,self.__dbConfigFile,self.__dbEnviron,self.__dateRange,self.__split,_control_dates),
+			                                                  pool_args_cons=(self.__dbConfigFile,self.__dbEnviron,_ctcode,_ctgender))
+		pool_stats=self.__internalPoolOfProcesses.process_pool()
+		self.__internalPoolOfProcesses.close_pool()
+		print(f'[{multiprocessing.current_process().name}] Feeding the table : ctenniscleanstats ...Done')
+		print(pool_stats)
+
+
 
 
 ################################################################################# TESTS ##########################################################################################
@@ -3555,12 +3644,14 @@ def consCleanStats(_ctcode=None,_ctgender='M',date_range=[]):
 		print(f'[{multiprocessing.current_process().name}] Stats from alternative source failed to be added with the following exception : {e}')	
 
 def testCleanStats():
-	print(prodCleanStats())
-
-	pool_proc=cTennisPoolOfProcesses(pool_size=6,pool_target_prod=prodCleanStats,pool_target_cons=consCleanStats,pool_data_prod=([],(1./12)),pool_args_cons=(None,'M'))
-	pool_stats=pool_proc.process_pool()
-	pool_proc.close_pool()
-	print(pool_stats)
+	#print(prodCleanStats())
+	#pool_proc=cTennisPoolOfProcesses(pool_size=6,pool_target_prod=prodCleanStats,pool_target_cons=consCleanStats,pool_data_prod=([],(1./12)),pool_args_cons=(None,'M'))
+	#pool_stats=pool_proc.process_pool()
+	#pool_proc.close_pool()
+	#print(pool_stats)
+	proc_run=cTennisRunProcess(pool_size=6,data_source='smo',_split=1./12)
+	#proc_run.test__feedCleanStatsProducer()
+	proc_run.runFeedCleanStats()
 
 
 def testsmocTennisRunProcess():
@@ -3889,6 +3980,6 @@ if __name__=='__main__':
 #	testregex()
 #	testSingleWomenLiveTennisDataClass()
 #	testextractSingleMatchStats()
-	testsmocTennisRunProcess()
-#	testCleanStats()
+#	testsmocTennisRunProcess()
+	testCleanStats()
 #	print(prodCleanStats())

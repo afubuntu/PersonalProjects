@@ -1,4 +1,4 @@
-DO 
+ DO 
 $do$
 begin
 	if exists(select 1 from pg_proc where proname='sp_feed_ctcleanmstats') then
@@ -216,6 +216,10 @@ create or replace function sp_feed_ctcleanmstats
 									and (mp2.ctcode is not null or mp2.ctcodeofficial is not null)
 									and m0.ctscore not like '%retired%'
 									and m0.ctscore not like '%walk%'
+									and t0.ctname not in ('ATP Cup','Laver Cup')
+									and t0.ctname not like '%WTA Elite Trophy%'
+									and t0.ctname not like '%WTA Finals%'
+									and t0.ctname not like '%ATP Finals%'
 									) as alternative_source
 									left outer join ctenniscleanstats as cleanstats
 									on  cleanstats.startdate=alternative_source.startdate
@@ -237,16 +241,20 @@ create or replace function sp_feed_ctcleanmstats
 				exit when not found;
 
 				if not exists(
-					select 1 from ctenniscleanstats
-					where  ((player1=_stats_record.player1 and player2=_stats_record.player2 and score=_stats_record.score)
-						or (_stats_record.player1=player2 and _stats_record.player2=player1 and _stats_record.score=fn_rscore(score)))
-					   and ((_stats_record.startdate>=startdate and _stats_record.enddate<=enddate)
-					   	or (_stats_record.startdate+interval '1 day'>=startdate and _stats_record.enddate+interval '1 day'<=enddate)
-					   	or (_stats_record.startdate+interval '-1 day'>=startdate and _stats_record.enddate+interval '-1 day'<=enddate))
-					   and _stats_record.tournament not in ('ATP Cup','Laver Cup')
-				       and _stats_record.tournament not like '%WTA Elite Trophy%'
-				       and _stats_record.tournament not like '%WTA Finals%'
-				       and _stats_record.tournament not like '%ATP Finals%'
+					select 1 from ctenniscleanstats as c0
+					where  ((c0.player1=_stats_record.player1 and c0.player2=_stats_record.player2 and c0.score=_stats_record.score)
+						or (_stats_record.player1=c0.player2 and _stats_record.player2=c0.player1 and _stats_record.score=fn_rscore(c0.score)))
+					   and ((_stats_record.startdate>=c0.startdate and _stats_record.enddate<=c0.enddate)
+					   	or (_stats_record.startdate+interval '1 day'>=c0.startdate and _stats_record.enddate+interval '1 day'<=c0.enddate)
+					   	or (_stats_record.startdate+interval '-1 day'>=c0.startdate and _stats_record.enddate+interval '-1 day'<=c0.enddate))
+				       and c0.source!=_stats_record.source
+				    union all
+					select 1 from ctenniscleanstats as c0
+					where  ((c0.player1=_stats_record.player1 and c0.player2=_stats_record.player2 and c0.score=_stats_record.score)
+						or (_stats_record.player1=c0.player2 and _stats_record.player2=c0.player1 and _stats_record.score=fn_rscore(c0.score)))
+					   and (_stats_record.startdate=c0.startdate and _stats_record.enddate=c0.enddate)
+				       and c0.source=_stats_record.source
+				       and _stats_record.round=c0.round			       
 					         ) then
 
 					_insert_count:=_insert_count+1;
@@ -286,38 +294,86 @@ create or replace function sp_feed_ctcleanmstats
 						updatedon
 					)
 					select
-						_stats_record.startdate,
-						_stats_record.enddate,
-						_stats_record.player1,
-						_stats_record.player2,
-						_stats_record.tournament,
-						_stats_record.tournament_category,
-						_stats_record.surface,
-						_stats_record.round,
-						_stats_record.score,
-						_stats_record.player_sets_won1,
-						_stats_record.player_sets_won2,
-						_stats_record.player_games_won1,
-						_stats_record.player_games_won2,
-						_stats_record.total_serv1,
-						_stats_record.total_serv2,       
-						_stats_record.first_serv1,
-						_stats_record.first_serv2,
-						_stats_record.first_serv_won1,
-						_stats_record.first_serv_won2,
-						_stats_record.second_serv_won1,
-						_stats_record.second_serv_won2,
-						_stats_record.total_break_points1,
-						_stats_record.total_break_points2,
-						_stats_record.break_points_won1,
-						_stats_record.break_points_won2,
-						_stats_record.double_fault1,
-						_stats_record.double_fault2,
-						_stats_record.aces1,
-						_stats_record.aces2,
-						_stats_record.source,
-						_stats_record.createdon,
-						current_timestamp;
+						_tmp_clean.startdate,
+						_tmp_clean.enddate,
+						_tmp_clean.player1,
+						_tmp_clean.player2,
+						_tmp_clean.tournament,
+						_tmp_clean.tournament_category,
+						_tmp_clean.surface,
+						_tmp_clean.round,
+						_tmp_clean.score,
+						_tmp_clean.player_sets_won1,
+						_tmp_clean.player_sets_won2,
+						_tmp_clean.player_games_won1,
+						_tmp_clean.player_games_won2,
+						_tmp_clean.total_serv1,
+						_tmp_clean.total_serv2,       
+						_tmp_clean.first_serv1,
+						_tmp_clean.first_serv2,
+						_tmp_clean.first_serv_won1,
+						_tmp_clean.first_serv_won2,
+						_tmp_clean.second_serv_won1,
+						_tmp_clean.second_serv_won2,
+						_tmp_clean.total_break_points1,
+						_tmp_clean.total_break_points2,
+						_tmp_clean.break_points_won1,
+						_tmp_clean.break_points_won2,
+						_tmp_clean.double_fault1,
+						_tmp_clean.double_fault2,
+						_tmp_clean.aces1,
+						_tmp_clean.aces2,
+						_tmp_clean.source,
+						_tmp_clean.createdon,
+						current_timestamp
+					from
+					(	select
+							_stats_record.startdate as startdate,
+							_stats_record.enddate as enddate,
+							_stats_record.player1 as player1,
+							_stats_record.player2 as player2,
+							_stats_record.tournament as tournament,
+							_stats_record.tournament_category as tournament_category,
+							_stats_record.surface as surface,
+							_stats_record.round as round,
+							_stats_record.score as score,
+							_stats_record.player_sets_won1 as player_sets_won1,
+							_stats_record.player_sets_won2 as player_sets_won2,
+							_stats_record.player_games_won1 as player_games_won1,
+							_stats_record.player_games_won2 as player_games_won2,
+							_stats_record.total_serv1 as total_serv1,
+							_stats_record.total_serv2 as total_serv2,       
+							_stats_record.first_serv1 as first_serv1,
+							_stats_record.first_serv2 as first_serv2,
+							_stats_record.first_serv_won1 as first_serv_won1,
+							_stats_record.first_serv_won2 as first_serv_won2,
+							_stats_record.second_serv_won1 as second_serv_won1,
+							_stats_record.second_serv_won2 as second_serv_won2,
+							_stats_record.total_break_points1 as total_break_points1,
+							_stats_record.total_break_points2 as total_break_points2,
+							_stats_record.break_points_won1 as break_points_won1,
+							_stats_record.break_points_won2 as break_points_won2,
+							_stats_record.double_fault1 as double_fault1,
+							_stats_record.double_fault2 as double_fault2,
+							_stats_record.aces1 as aces1,
+							_stats_record.aces2 as aces2,
+							_stats_record.source as source,
+							_stats_record.createdon as createdon
+					) as _tmp_clean
+					left outer join ctenniscleanstats as cleanstats
+						on _tmp_clean.startdate=cleanstats.startdate
+					   and _tmp_clean.enddate=cleanstats.enddate
+					   and _tmp_clean.round=cleanstats.round
+					   and _tmp_clean.player1=cleanstats.player1
+					   and _tmp_clean.player2=cleanstats.player2
+					   and _tmp_clean.score=cleanstats.score
+					where  cleanstats.startdate is null
+					   and cleanstats.enddate is null
+					   and cleanstats.round is null
+					   and cleanstats.player1 is null
+					   and cleanstats.player2 is null
+					   and cleanstats.score is null;
+						
 					raise notice 'Insertion - stats : % : {%; %; %; %; %}',_insert_count,_stats_record.startdate,_stats_record.player1,_stats_record.player2,_stats_record.tournament,_stats_record.score;
 				end if;
 			end loop;
@@ -511,9 +567,13 @@ create or replace function sp_feed_ctcleanmstats
 									and p2.ctgender=_ctgender
 									and (mp1.ctcode is not null or mp1.ctcodeofficial is not null)
 									and (mp2.ctcode is not null or mp2.ctcodeofficial is not null)										
-									and (p1.ctcode=_ctcode or p2.ctcode=_ctcode)
+									and (p11.ctcode=_ctcode or p22.ctcode=_ctcode)
 									and m0.ctscore not like '%retired%'
 									and m0.ctscore not like '%walk%'
+									and t0.ctname not in ('ATP Cup','Laver Cup')
+									and t0.ctname not like '%WTA Elite Trophy%'
+									and t0.ctname not like '%WTA Finals%'
+									and t0.ctname not like '%ATP Finals%'
 									) as alternative_source
 									left outer join ctenniscleanstats as cleanstats
 									on  cleanstats.startdate=alternative_source.startdate
@@ -535,16 +595,20 @@ create or replace function sp_feed_ctcleanmstats
 				exit when not found;
 
 				if not exists(
-					select 1 from ctenniscleanstats
-					where  ((player1=_stats_record.player1 and player2=_stats_record.player2 and score=_stats_record.score)
-						or (_stats_record.player1=player2 and _stats_record.player2=player1 and _stats_record.score=fn_rscore(score)))
-					   and ((_stats_record.startdate>=startdate and _stats_record.enddate<=enddate)
-					   	or (_stats_record.startdate+interval '1 day'>=startdate and _stats_record.enddate+interval '1 day'<=enddate)
-					   	or (_stats_record.startdate+interval '-1 day'>=startdate and _stats_record.enddate+interval '-1 day'<=enddate))
-					   and _stats_record.tournament not in ('ATP Cup','Laver Cup')
-				       and _stats_record.tournament not like '%WTA Elite Trophy%'
-				       and _stats_record.tournament not like '%WTA Finals%'
-				       and _stats_record.tournament not like '%ATP Finals%'
+					select 1 from ctenniscleanstats as c0
+					where  ((c0.player1=_stats_record.player1 and c0.player2=_stats_record.player2 and c0.score=_stats_record.score)
+						or (_stats_record.player1=c0.player2 and _stats_record.player2=c0.player1 and _stats_record.score=fn_rscore(c0.score)))
+					   and ((_stats_record.startdate>=c0.startdate and _stats_record.enddate<=c0.enddate)
+					   	or (_stats_record.startdate+interval '1 day'>=c0.startdate and _stats_record.enddate+interval '1 day'<=c0.enddate)
+					   	or (_stats_record.startdate+interval '-1 day'>=c0.startdate and _stats_record.enddate+interval '-1 day'<=c0.enddate))
+				       and c0.source!=_stats_record.source
+				    union all
+					select 1 from ctenniscleanstats as c0
+					where  ((c0.player1=_stats_record.player1 and c0.player2=_stats_record.player2 and c0.score=_stats_record.score)
+						or (_stats_record.player1=c0.player2 and _stats_record.player2=c0.player1 and _stats_record.score=fn_rscore(c0.score)))
+					   and (_stats_record.startdate=c0.startdate and _stats_record.enddate=c0.enddate)
+				       and c0.source=_stats_record.source
+				       and _stats_record.round=c0.round
 					         ) then
 
 					_insert_count:=_insert_count+1;
@@ -584,38 +648,86 @@ create or replace function sp_feed_ctcleanmstats
 						updatedon
 					)
 					select
-						_stats_record.startdate,
-						_stats_record.enddate,
-						_stats_record.player1,
-						_stats_record.player2,
-						_stats_record.tournament,
-						_stats_record.tournament_category,
-						_stats_record.surface,
-						_stats_record.round,
-						_stats_record.score,
-						_stats_record.player_sets_won1,
-						_stats_record.player_sets_won2,
-						_stats_record.player_games_won1,
-						_stats_record.player_games_won2,
-						_stats_record.total_serv1,
-						_stats_record.total_serv2,       
-						_stats_record.first_serv1,
-						_stats_record.first_serv2,
-						_stats_record.first_serv_won1,
-						_stats_record.first_serv_won2,
-						_stats_record.second_serv_won1,
-						_stats_record.second_serv_won2,
-						_stats_record.total_break_points1,
-						_stats_record.total_break_points2,
-						_stats_record.break_points_won1,
-						_stats_record.break_points_won2,
-						_stats_record.double_fault1,
-						_stats_record.double_fault2,
-						_stats_record.aces1,
-						_stats_record.aces2,
-						_stats_record.source,
-						_stats_record.createdon,
-						current_timestamp;
+						_tmp_clean.startdate,
+						_tmp_clean.enddate,
+						_tmp_clean.player1,
+						_tmp_clean.player2,
+						_tmp_clean.tournament,
+						_tmp_clean.tournament_category,
+						_tmp_clean.surface,
+						_tmp_clean.round,
+						_tmp_clean.score,
+						_tmp_clean.player_sets_won1,
+						_tmp_clean.player_sets_won2,
+						_tmp_clean.player_games_won1,
+						_tmp_clean.player_games_won2,
+						_tmp_clean.total_serv1,
+						_tmp_clean.total_serv2,       
+						_tmp_clean.first_serv1,
+						_tmp_clean.first_serv2,
+						_tmp_clean.first_serv_won1,
+						_tmp_clean.first_serv_won2,
+						_tmp_clean.second_serv_won1,
+						_tmp_clean.second_serv_won2,
+						_tmp_clean.total_break_points1,
+						_tmp_clean.total_break_points2,
+						_tmp_clean.break_points_won1,
+						_tmp_clean.break_points_won2,
+						_tmp_clean.double_fault1,
+						_tmp_clean.double_fault2,
+						_tmp_clean.aces1,
+						_tmp_clean.aces2,
+						_tmp_clean.source,
+						_tmp_clean.createdon,
+						current_timestamp
+					from
+					(	select
+							_stats_record.startdate as startdate,
+							_stats_record.enddate as enddate,
+							_stats_record.player1 as player1,
+							_stats_record.player2 as player2,
+							_stats_record.tournament as tournament,
+							_stats_record.tournament_category as tournament_category,
+							_stats_record.surface as surface,
+							_stats_record.round as round,
+							_stats_record.score as score,
+							_stats_record.player_sets_won1 as player_sets_won1,
+							_stats_record.player_sets_won2 as player_sets_won2,
+							_stats_record.player_games_won1 as player_games_won1,
+							_stats_record.player_games_won2 as player_games_won2,
+							_stats_record.total_serv1 as total_serv1,
+							_stats_record.total_serv2 as total_serv2,       
+							_stats_record.first_serv1 as first_serv1,
+							_stats_record.first_serv2 as first_serv2,
+							_stats_record.first_serv_won1 as first_serv_won1,
+							_stats_record.first_serv_won2 as first_serv_won2,
+							_stats_record.second_serv_won1 as second_serv_won1,
+							_stats_record.second_serv_won2 as second_serv_won2,
+							_stats_record.total_break_points1 as total_break_points1,
+							_stats_record.total_break_points2 as total_break_points2,
+							_stats_record.break_points_won1 as break_points_won1,
+							_stats_record.break_points_won2 as break_points_won2,
+							_stats_record.double_fault1 as double_fault1,
+							_stats_record.double_fault2 as double_fault2,
+							_stats_record.aces1 as aces1,
+							_stats_record.aces2 as aces2,
+							_stats_record.source as source,
+							_stats_record.createdon as createdon
+					) as _tmp_clean
+					left outer join ctenniscleanstats as cleanstats
+						on _tmp_clean.startdate=cleanstats.startdate
+					   and _tmp_clean.enddate=cleanstats.enddate
+					   and _tmp_clean.round=cleanstats.round
+					   and _tmp_clean.player1=cleanstats.player1
+					   and _tmp_clean.player2=cleanstats.player2
+					   and _tmp_clean.score=cleanstats.score
+					where  cleanstats.startdate is null
+					   and cleanstats.enddate is null
+					   and cleanstats.round is null
+					   and cleanstats.player1 is null
+					   and cleanstats.player2 is null
+					   and cleanstats.score is null;
+
 					raise notice 'Insertion - stats : % : {%; %; %; %; %}',_insert_count,_stats_record.startdate,_stats_record.player1,_stats_record.player2,_stats_record.tournament,_stats_record.score;
 				end if;
 			end loop;

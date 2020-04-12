@@ -91,8 +91,7 @@ create or replace function sp_get_ctmstats
 				     	       m0.ctstataces1 as aces1,
 				     	       m0.ctstataces2 as aces2,
 				     	       m0.ctstatsource as source,
-				     	       m0.ctcreatedon as createdon,
-				     	       m0.ctupdatedon as updatedon
+				     	       m0.ctcreatedon as createdon
 				     	from ctennismatchesstats as m0
 				     	left outer join ctennisplayers as p1 on p1.ctdid=m0.ctplayer1
 				     	left outer join ctennisplayers as p2 on p2.ctdid=m0.ctplayer2
@@ -109,7 +108,7 @@ create or replace function sp_get_ctmstats
 				     ),
 				     alternative_source as
 				     (
-				     	select case when r0.ctlabel like '%Qualifying%' then 
+				     	select distinct case when r0.ctlabel like '%Qualifying%' then 
 				     					case when c0.ctcode='grandslam' then (m0.ctstartdate+interval '13 day') else (m0.ctstartdate+interval '2 day') end 
 				     				else m0.ctstartdate 
 				     		   end::date as startdate,
@@ -145,8 +144,7 @@ create or replace function sp_get_ctmstats
 				     	       m0.ctstataces1 as aces1,
 				     	       m0.ctstataces2 as aces2,
 				     	       m0.ctstatsource as source,
-				     	       m0.ctcreatedon as createdon,
-				     	       m0.ctupdatedon as updatedon
+				     	       m0.ctcreatedon as createdon
 				     	from ctennismatchesstats as m0
 				     	left outer join ctennisplayers as p1 on p1.ctdid=m0.ctplayer1
 				     	left outer join ctennisplayers as p2 on p2.ctdid=m0.ctplayer2
@@ -166,11 +164,15 @@ create or replace function sp_get_ctmstats
 						  and (mp1.ctcode is not null or mp1.ctcodeofficial is not null)
 						  and (mp2.ctcode is not null or mp2.ctcodeofficial is not null)
 				     	  and m0.ctscore not like '%retired%'
-				     	  and m0.ctscore not like '%walk%'   	
+				     	  and m0.ctscore not like '%walk%'		     	  
+						  and t0.ctname not in ('ATP Cup','Laver Cup')
+						  and t0.ctname not like '%WTA Elite Trophy%'
+						  and t0.ctname not like '%WTA Finals%'
+						  and t0.ctname not like '%ATP Finals%'	
 				     )
-				     select o0.* from official_source as o0
+				     select o0.*,current_timestamp::timestamp as updatedon from official_source as o0
 				     union all
-				     select a0.* from alternative_source as a0
+				     select a0.*,current_timestamp::timestamp as updatedon from alternative_source as a0
 				     left outer join official_source as o0 
 				        on ((a0.player1=o0.player1 and a0.player2=o0.player2 and a0.score=o0.score)
 				        or (a0.player1=o0.player2 and a0.player2=o0.player1 and a0.score=fn_rscore(o0.score)))
@@ -179,11 +181,7 @@ create or replace function sp_get_ctmstats
 				       	or (a0.startdate+interval '-1 day'>=o0.startdate and a0.enddate+interval '-1 day'<=o0.enddate))
 				     where o0.player1 is null 
 				       and o0.player2 is null
-				       and o0.score is null
-				       and a0.tournament not in ('ATP Cup','Laver Cup')
-				       and a0.tournament not like '%WTA Elite Trophy%'
-				       and a0.tournament not like '%WTA Finals%'
-				       and a0.tournament not like '%ATP Finals%';
+				       and o0.score is null;
 		else
 			return query
 				with official_source as
@@ -218,8 +216,7 @@ create or replace function sp_get_ctmstats
 				     	       m0.ctstataces1 as aces1,
 				     	       m0.ctstataces2 as aces2,
 				     	       m0.ctstatsource as source,
-				     	       m0.ctcreatedon as createdon,
-				     	       m0.ctupdatedon as updatedon
+				     	       m0.ctcreatedon as createdon
 				     	from ctennismatchesstats as m0
 				     	left outer join ctennisplayers as p1 on p1.ctdid=m0.ctplayer1
 				     	left outer join ctennisplayers as p2 on p2.ctdid=m0.ctplayer2
@@ -237,7 +234,7 @@ create or replace function sp_get_ctmstats
 				     ),
 				     alternative_source as
 				     (
-				     	select case when r0.ctlabel like '%Qualifying%' then 
+				     	select distinct case when r0.ctlabel like '%Qualifying%' then 
 				     					case when c0.ctcode='grandslam' then (m0.ctstartdate+interval '13 day') else (m0.ctstartdate+interval '2 day') end 
 				     				else m0.ctstartdate 
 				     		   end::date as startdate,
@@ -273,8 +270,7 @@ create or replace function sp_get_ctmstats
 				     	       m0.ctstataces1 as aces1,
 				     	       m0.ctstataces2 as aces2,
 				     	       m0.ctstatsource as source,
-				     	       m0.ctcreatedon as createdon,
-				     	       m0.ctupdatedon as updatedon
+				     	       m0.ctcreatedon as createdon
 				     	from ctennismatchesstats as m0
 				     	left outer join ctennisplayers as p1 on p1.ctdid=m0.ctplayer1
 				     	left outer join ctennisplayers as p2 on p2.ctdid=m0.ctplayer2
@@ -293,13 +289,17 @@ create or replace function sp_get_ctmstats
 				     	  and p2.ctgender=_ctgender
 						  and (mp1.ctcode is not null or mp1.ctcodeofficial is not null)
 						  and (mp2.ctcode is not null or mp2.ctcodeofficial is not null)
-				     	  and (p1.ctcode=_ctcode or p2.ctcode=_ctcode)	 
+				     	  and (p11.ctcode=_ctcode or p22.ctcode=_ctcode)	 
 				     	  and m0.ctscore not like '%retired%'
-				     	  and m0.ctscore not like '%walk%'  	
+				     	  and m0.ctscore not like '%walk%' 
+						  and t0.ctname not in ('ATP Cup','Laver Cup')
+						  and t0.ctname not like '%WTA Elite Trophy%'
+						  and t0.ctname not like '%WTA Finals%'
+						  and t0.ctname not like '%ATP Finals%'		
 				     )
-				     select o0.* from official_source as o0
+				     select o0.*,current_timestamp::timestamp as updatedon from official_source as o0
 				     union all
-				     select a0.* from alternative_source as a0
+				     select a0.*,current_timestamp::timestamp as updatedon from alternative_source as a0
 				     left outer join official_source as o0 
 				        on ((a0.player1=o0.player1 and a0.player2=o0.player2 and a0.score=o0.score)
 				        or (a0.player1=o0.player2 and a0.player2=o0.player1 and a0.score=fn_rscore(o0.score)))
@@ -308,10 +308,6 @@ create or replace function sp_get_ctmstats
 				       	or (a0.startdate+interval '-1 day'>=o0.startdate and a0.enddate+interval '-1 day'<=o0.enddate))
 				     where o0.player1 is null 
 				       and o0.player2 is null
-				       and o0.score is null
-				       and a0.tournament not in ('ATP Cup','Laver Cup')
-				       and a0.tournament not like '%WTA Elite Trophy%'
-				       and a0.tournament not like '%WTA Finals%'
-				       and a0.tournament not like '%ATP Finals%';				       
+				       and o0.score is null;				       
 		end if;
 	end $$;
