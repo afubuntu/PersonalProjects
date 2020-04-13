@@ -26,7 +26,7 @@ create or replace function sp_feed_ctcleanmstats
 		_str_challenger varchar(100);
 	begin
 		select coalesce(_ctstartdate,min(ctstartdate)), coalesce(_ctenddate,max(ctenddate)) into _min_date,_max_date from ctennismatchesstats;
-		select case when _ctgender='M' then 'atpchallenger' when 'W' then 'wtachallenger' else 'notdefined' end into _str_challenger;
+		select case when _ctgender='M' then 'atpchallenger' when _ctgender='W' then 'wtachallenger' else 'notdefined' end into _str_challenger;
 
 		if _ctcode is null then
 			insert into ctenniscleanstats
