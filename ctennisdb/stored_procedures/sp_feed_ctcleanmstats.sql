@@ -23,8 +23,10 @@ create or replace function sp_feed_ctcleanmstats
 		_alt_cursor refcursor;
 		_stats_record record;
 		_insert_count integer;
+		_str_challenger varchar(100);
 	begin
 		select coalesce(_ctstartdate,min(ctstartdate)), coalesce(_ctenddate,max(ctenddate)) into _min_date,_max_date from ctennismatchesstats;
+		select case when _ctgender='M' then 'atpchallenger' when 'W' then 'wtachallenger' else 'notdefined' end into _str_challenger;
 
 		if _ctcode is null then
 			insert into ctenniscleanstats
@@ -172,8 +174,14 @@ create or replace function sp_feed_ctcleanmstats
 									replace(p11.ctname,',','')::varchar(200) as player1,
 									replace(p22.ctname,',','')::varchar(200) as player2,
 									t0.ctname as tournament,
-									c0.ctcode as tournament_category,
-									s0.ctlabel as surface,
+									case when t0.ctname in('Davis Cup','Hopman Cup','Fed Cup') then 'itf' 
+									     when t0.ctname ilike '%olympic%' then 'olympicgames' 
+									     when t0.ctname ilike '%challenger%' then _str_challenger 
+									     else c0.ctcode end::varchar(100) as tournament_category,
+									case when s0.ctlabel='Hard' then 'Outdoor Hard'
+									     when s0.ctlabel='Clay' then 'Outdoor Clay' 
+									     when s0.ctlabel='Grass' then 'Outdoor Grass' 
+									     else s0.ctlabel end::varchar(200) as surface,
 									r0.ctlabel as round,
 									m0.ctscore as score,
 									fn_get_score(m0.ctscore,1,'s') as player_sets_won1,
@@ -529,8 +537,14 @@ create or replace function sp_feed_ctcleanmstats
 									replace(p11.ctname,',','')::varchar(200) as player1,
 									replace(p22.ctname,',','')::varchar(200) as player2,
 									t0.ctname as tournament,
-									c0.ctcode as tournament_category,
-									s0.ctlabel as surface,
+									case when t0.ctname in('Davis Cup','Hopman Cup','Fed Cup') then 'itf' 
+									     when t0.ctname ilike '%olympic%' then 'olympicgames' 
+									     when t0.ctname ilike '%challenger%' then _str_challenger 
+									     else c0.ctcode end::varchar(100) as tournament_category,
+									case when s0.ctlabel='Hard' then 'Outdoor Hard'
+									     when s0.ctlabel='Clay' then 'Outdoor Clay' 
+									     when s0.ctlabel='Grass' then 'Outdoor Grass' 
+									     else s0.ctlabel end::varchar(200) as surface,
 									r0.ctlabel as round,
 									m0.ctscore as score,
 									fn_get_score(m0.ctscore,1,'s') as player_sets_won1,

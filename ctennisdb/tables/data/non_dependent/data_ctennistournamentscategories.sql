@@ -34,9 +34,9 @@ begin
         union all select 'premier' as ctcode, 'WTA Premier' as ctlabel, 470 as ctpoints
         union all select 'International' as ctcode, 'WTA International' as ctlabel, 280 as ctpoints
         union all select 'lvr' as ctcode, 'Laver Cup' as ctlabel, 0 as ctpoints
-        union all select 'olympicgames' as ctcode, 'Olympic Games' as ctlabel, 0 as ctpoints
-        union all select 'atpchallenger' as ctcode, 'ATP Challenger Tour' as ctlabel, 0 as ctpoints
-        union all select 'wtachallenger' as ctcode, 'WTA Challenger Tour' as ctlabel, 0 as ctpoints
+        union all select 'olympicgames' as ctcode, 'Olympic Games' as ctlabel, 750 as ctpoints
+        union all select 'atpchallenger' as ctcode, 'ATP Challenger Tour' as ctlabel, 125 as ctpoints
+        union all select 'wtachallenger' as ctcode, 'WTA Challenger Tour' as ctlabel, 125 as ctpoints
       ) as tmp
       left outer join ctennistournamentscategories as c 
            on  lower(c.ctcode)=lower(tmp.ctcode)
